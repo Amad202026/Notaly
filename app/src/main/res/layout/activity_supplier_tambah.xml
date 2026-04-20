@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="32dp">
+
+        <!-- TOP BAR: Back + Judul -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="12dp">
+
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="Kembali"
+                android:focusable="true"
+                android:padding="8dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="#2E7D5B" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="TAMBAH SUPPLIER"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#2E7D5B"
+                android:letterSpacing="0.08" />
+
+        </LinearLayout>
+
+        <!-- Header: Judul + Subjudul + Garis -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Daftar Supplier"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="#1A1A1A" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Manajemen database Supplier"
+                android:textSize="13sp"
+                android:textColor="#666666" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="12dp"
+                android:background="#DDDDDD" />
+
+        </LinearLayout>
+
+        <!-- ======================== -->
+        <!-- SECTION 1: IDENTITAS UTAMA -->
+        <!-- ======================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="IDENTITAS UTAMA"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#1A1A1A"
+                android:letterSpacing="0.05" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Informasi fundamental untuk pelacakan sistem."
+                android:textSize="12sp"
+                android:textColor="#888888" />
+
+            <!-- ID Supplier -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="ID SUPPLIER"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:textColor="#444444"
+                android:letterSpacing="0.05" />
+
+            <!-- ID otomatis, tidak bisa diedit -->
+            <TextView
+                android:id="@+id/tvIdSupplier"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_search_rounded"
+                android:paddingHorizontal="14dp"
+                android:gravity="center_vertical"
+                android:text="001"
+                android:textSize="15sp"
+                android:textColor="#888888" />
+
+            <!-- Nama Supplier -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="NAMA SUPPLIER"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:textColor="#444444"
+                android:letterSpacing="0.05" />
+
+            <EditText
+                android:id="@+id/etNamaSupplier"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_search_rounded"
+                android:paddingHorizontal="14dp"
+                android:hint="Contoh: PT. Maju Jaya"
+                android:textSize="15sp"
+                android:textColor="#1A1A1A"
+                android:textColorHint="#AAAAAA"
+                android:inputType="textCapWords"
+                android:singleLine="true" />
+
+        </LinearLayout>
+
+        <!-- Spacer antar section -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="24dp" />
+
+        <!-- ======================== -->
+        <!-- SECTION 2: SALURAN KONTAK -->
+        <!-- ======================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SALURAN KONTAK"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#1A1A1A"
+                android:letterSpacing="0.05" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Detail komunikasi untuk koordinasi pengadaan."
+                android:textSize="12sp"
+                android:textColor="#888888" />
+
+            <!-- Nomor Telepon -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="NOMOR TELEPON/WHATSAPP"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:textColor="#444444"
+                android:letterSpacing="0.05" />
+
+            <EditText
+                android:id="@+id/etNoTelp"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_search_rounded"
+                android:paddingHorizontal="14dp"
+                android:hint="+62  812 3456 7890"
+                android:textSize="15sp"
+                android:textColor="#1A1A1A"
+                android:textColorHint="#AAAAAA"
+                android:inputType="phone"
+                android:singleLine="true" />
+
+            <!-- Kategori Produk (Spinner) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="KATEGORI PRODUK"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:textColor="#444444"
+                android:letterSpacing="0.05" />
+
+            <!-- Wrapper Spinner dengan ikon panah kanan -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_search_rounded">
+
+                <Spinner
+                    android:id="@+id/spinnerKategori"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingHorizontal="14dp"
+                    android:background="@null"
+                    android:hint="Pilih Kategori" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="14dp"
+                    android:src="@drawable/ic_arrow_down"
+                    android:contentDescription="Dropdown"
+                    app:tint="#888888" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <!-- Spacer antar section -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="24dp" />
+
+        <!-- ======================== -->
+        <!-- SECTION 3: GEOLOKASI & ALAMAT -->
+        <!-- ======================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="GEOLOKASI &amp; ALAMAT"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#1A1A1A"
+                android:letterSpacing="0.05" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Titik distribusi dan alamat operasional lengkap."
+                android:textSize="12sp"
+                android:textColor="#888888" />
+
+            <!-- Alamat Lengkap -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="ASAL DAERAH/ALAMAT LENGKAP"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:textColor="#444444"
+                android:letterSpacing="0.05" />
+
+            <EditText
+                android:id="@+id/etAlamat"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_search_rounded"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="12dp"
+                android:hint="Jl. Pahlawan No. 123, Blok C, Jakarta Selatan..."
+                android:textSize="15sp"
+                android:textColor="#1A1A1A"
+                android:textColorHint="#AAAAAA"
+                android:inputType="textMultiLine"
+                android:gravity="top"
+                android:minLines="3" />
+
+        </LinearLayout>
+
+        <!-- Spacer -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="24dp" />
+
+        <!-- Tombol Simpan -->
+        <TextView
+            android:id="@+id/btnSimpan"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginHorizontal="16dp"
+            android:background="@drawable/bg_btn_hijau"
+            android:gravity="center"
+            android:text="Simpan Supplier"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <!-- Tombol Batal -->
+        <TextView
+            android:id="@+id/btnBatal"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:text="Batal"
+            android:textColor="#444444"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true" />
+
+    </LinearLayout>
+
+</ScrollView>

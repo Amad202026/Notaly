@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Notaly">
+        <activity
+            android:name=".pengaturan.GantiTanggalLahirActivity"
+            android:exported="false" />
+        <activity
+            android:name=".pengaturan.GantiNamatokoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".pengaturan.GantiPinActivity"
+            android:exported="false" />
+        <activity
+            android:name=".pengaturan.PengaturanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".cacat.CacatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".daftransaksi.DafTransaksiActivity"
+            android:exported="false" />
+        <activity
+            android:name=".kirim.KirimActivity"
+            android:exported="false" />
+        <activity
+            android:name=".restock.StockActivity"
+            android:exported="false" />
+        <activity
+            android:name=".pelanggan.PelangganActivity"
+            android:exported="false" />
+        <activity
+            android:name=".barang.BarangActivity"
+            android:exported="false" />
+        <activity
+            android:name=".kategori.KategoriActivity"
+            android:exported="false" />
+        <activity
+            android:name=".auth.LupaPinActivity"
+            android:exported="false" />
+        <activity
+            android:name=".auth.DetailLoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".auth.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".auth.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".home.BerandaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".supplier.TambahSupplierActivity"
+            android:exported="false" />
+        <activity
+            android:name=".supplier.SupplierActivity"
+            android:exported="false" />
+        <activity
+            android:name=".auth.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
