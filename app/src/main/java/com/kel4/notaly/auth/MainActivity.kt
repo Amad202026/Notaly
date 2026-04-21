@@ -27,11 +27,20 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnGetStarted = findViewById(R.id.btnGetStarted)
+        val userPref = getSharedPreferences("UserPreferences", MODE_PRIVATE)
+        var isReg = userPref.getBoolean("IS_REG", false)
 
         btnGetStarted.setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
-            finish()
+
+            if(isReg) {
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            } else{
+                val intent = Intent(this, RegisterActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         }
     }
 }

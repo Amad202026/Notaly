@@ -13,6 +13,8 @@ interface BarangDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun tambahBarang(barang: Barang)
 
+    @Query("SELECT DISTINCT Kategori FROM barang WHERE Kategori IS NOT NULL AND Kategori != '' ORDER BY Kategori ASC")
+    suspend fun ambilKategoriUnik(): List<String>
     @Update
     suspend fun ubahBarang(barang: Barang)
 

@@ -1,0 +1,29 @@
+package com.kel4.notaly.pengaturan
+
+import android.content.Intent
+import android.os.Bundle
+import android.widget.Button
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.kel4.notaly.R
+
+class BerhasilNamatokoActivity : AppCompatActivity() {
+
+    lateinit var btnKembali : Button
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_berhasil_namatoko)
+
+        btnKembali = findViewById(R.id.btnKembali)
+        
+        btnKembali.setOnClickListener {
+            startActivity(Intent(this, PengaturanActivity::class.java))
+            finish()
+        }
+
+    }
+}

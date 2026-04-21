@@ -76,11 +76,11 @@
             app:layout_constraintTop_toBottomOf="@id/tvLabelPin" >
 
             <EditText
-                android:id="@+id/etCari"
+                android:id="@+id/etPin"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/bg_search_rounded"
                 android:layout_margin="5dp"
+                android:background="@drawable/bg_search_rounded"
                 android:gravity="center"
                 android:hint="......"
                 android:imeOptions="actionSearch"

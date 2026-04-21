@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- item_laporan_tanggal.xml -->
+<!-- Layout untuk satu grup tanggal beserta daftar transaksinya -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginBottom="16dp">
+
+    <!-- Grup Tanggal (background abu-abu muda) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#EDF2EF"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+
+        <!-- Header: Tanggal -->
+        <TextView
+            android:id="@+id/tvTanggal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="11 APRIL 2026"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="#1A1A1A"
+            android:letterSpacing="0.04" />
+
+        <!-- Header kolom tabel -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.5"
+                android:text="NAMA BARANG\n&amp; PCS"
+                android:textSize="10sp"
+                android:textColor="#888888"
+                android:textStyle="normal"
+                android:letterSpacing="0.03" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:text="HARGA\nJUAL"
+                android:textSize="10sp"
+                android:textColor="#888888"
+                android:gravity="center"
+                android:letterSpacing="0.03" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:text="HARGA\nMODAL"
+                android:textSize="10sp"
+                android:textColor="#888888"
+                android:gravity="center"
+                android:letterSpacing="0.03" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:text="LABA\nBERSIH"
+                android:textSize="10sp"
+                android:textColor="#888888"
+                android:gravity="center"
+                android:letterSpacing="0.03" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- RecyclerView nested untuk item barang per tanggal ini -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvItemBarang"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="false"
+        android:overScrollMode="never" />
+
+    <!-- Garis pemisah sebelum summary -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="14dp"
+        android:background="#DDDDDD" />
+
+    <!-- Summary bawah: Barang Terjual, Total Pendapatan, Total Laba -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="14dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="10dp">
+
+        <!-- Baris: Barang Terjual -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="BARANG TERJUAL :"
+                android:textSize="11sp"
+                android:textColor="#888888"
+                android:letterSpacing="0.02" />
+
+            <TextView
+                android:id="@+id/tvTotalBarangTerjual"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4 pcs"
+                android:textSize="12sp"
+                android:textColor="#1A1A1A" />
+        </LinearLayout>
+
+        <!-- Baris: Total Pendapatan -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="6dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="TOTAL PENDAPATAN :"
+                android:textSize="11sp"
+                android:textColor="#888888"
+                android:letterSpacing="0.02" />
+
+            <TextView
+                android:id="@+id/tvTotalPendapatan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rp 435.00"
+                android:textSize="12sp"
+                android:textColor="#1A1A1A" />
+        </LinearLayout>
+
+        <!-- Baris: Total Laba (dengan badge cyan) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="TOTAL LABA :"
+                android:textSize="11sp"
+                android:textColor="#888888"
+                android:letterSpacing="0.02" />
+
+            <TextView
+                android:id="@+id/tvTotalLaba"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rp 130.000"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="#1A1A1A"
+                android:background="@drawable/bg_badge_kategori"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Garis bawah pemisah antar grup -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DDDDDD" />
+
+</LinearLayout>

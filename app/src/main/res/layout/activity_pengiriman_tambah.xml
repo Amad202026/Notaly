@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <!-- Tombol Back -->
+    <ImageView
+        android:id="@+id/btnBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_arrow_back"
+        android:clickable="true"
+        android:focusable="true"
+        android:scaleType="centerInside"
+        android:contentDescription="Kembali"
+        app:tint="#2E7D5B"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Label atas -->
+    <TextView
+        android:id="@+id/tvLabelAtas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        android:text="INPUT PENGIRIMAN"
+        android:textSize="11sp"
+        android:textColor="#2E7D5B"
+        android:textStyle="bold"
+        android:letterSpacing="0.06"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnBack" />
+
+    <!-- Judul -->
+    <TextView
+        android:id="@+id/tvJudul"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        android:text="Management Logistik"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#1A1A1A"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvLabelAtas" />
+
+    <!-- Garis pemisah -->
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="10dp"
+        android:background="#DDDDDD"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvJudul" />
+
+    <!-- ScrollView -->
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        app:layout_constraintTop_toBottomOf="@id/divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="32dp">
+
+            <!-- ===== IDENTITAS PENGIRIMAN ===== -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="14dp">
+
+                <View
+                    android:layout_width="4dp"
+                    android:layout_height="16dp"
+                    android:background="#2E7D5B"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="IDENTITAS PENGIRIMAN"
+                    android:textSize="11sp"
+                    android:textColor="#2E7D5B"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.06" />
+            </LinearLayout>
+
+            <!-- ID Pengiriman -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ID Pengiriman"
+                android:textSize="13sp"
+                android:textColor="#555555"
+                android:layout_marginBottom="6dp" />
+
+            <Spinner
+                android:id="@+id/spinnerIdPengiriman"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_search_rounded"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:spinnerMode="dropdown"
+                android:layout_marginBottom="14dp" />
+
+            <!-- ID Transaksi -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ID Transaksi"
+                android:textSize="13sp"
+                android:textColor="#555555"
+                android:layout_marginBottom="6dp" />
+
+            <Spinner
+                android:id="@+id/spinnerIdTransaksi"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_search_rounded"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:spinnerMode="dropdown"
+                android:layout_marginBottom="24dp" />
+
+            <!-- ===== DETAIL EKSPEDISI ===== -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="14dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_car_full_green"
+                    android:scaleType="centerInside"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="Ekspedisi" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DETAIL EKSPEDISI"
+                    android:textSize="11sp"
+                    android:textColor="#2E7D5B"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.06" />
+            </LinearLayout>
+
+            <!-- Nama Ekspedisi -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nama Ekspedisi"
+                android:textSize="13sp"
+                android:textColor="#555555"
+                android:layout_marginBottom="6dp" />
+
+            <EditText
+                android:id="@+id/etNamaEkspedisi"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_search_rounded"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:hint="J&amp;T Express"
+                android:textSize="14sp"
+                android:textColor="#1A1A1A"
+                android:textColorHint="#AAAAAA"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="14dp" />
+
+            <!-- Nomor Resi -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nomor Resi"
+                android:textSize="13sp"
+                android:textColor="#555555"
+                android:layout_marginBottom="6dp" />
+
+            <EditText
+                android:id="@+id/etNomorResi"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_search_rounded"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:hint="Masukkan nomor resi..."
+                android:textSize="14sp"
+                android:textColor="#1A1A1A"
+                android:textColorHint="#AAAAAA"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="14dp" />
+
+            <!-- Alamat Tujuan -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Alamat Lengkap Tujuan"
+                android:textSize="13sp"
+                android:textColor="#555555"
+                android:layout_marginBottom="6dp" />
+
+            <EditText
+                android:id="@+id/etAlamatTujuan"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/bg_search_rounded"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:hint="Jl. Palaran No 17, Samarinda"
+                android:inputType="textMultiLine"
+                android:textSize="14sp"
+                android:textColor="#1A1A1A"
+                android:textColorHint="#AAAAAA"
+                android:gravity="top|start"
+                android:layout_marginBottom="24dp" />
+
+            <!-- ===== STATUS & ADMINISTRASI ===== -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="14dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_cheklis"
+                    app:tint="#2E7D5B"
+                    android:scaleType="centerInside"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="Status" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="STATUS &amp; ADMINISTRASI"
+                    android:textSize="11sp"
+                    android:textColor="#2E7D5B"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.06" />
+            </LinearLayout>
+
+            <!-- Biaya Kirim -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Biaya Kirim"
+                android:textSize="13sp"
+                android:textColor="#555555"
+                android:layout_marginBottom="6dp" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_search_rounded"
+                android:layout_marginBottom="14dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|start"
+                    android:layout_marginStart="14dp"
+                    android:text="Rp"
+                    android:textSize="14sp"
+                    android:textColor="#888888" />
+
+                <EditText
+                    android:id="@+id/etBiayaKirim"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="14dp"
+                    android:hint="0"
+                    android:inputType="numberDecimal"
+                    android:textSize="14sp"
+                    android:textColor="#1A1A1A"
+                    android:textColorHint="#AAAAAA"
+                    android:background="@null"
+                    android:gravity="center_vertical" />
+            </FrameLayout>
+
+            <!-- Status Pengiriman -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Status Pengiriman"
+                android:textSize="13sp"
+                android:textColor="#555555"
+                android:layout_marginBottom="6dp" />
+
+            <Spinner
+                android:id="@+id/spinnerStatusPengiriman"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_search_rounded"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:spinnerMode="dropdown"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Tombol Simpan -->
+            <Button
+                android:id="@+id/btnSimpan"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@drawable/bg_btn_hijau"
+                android:text="Simpan Data Pengiriman"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

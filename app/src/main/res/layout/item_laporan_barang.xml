@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- item_laporan_barang.xml -->
+<!-- Layout untuk satu baris barang di dalam grup tanggal -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingHorizontal="14dp"
+    android:paddingTop="14dp"
+    android:paddingBottom="14dp">
+
+    <!-- Nama Barang + Jumlah pcs -->
+    <TextView
+        android:id="@+id/tvNamaBarang"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2.5"
+        android:text="Jersey Persija\n(2 pcs)"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:textColor="#1A1A1A"
+        android:lineSpacingExtra="2dp" />
+
+    <!-- Harga Jual -->
+    <TextView
+        android:id="@+id/tvHargaJual"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:text="Rp\n250.000"
+        android:textSize="12sp"
+        android:textColor="#1A1A1A"
+        android:gravity="center"
+        android:lineSpacingExtra="2dp" />
+
+    <!-- Harga Modal -->
+    <TextView
+        android:id="@+id/tvHargaModal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:text="Rp\n175.000"
+        android:textSize="12sp"
+        android:textColor="#1A1A1A"
+        android:gravity="center"
+        android:lineSpacingExtra="2dp" />
+
+    <!-- Laba Bersih (badge cyan/teal) -->
+    <TextView
+        android:id="@+id/tvLabaBersih"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:text="+ Rp 75.000"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        android:textColor="#1A1A1A"
+        android:gravity="center"
+        android:background="@drawable/bg_badge_kategori"
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="5dp" />
+
+</LinearLayout>

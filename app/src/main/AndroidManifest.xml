@@ -12,6 +12,57 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Notaly">
         <activity
+            android:name=".supplier.DetailSupplierActivity"
+            android:exported="false" />
+        <activity
+            android:name=".pengiriman.DetailPengirimanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".pengiriman.TambahPengirimanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".pengiriman.PengirimanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".transaksi.DetailTransaksiActivity"
+            android:exported="false" />
+        <activity
+            android:name=".transaksi.TransaksiActivity"
+            android:exported="false" />
+        <activity
+            android:name=".barang.TambahBarangActivity"
+            android:exported="false" />
+        <activity
+            android:name=".kategori.TambahKategoriActivity"
+            android:exported="false" />
+        <activity
+            android:name=".cacat.BerhasilCacatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".cacat.TambahCacatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".pengaturan.BerhasilTanggalLahirActivity"
+            android:exported="false" />
+        <activity
+            android:name=".pengaturan.BerhasilPinActivity"
+            android:exported="false" />
+        <activity
+            android:name=".pengaturan.BerhasilNamatokoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".laporan.LaporanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".pelanggan.DetailPelangganActivity"
+            android:exported="false" />
+        <activity
+            android:name=".pelanggan.TambahPelangganActivity"
+            android:exported="false" />
+        <activity
+            android:name=".restock.RestockActivity"
+            android:exported="false" />
+        <activity
             android:name=".pengaturan.GantiTanggalLahirActivity"
             android:exported="false" />
         <activity

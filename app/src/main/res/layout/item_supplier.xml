@@ -35,14 +35,14 @@
                 android:textStyle="bold" />
 
             <ImageView
-                android:id="@+id/btnOptions"
+                android:id="@+id/btnDelete"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_add"
+                android:src="@drawable/ic_delete"
                 app:tint="#888888"
-                android:contentDescription="Options" />
+                android:contentDescription="Delete" />
         </RelativeLayout>
 
         <TextView

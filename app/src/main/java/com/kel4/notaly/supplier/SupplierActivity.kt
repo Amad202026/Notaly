@@ -29,24 +29,26 @@ class SupplierActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_supplier)
 
-        // 1. Inisialisasi UI
+        initViews()
+    }
+
+    private fun initViews() {
         rvSupplier = findViewById(R.id.rvSupplier)
-        tvKosong = findViewById(R.id.tvKosong)
-        val btnBack = findViewById<ImageView>(R.id.btnBack)
+        tvKosong   = findViewById(R.id.tvKosong)
+
+        val btnBack           = findViewById<ImageView>(R.id.btnBack)
         val menuTambahSupplier = findViewById<CardView>(R.id.menuTambahSupplier)
 
-        // 2. Setup RecyclerView & Adapter
         rvSupplier.layoutManager = LinearLayoutManager(this)
 
-        // Memasukkan logika hapus ke dalam adapter melalui parameter kedua
-        adapter = SupplierAdapter(emptyList()) { supplier ->
-            tampilkanDialogKonfirmasi(supplier)
-        }
+        adapter = SupplierAdapter(
+            listSupplier  = emptyList(),
+            onDetailKlik  = { supplier -> bukaDetail(supplier) },
+            onHapusKlik   = { supplier -> tampilkanDialogHapus(supplier) }
+        )
         rvSupplier.adapter = adapter
 
-        // 3. Listener Tombol
         btnBack.setOnClickListener { finish() }
-
         menuTambahSupplier.setOnClickListener {
             startActivity(Intent(this, TambahSupplierActivity::class.java))
         }
@@ -57,48 +59,53 @@ class SupplierActivity : AppCompatActivity() {
         muatDataSupplier()
     }
 
+    // ── Load Data ─────────────────────────────────────────────
     private fun muatDataSupplier() {
-        val db = AppDatabase.getDatabase(this)
-        val supplierDao = db.supplierDao()
-
         lifecycleScope.launch(Dispatchers.IO) {
-            val daftarSupplier = supplierDao.ambilSemuaSupplier()
+            val daftar = AppDatabase.getDatabase(this@SupplierActivity)
+                .supplierDao()
+                .ambilSemuaSupplier()
 
             withContext(Dispatchers.Main) {
-                if (daftarSupplier.isEmpty()) {
-                    tvKosong.visibility = View.VISIBLE
-                    rvSupplier.visibility = View.GONE
-                } else {
-                    tvKosong.visibility = View.GONE
-                    rvSupplier.visibility = View.VISIBLE
-                    adapter.updateData(daftarSupplier)
-                }
+                val adaData = daftar.isNotEmpty()
+                tvKosong.visibility   = if (adaData) View.GONE else View.VISIBLE
+                rvSupplier.visibility = if (adaData) View.VISIBLE else View.GONE
+                if (adaData) adapter.updateData(daftar)
             }
         }
     }
 
-    // --- FITUR HAPUS ---
+    // ── Navigasi ke Detail ────────────────────────────────────
+    private fun bukaDetail(supplier: Supplier) {
+        val intent = Intent(this, DetailSupplierActivity::class.java).apply {
+            putExtra(DetailSupplierActivity.EXTRA_ID_SUPPLIER, supplier.idSupplier)
+        }
+        startActivity(intent)
+    }
 
-    private fun tampilkanDialogKonfirmasi(supplier: Supplier) {
+    // ── Hapus Supplier ────────────────────────────────────────
+    private fun tampilkanDialogHapus(supplier: Supplier) {
         AlertDialog.Builder(this)
             .setTitle("Hapus Supplier")
-            .setMessage("Apakah Anda yakin ingin menghapus ${supplier.namaSupplier}?")
-            .setPositiveButton("Hapus") { _, _ ->
-                eksekusiHapus(supplier)
-            }
+            .setMessage("Yakin ingin menghapus \"${supplier.namaSupplier}\"?")
+            .setPositiveButton("Hapus") { _, _ -> eksekusiHapus(supplier) }
             .setNegativeButton("Batal", null)
             .show()
     }
 
     private fun eksekusiHapus(supplier: Supplier) {
-        val db = AppDatabase.getDatabase(this)
-
         lifecycleScope.launch(Dispatchers.IO) {
-            db.supplierDao().hapusSupplier(supplier)
+            AppDatabase.getDatabase(this@SupplierActivity)
+                .supplierDao()
+                .hapusSupplier(supplier)
 
             withContext(Dispatchers.Main) {
-                Toast.makeText(this@SupplierActivity, "Supplier berhasil dihapus", Toast.LENGTH_SHORT).show()
-                muatDataSupplier() // Refresh list setelah data hilang dari database
+                Toast.makeText(
+                    this@SupplierActivity,
+                    "${supplier.namaSupplier} berhasil dihapus",
+                    Toast.LENGTH_SHORT
+                ).show()
+                muatDataSupplier()
             }
         }
     }
