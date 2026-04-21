@@ -59,7 +59,6 @@ class SupplierActivity : AppCompatActivity() {
         muatDataSupplier()
     }
 
-    // ── Load Data ─────────────────────────────────────────────
     private fun muatDataSupplier() {
         lifecycleScope.launch(Dispatchers.IO) {
             val daftar = AppDatabase.getDatabase(this@SupplierActivity)
@@ -75,7 +74,6 @@ class SupplierActivity : AppCompatActivity() {
         }
     }
 
-    // ── Navigasi ke Detail ────────────────────────────────────
     private fun bukaDetail(supplier: Supplier) {
         val intent = Intent(this, DetailSupplierActivity::class.java).apply {
             putExtra(DetailSupplierActivity.EXTRA_ID_SUPPLIER, supplier.idSupplier)
@@ -83,7 +81,6 @@ class SupplierActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    // ── Hapus Supplier ────────────────────────────────────────
     private fun tampilkanDialogHapus(supplier: Supplier) {
         AlertDialog.Builder(this)
             .setTitle("Hapus Supplier")

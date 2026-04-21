@@ -75,7 +75,6 @@ class DetailSupplierActivity : AppCompatActivity() {
     private fun setupListeners() {
         btnBack.setOnClickListener { finish() }
 
-        // Buka TambahSupplierActivity dalam mode Edit
         btnEdit.setOnClickListener {
             supplier?.let { s ->
                 val intent = Intent(this, TambahSupplierActivity::class.java).apply {
@@ -93,7 +92,6 @@ class DetailSupplierActivity : AppCompatActivity() {
         btnHubungiWa.setOnClickListener { bukaWhatsApp() }
     }
 
-    // ── Load Data dari Database ───────────────────────────────
     private fun muatDataSupplier() {
         val id = intent.getIntExtra(EXTRA_ID_SUPPLIER, -1)
 
@@ -120,7 +118,6 @@ class DetailSupplierActivity : AppCompatActivity() {
         }
     }
 
-    // ── Isi UI dengan data supplier ───────────────────────────
     private fun tampilkanData(s: Supplier) {
         val inisial  = s.namaSupplier.firstOrNull()?.uppercaseChar()?.toString() ?: "S"
         val nomorWa  = s.noWa?.takeIf { it.isNotBlank() } ?: "-"
@@ -139,7 +136,6 @@ class DetailSupplierActivity : AppCompatActivity() {
         tvDetailAsalDaerah.text = s.asalDaerah?.takeIf { it.isNotBlank() } ?: "-"
     }
 
-    // ── Buka WhatsApp ─────────────────────────────────────────
     private fun bukaWhatsApp() {
         val noWa = supplier?.noWa?.takeIf { it.isNotBlank() }
 
@@ -160,7 +156,6 @@ class DetailSupplierActivity : AppCompatActivity() {
         }
     }
 
-    // ── Hapus Supplier ────────────────────────────────────────
     private fun tampilkanDialogHapus(s: Supplier) {
         AlertDialog.Builder(this)
             .setTitle("Hapus Supplier")
@@ -183,7 +178,6 @@ class DetailSupplierActivity : AppCompatActivity() {
         }
     }
 
-    // ── Refresh setelah kembali dari Edit ─────────────────────
     override fun onResume() {
         super.onResume()
         if (supplier != null) muatDataSupplier()

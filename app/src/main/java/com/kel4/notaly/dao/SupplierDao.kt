@@ -10,11 +10,9 @@ import com.kel4.notaly.model.Supplier
 @Dao
 interface SupplierDao {
 
-    // ── Create ────────────────────────────────────────────────
     @Insert
     suspend fun tambahSupplier(supplier: Supplier)
 
-    // ── Read ──────────────────────────────────────────────────
     @Query("SELECT * FROM supplier")
     suspend fun ambilSemuaSupplier(): List<Supplier>
 
@@ -24,11 +22,9 @@ interface SupplierDao {
     @Query("SELECT ID_Supplier FROM supplier ORDER BY ID_Supplier ASC")
     suspend fun ambilSemuaIdSupplier(): List<Int>
 
-    // ── Update ────────────────────────────────────────────────
     @Update
     suspend fun updateSupplier(supplier: Supplier)
 
-    // ── Delete ────────────────────────────────────────────────
     @Delete
     suspend fun hapusSupplier(supplier: Supplier)
 }

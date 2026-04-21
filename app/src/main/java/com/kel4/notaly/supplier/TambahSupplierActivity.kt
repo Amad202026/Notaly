@@ -29,7 +29,6 @@ class TambahSupplierActivity : AppCompatActivity() {
     private lateinit var tvIdSupplier: TextView
     private lateinit var tvJudul: TextView
 
-    // Data lama saat mode Edit
     private var supplierLama: Supplier? = null
     private val isEditMode get() = supplierLama != null
 
@@ -45,12 +44,10 @@ class TambahSupplierActivity : AppCompatActivity() {
         setupListeners()
         loadKategoriData()
 
-        // Cek apakah mode Edit (ada ID yang dikirim)
         val idEdit = intent.getIntExtra(EXTRA_ID_SUPPLIER_EDIT, -1)
         if (idEdit != -1) {
             muatDataUntukEdit(idEdit)
         } else {
-            // Mode Tambah: ID otomatis dari Room
             tvIdSupplier.text = "Otomatis"
             tvJudul.text = "Tambah Supplier"
         }
@@ -74,7 +71,6 @@ class TambahSupplierActivity : AppCompatActivity() {
         btnSimpan.setOnClickListener { simpanData() }
     }
 
-    // ── Load data lama ke form (mode Edit) ───────────────────
     private fun muatDataUntukEdit(id: Int) {
         lifecycleScope.launch(Dispatchers.IO) {
             val supplier = AppDatabase.getDatabase(this@TambahSupplierActivity)
@@ -100,7 +96,6 @@ class TambahSupplierActivity : AppCompatActivity() {
                 etNoTelp.setText(supplier.noWa ?: "")
                 etAlamat.setText(supplier.asalDaerah ?: "")
 
-                // Set posisi spinner sesuai kategori lama
                 val kategoriAdapter = spinnerKategori.adapter
                 for (i in 0 until kategoriAdapter.count) {
                     if (kategoriAdapter.getItem(i).toString() == supplier.kategoriSuplai) {
@@ -112,7 +107,6 @@ class TambahSupplierActivity : AppCompatActivity() {
         }
     }
 
-    // ── Isi pilihan Spinner dari SharedPreferences ────────────
     private fun loadKategoriData() {
         val sharedPref      = getSharedPreferences("KategoriPrefs", Context.MODE_PRIVATE)
         val daftarKategori  = sharedPref.getStringSet("DAFTAR_KATEGORI", emptySet()) ?: emptySet()
@@ -131,7 +125,6 @@ class TambahSupplierActivity : AppCompatActivity() {
         )
     }
 
-    // ── Simpan / Update data ──────────────────────────────────
     private fun simpanData() {
         val nama    = etNamaSupplier.text.toString().trim()
         val noWa    = etNoTelp.text.toString().trim()
@@ -150,7 +143,6 @@ class TambahSupplierActivity : AppCompatActivity() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 if (isEditMode) {
-                    // ── Mode Edit: update data lama ──
                     val supplierDiperbarui = supplierLama!!.copy(
                         namaSupplier   = nama,
                         noWa           = noWa,
@@ -168,7 +160,6 @@ class TambahSupplierActivity : AppCompatActivity() {
                         finish()
                     }
                 } else {
-                    // ── Mode Tambah: insert baru ──
                     db.supplierDao().tambahSupplier(
                         Supplier(
                             namaSupplier   = nama,

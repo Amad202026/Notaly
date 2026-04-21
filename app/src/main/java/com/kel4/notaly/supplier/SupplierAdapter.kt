@@ -32,10 +32,8 @@ class SupplierAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val supplier = listSupplier[position]
 
-        // Nama
         holder.tvNamaSupplier.text = supplier.namaSupplier
 
-        // Badge Kategori
         val kategori = supplier.kategoriSuplai
         if (kategori.isNullOrBlank()) {
             holder.tvKategoriPill.visibility = View.GONE
@@ -44,16 +42,13 @@ class SupplierAdapter(
             holder.tvKategoriPill.text = kategori.uppercase()
         }
 
-        // Nomor WA
         holder.tvNoTelp.text = supplier.noWa
             ?.takeIf { it.isNotBlank() }
             ?: "Tidak ada nomor"
 
-        // Tombol Detail → buka SupplierDetailActivity
         holder.btnDetail.text = "Detail"
         holder.btnDetail.setOnClickListener { onDetailKlik(supplier) }
 
-        // Tombol Hapus (ikon tong sampah di pojok kanan atas)
         holder.btnDelete.setOnClickListener { onHapusKlik(supplier) }
     }
 

@@ -17,7 +17,6 @@ interface TransaksiPenjualanDao {
     @Query("SELECT * FROM transaksi_penjualan ORDER BY Tanggal_Transaksi DESC")
     suspend fun ambilSemuaTransaksi(): List<TransaksiPenjualan>
 
-    // Menghitung total pendapatan
     @Query("SELECT SUM(Total_Belanja) FROM transaksi_penjualan WHERE Status_Pembayaran = 'Lunas'")
     suspend fun hitungTotalPendapatan(): Int?
 }
