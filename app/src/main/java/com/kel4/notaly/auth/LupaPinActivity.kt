@@ -17,6 +17,9 @@ class LupaPinActivity : AppCompatActivity() {
     lateinit var etTahunLahir: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_lupapin)
+
         etNamaToko = findViewById(R.id.etNamaToko)
         etHariLahir = findViewById(R.id.etHariLahir)
         etBulanLahir = findViewById(R.id.etBulanLahir)
@@ -27,9 +30,6 @@ class LupaPinActivity : AppCompatActivity() {
         val hariLahir = sharedPref.getString("HARI_LAHIR", "")
         val bulanLahir = sharedPref.getString("BULAN_LAHIR", "")
         val tahunLahir = sharedPref.getString("TAHUN_LAHIR", "")
-
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_lupapin)
 
         findViewById<TextView>(R.id.btnVerifikasi).setOnClickListener {
             val inputNamaToko = etNamaToko.text.toString()

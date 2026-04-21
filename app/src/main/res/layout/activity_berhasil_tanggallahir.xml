@@ -25,17 +25,7 @@
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:layout_gravity="center"
-            android:background="@drawable/ic_cheklis_full_green">
-
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_cheklis"
-                android:scaleType="centerInside"
-                android:contentDescription="Berhasil"
-                app:tint="#2E7D5B" />
-        </FrameLayout>
+            android:background="@drawable/ic_cheklis_full_green"/>
     </FrameLayout>
 
     <!-- Judul -->
@@ -44,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
-        android:text="Berhasil Ganti PIN"
+        android:text="Berhasil Ganti Tanggal Lahir"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="#1A1A1A"
@@ -61,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginHorizontal="8dp"
-        android:text="PIN keamanan Anda telah diperbarui. Gunakan PIN baru ini untuk transaksi dan akses akun berikutnya."
+        android:text="Tanggal lahir anda telah diperbarui."
         android:textSize="15sp"
         android:textColor="#666666"
         android:gravity="center"
@@ -74,7 +64,7 @@
 
     <!-- Tombol Kembali ke Pengaturan -->
     <Button
-        android:id="@+id/btnKembaliPengaturan"
+        android:id="@+id/btnKembali"
         android:layout_width="0dp"
         android:layout_height="58dp"
         android:layout_marginBottom="32dp"

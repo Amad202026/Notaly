@@ -120,7 +120,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/btnLogin"
+            android:id="@+id/btnSimpan"
             android:layout_width="0dp"
             android:layout_height="54dp"
             android:layout_marginBottom="32dp"
@@ -129,7 +129,7 @@
             android:focusable="true"
             android:gravity="center"
             android:letterSpacing="0.08"
-            android:text="LOGIN"
+            android:text="SIMPAN"
             android:textColor="#FFFFFF"
             android:textSize="15sp"
             android:textStyle="bold"
