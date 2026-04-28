@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
-    <!-- Tombol Back -->
     <ImageView
         android:id="@+id/btnBack"
         android:layout_width="48dp"
@@ -23,7 +22,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Judul -->
     <TextView
         android:id="@+id/tvJudul"
         android:layout_width="wrap_content"
@@ -49,7 +47,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvJudul" />
 
-    <!-- Garis pemisah -->
     <View
         android:id="@+id/divider"
         android:layout_width="0dp"
@@ -61,7 +58,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvSubJudul" />
 
-    <!-- ScrollView isi form -->
     <ScrollView
         android:id="@+id/ScrollForm"
         android:layout_width="0dp"
@@ -81,160 +77,12 @@
             android:paddingTop="16dp"
             android:paddingBottom="8dp">
 
-            <!-- ===== ITEM #1 ===== -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ITEM #1"
-                android:textSize="11sp"
-                android:textColor="#2E7D5B"
-                android:textStyle="bold"
-                android:letterSpacing="0.06"
-                android:layout_marginBottom="10dp" />
-
-            <!-- Barang -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Barang"
-                android:textSize="13sp"
-                android:textColor="#555555"
-                android:layout_marginBottom="6dp" />
-
-            <Spinner
-                android:id="@+id/spinnerBarang"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:background="@drawable/bg_search_rounded"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
-                android:spinnerMode="dropdown"
-                android:layout_marginBottom="14dp" />
-
-            <!-- Harga Nego + Jumlah Terjual -->
             <LinearLayout
+                android:id="@+id/containerItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="14dp">
+                android:orientation="vertical" />
 
-                <!-- Harga Nego -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginEnd="8dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Harga Nego\n(Optional)"
-                        android:textSize="13sp"
-                        android:textColor="#555555"
-                        android:layout_marginBottom="6dp" />
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="@drawable/bg_search_rounded">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical|start"
-                            android:layout_marginStart="12dp"
-                            android:text="Rp"
-                            android:textSize="13sp"
-                            android:textColor="#888888" />
-
-                        <EditText
-                            android:id="@+id/etHargaNego"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:paddingStart="36dp"
-                            android:paddingEnd="10dp"
-                            android:hint="0"
-                            android:inputType="numberDecimal"
-                            android:textSize="14sp"
-                            android:textColor="#1A1A1A"
-                            android:textColorHint="#AAAAAA"
-                            android:background="@null"
-                            android:gravity="center_vertical" />
-                    </FrameLayout>
-                </LinearLayout>
-
-                <!-- Jumlah Terjual -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Jumlah Terjual"
-                        android:textSize="13sp"
-                        android:textColor="#555555"
-                        android:layout_marginBottom="6dp" />
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="@drawable/bg_search_rounded">
-
-                        <EditText
-                            android:id="@+id/etJumlahTerjual"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:paddingStart="12dp"
-                            android:paddingEnd="44dp"
-                            android:hint="0"
-                            android:inputType="number"
-                            android:textSize="14sp"
-                            android:textColor="#1A1A1A"
-                            android:textColorHint="#AAAAAA"
-                            android:background="@null"
-                            android:gravity="center_vertical" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical|end"
-                            android:layout_marginEnd="12dp"
-                            android:text="PCS"
-                            android:textSize="12sp"
-                            android:textColor="#888888"
-                            android:textStyle="bold" />
-                    </FrameLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- Subtotal -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Subtotal"
-                android:textSize="13sp"
-                android:textColor="#555555"
-                android:layout_marginBottom="6dp" />
-
-            <TextView
-                android:id="@+id/tvSubtotal"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/bg_white_rounded"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
-                android:text="Rp 0"
-                android:textSize="14sp"
-                android:textColor="#2E7D5B"
-                android:textStyle="bold"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="20dp" />
-
-            <!-- Tambah Item -->
             <Button
                 android:id="@+id/btnTambahItem"
                 android:layout_width="wrap_content"
@@ -243,18 +91,16 @@
                 android:drawableStart="@drawable/ic_plus"
                 android:drawablePadding="6dp"
                 android:text="Tambah Item"
-                android:textColor="#2E7D5B"
+                android:textColor="@color/green_primary"
                 android:textSize="13sp"
                 android:layout_marginBottom="20dp" />
 
-            <!-- Garis -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#EEEEEE"
                 android:layout_marginBottom="20dp" />
 
-            <!-- ===== METODE PEMBAYARAN ===== -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -264,7 +110,6 @@
                 android:textColor="#1A1A1A"
                 android:layout_marginBottom="12dp" />
 
-            <!-- Transfer Bank -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -320,7 +165,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- QRIS -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -376,7 +220,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Tunai -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -431,17 +274,17 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Bayar DP / Lunas -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal"
+                android:layout_height="56dp" android:orientation="horizontal"
                 android:background="@drawable/bg_search_rounded"
                 android:layout_marginBottom="16dp">
 
                 <Button
                     android:id="@+id/btnBayarDp"
+                    app:backgroundTint="@null"
                     android:layout_width="0dp"
+                    android:backgroundTint="@color/green_primary"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:layout_margin="4dp"
@@ -466,7 +309,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- Card Total Penjualan (sticky bottom) -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardTotal"
         android:layout_width="0dp"
@@ -531,7 +373,6 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Tombol Simpan -->
     <Button
         android:id="@+id/btnSimpan"
         android:layout_width="0dp"

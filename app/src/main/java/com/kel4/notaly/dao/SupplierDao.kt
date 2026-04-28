@@ -16,6 +16,9 @@ interface SupplierDao {
     @Query("SELECT * FROM supplier")
     suspend fun ambilSemuaSupplier(): List<Supplier>
 
+    @Query("DELETE FROM supplier")  // ← was: DELETE FROM barang
+    suspend fun hapusSemua()
+
     @Query("SELECT * FROM supplier WHERE ID_Supplier = :id")
     suspend fun ambilSupplierById(id: Int): Supplier?
 

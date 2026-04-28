@@ -2,141 +2,198 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F5F5F5">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#FFFFFF"
-        android:paddingHorizontal="32dp">
+    <!-- Tombol Back -->
+    <ImageView
+        android:id="@+id/btnBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_arrow_back"
+        android:clickable="true"
+        android:focusable="true"
+        android:scaleType="centerInside"
+        android:contentDescription="Kembali"
+        app:tint="#2E7D5B"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/ivIcon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="48dp"
-            android:contentDescription="Icon"
-            android:src="@drawable/ic_daftartransaksi"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="#2E7D5B" />
+    <!-- Judul -->
+    <TextView
+        android:id="@+id/tvJudul"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Ubah Tanggal Lahir"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:textColor="#1A1A1A"
+        android:letterSpacing="0.01"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnBack" />
 
-        <TextView
-            android:id="@+id/tvJudul"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="Ganti Tanggal Lahir"
-            android:textColor="#2A2A2A"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivIcon" />
+    <!-- Subjudul -->
+    <TextView
+        android:id="@+id/tvSubJudul"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        android:text="Ubah data tanggal lahir Anda"
+        android:textSize="13sp"
+        android:textColor="#888888"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvJudul" />
 
-        <TextView
-            android:id="@+id/tvNamaToko"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:text="Masukkan tanggal lahir baru anda"
-            android:textColor="#000000"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvJudul" />
+    <!-- Garis pemisah -->
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="12dp"
+        android:background="#DDDDDD"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSubJudul" />
+
+    <!-- Konten Form -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardForm"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
-            android:id="@+id/llTanggalLahir"
-            android:layout_width="0dp"
-            android:layout_height="58dp"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:weightSum="5"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvNamaToko">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
 
-            <EditText
-                android:id="@+id/etHariLahir"
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_margin="5dp"
-                android:background="@drawable/bg_search_rounded"
-                android:hint="dd"
-                android:gravity="center"
-                android:inputType="number"
-                android:singleLine="true"
-                android:textColor="#1A1A1A"
-                android:textColorHint="#AAAAAA"
-                android:textSize="14sp" />
+            <!-- Label -->
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:layout_margin="5dp"
-                android:text="-"
-                android:textSize="35dp"/>
-            <EditText
-                android:id="@+id/etBulanLahir"
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_margin="5dp"
-                android:background="@drawable/bg_search_rounded"
-                android:hint="mm"
-                android:gravity="center"
-                android:inputType="number"
-                android:singleLine="true"
-                android:textColor="#1A1A1A"
-                android:textColorHint="#AAAAAA"
-                android:textSize="14sp" />
+                android:text="TANGGAL LAHIR"
+                android:textSize="11sp"
+                android:textColor="#888888"
+                android:textStyle="bold"
+                android:letterSpacing="0.06"
+                android:layout_marginBottom="6dp" />
+
+            <!-- Input DD - MM - YYYY -->
+            <LinearLayout
+                android:id="@+id/llTanggalLahir"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <!-- DD -->
+                <EditText
+                    android:id="@+id/etHariLahir"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@drawable/bg_search_rounded"
+                    android:gravity="center"
+                    android:hint="DD"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:textSize="15sp"
+                    android:textColor="#1A1A1A"
+                    android:textColorHint="#AAAAAA" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:text="/"
+                    android:textSize="20sp"
+                    android:textColor="#AAAAAA" />
+
+                <!-- MM -->
+                <EditText
+                    android:id="@+id/etBulanLahir"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@drawable/bg_search_rounded"
+                    android:gravity="center"
+                    android:hint="MM"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:textSize="15sp"
+                    android:textColor="#1A1A1A"
+                    android:textColorHint="#AAAAAA" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:text="/"
+                    android:textSize="20sp"
+                    android:textColor="#AAAAAA" />
+
+                <!-- YYYY -->
+                <EditText
+                    android:id="@+id/etTahunLahir"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:background="@drawable/bg_search_rounded"
+                    android:gravity="center"
+                    android:hint="YYYY"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:textSize="15sp"
+                    android:textColor="#1A1A1A"
+                    android:textColorHint="#AAAAAA" />
+            </LinearLayout>
+
+            <!-- Hint kecil -->
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:layout_margin="5dp"
-                android:text="-"
-                android:textSize="35dp"/>
-            <EditText
-                android:id="@+id/etTahunLahir"
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_margin="5dp"
-                android:background="@drawable/bg_search_rounded"
-                android:hint="yy"
-                android:gravity="center"
-                android:inputType="number"
-                android:singleLine="true"
-                android:textColor="#1A1A1A"
-                android:textColorHint="#AAAAAA"
-                android:textSize="14sp" />
+                android:layout_marginTop="8dp"
+                android:text="Contoh: 25 / 04 / 2000"
+                android:textSize="11sp"
+                android:textColor="#BBBBBB" />
+
         </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/btnSimpan"
-            android:layout_width="0dp"
-            android:layout_height="54dp"
-            android:layout_marginBottom="32dp"
-            android:background="@drawable/bg_btn_hijau"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:letterSpacing="0.08"
-            android:text="SIMPAN"
-            android:textColor="#FFFFFF"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:layout_marginVertical="100dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+    <!-- Tombol Simpan -->
+    <TextView
+        android:id="@+id/btnSimpan"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="28dp"
+        android:background="@drawable/bg_btn_hijau"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:letterSpacing="0.04"
+        android:text="Simpan Perubahan"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

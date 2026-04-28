@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF">
@@ -81,7 +82,7 @@
             android:orientation="vertical"
             android:paddingHorizontal="16dp"
             android:paddingTop="20dp"
-            android:paddingBottom="32dp">
+            android:paddingBottom="40dp">
 
             <!-- ===== IDENTITAS PENGIRIMAN ===== -->
             <LinearLayout
@@ -107,30 +108,11 @@
                     android:letterSpacing="0.06" />
             </LinearLayout>
 
-            <!-- ID Pengiriman -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ID Pengiriman"
-                android:textSize="13sp"
-                android:textColor="#555555"
-                android:layout_marginBottom="6dp" />
-
-            <Spinner
-                android:id="@+id/spinnerIdPengiriman"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/bg_search_rounded"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
-                android:spinnerMode="dropdown"
-                android:layout_marginBottom="14dp" />
-
             <!-- ID Transaksi -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ID Transaksi"
+                android:text="ID Transaksi *"
                 android:textSize="13sp"
                 android:textColor="#555555"
                 android:layout_marginBottom="6dp" />
@@ -143,7 +125,7 @@
                 android:paddingStart="14dp"
                 android:paddingEnd="14dp"
                 android:spinnerMode="dropdown"
-                android:layout_marginBottom="24dp" />
+                android:layout_marginBottom="20dp" />
 
             <!-- ===== DETAIL EKSPEDISI ===== -->
             <LinearLayout
@@ -175,7 +157,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nama Ekspedisi"
+                android:text="Nama Ekspedisi *"
                 android:textSize="13sp"
                 android:textColor="#555555"
                 android:layout_marginBottom="6dp" />
@@ -192,13 +174,14 @@
                 android:textColor="#1A1A1A"
                 android:textColorHint="#AAAAAA"
                 android:gravity="center_vertical"
+                android:inputType="text"
                 android:layout_marginBottom="14dp" />
 
             <!-- Nomor Resi -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nomor Resi"
+                android:text="Nomor Resi *"
                 android:textSize="13sp"
                 android:textColor="#555555"
                 android:layout_marginBottom="6dp" />
@@ -215,13 +198,14 @@
                 android:textColor="#1A1A1A"
                 android:textColorHint="#AAAAAA"
                 android:gravity="center_vertical"
+                android:inputType="text"
                 android:layout_marginBottom="14dp" />
 
             <!-- Alamat Tujuan -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Alamat Lengkap Tujuan"
+                android:text="Alamat Lengkap Tujuan *"
                 android:textSize="13sp"
                 android:textColor="#555555"
                 android:layout_marginBottom="6dp" />
@@ -229,7 +213,7 @@
             <EditText
                 android:id="@+id/etAlamatTujuan"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="90dp"
                 android:background="@drawable/bg_search_rounded"
                 android:paddingStart="14dp"
                 android:paddingEnd="14dp"
@@ -241,7 +225,7 @@
                 android:textColor="#1A1A1A"
                 android:textColorHint="#AAAAAA"
                 android:gravity="top|start"
-                android:layout_marginBottom="24dp" />
+                android:layout_marginBottom="20dp" />
 
             <!-- ===== STATUS & ADMINISTRASI ===== -->
             <LinearLayout
@@ -274,7 +258,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Biaya Kirim"
+                android:text="Biaya Kirim *"
                 android:textSize="13sp"
                 android:textColor="#555555"
                 android:layout_marginBottom="6dp" />
@@ -298,7 +282,7 @@
                     android:id="@+id/etBiayaKirim"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingStart="40dp"
+                    android:paddingStart="44dp"
                     android:paddingEnd="14dp"
                     android:hint="0"
                     android:inputType="numberDecimal"
@@ -313,7 +297,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Status Pengiriman"
+                android:text="Status Pengiriman *"
                 android:textSize="13sp"
                 android:textColor="#555555"
                 android:layout_marginBottom="6dp" />
@@ -326,7 +310,7 @@
                 android:paddingStart="14dp"
                 android:paddingEnd="14dp"
                 android:spinnerMode="dropdown"
-                android:layout_marginBottom="24dp" />
+                android:layout_marginBottom="28dp" />
 
             <!-- Tombol Simpan -->
             <Button

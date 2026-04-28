@@ -32,7 +32,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun barangDao(): BarangDao
     abstract fun pelangganDao(): PelangganDao
     abstract fun supplierDao(): SupplierDao
-    abstract fun transaksiDao(): TransaksiPenjualanDao
+    abstract fun transaksiPenjualanDao(): TransaksiPenjualanDao
     abstract fun detailPenjualanDao(): DetailPenjualanDao
     abstract fun barangMasukDao(): BarangMasukDao
     abstract fun pengirimanDao(): PengirimanDao
@@ -54,6 +54,16 @@ abstract class AppDatabase : RoomDatabase() {
                 INSTANCE = instance
                 instance
             }
+        }
+
+        fun resetDatabase(context: Context): AppDatabase {
+            synchronized(this) {
+                INSTANCE?.close()
+                INSTANCE = null
+            }
+            // Hapus file database agar asset seed ter-copy ulang
+            context.applicationContext.deleteDatabase("notaly_database.db")
+            return getDatabase(context)
         }
     }
 }

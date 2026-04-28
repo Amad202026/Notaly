@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="#FFFFFF">
+    android:background="#FFFFFF"
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -13,61 +13,51 @@
 
         <ImageButton
             android:id="@+id/btnBack"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_arrow_back"
-            app:tint="#006C4B"
+            app:tint="#2E7D5B"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:contentDescription="Kembali"/>
 
         <TextView
-            android:id="@+id/tvTopTitle"
+            android:id="@+id/tvLabelHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TAMBAH STOCK BARANG"
-            android:textColor="#006C4B"
+            android:layout_marginStart="8dp"
+            android:text="PENCATATAN RESTOCK"
+            android:textColor="#2E7D5B"
             android:textSize="12sp"
             android:textStyle="bold"
-            android:layout_marginStart="8dp"
             app:layout_constraintBottom_toBottomOf="@id/btnBack"
             app:layout_constraintStart_toEndOf="@id/btnBack"
             app:layout_constraintTop_toTopOf="@id/btnBack" />
 
         <TextView
-            android:id="@+id/tvMainTitle"
+            android:id="@+id/tvJudul"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Pencatatan Restock"
-            android:textColor="#1D1D1D"
+            android:layout_marginTop="16dp"
+            android:text="Tambah Stock Barang"
+            android:textColor="#1A1A1A"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnBack" />
 
         <TextView
-            android:id="@+id/tvSubtitle"
+            android:id="@+id/lblTanggal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Manajemen database restock"
-            android:textColor="#757575"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvMainTitle" />
-
-        <TextView
-            android:id="@+id/labelTanggal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="TANGGAL RESTOCK"
-            android:textSize="12sp"
-            android:textColor="#757575"
+            android:layout_marginTop="24dp"
+            android:text="TANGGAL MASUK"
+            android:textColor="#888888"
+            android:textSize="11sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvSubtitle" />
+            app:layout_constraintTop_toBottomOf="@id/tvJudul" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilTanggal"
@@ -75,189 +65,189 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            app:boxBackgroundColor="#F2F4F2"
+            app:boxBackgroundColor="#F8F9FA"
             app:boxStrokeWidth="0dp"
-            app:boxCornerRadiusTopStart="8dp"
-            app:boxCornerRadiusTopEnd="8dp"
-            app:boxCornerRadiusBottomStart="8dp"
-            app:boxCornerRadiusBottomEnd="8dp"
-            app:layout_constraintTop_toBottomOf="@id/labelTanggal">
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:endIconMode="custom"
+            app:endIconDrawable="@android:drawable/ic_menu_my_calendar"
+            app:layout_constraintTop_toBottomOf="@id/lblTanggal">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etTanggal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="DD/MM/YYYY"
-                android:inputType="date" />
+                android:hint="Pilih Tanggal"
+                android:inputType="none"
+                android:focusable="false"
+                android:clickable="true" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/labelPemasok"
+            android:id="@+id/lblPemasok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="PEMASOK &amp; BARANG"
-            android:textSize="12sp"
-            android:textColor="#757575"
+            android:layout_marginTop="16dp"
+            android:text="PILIH PEMASOK"
+            android:textColor="#888888"
+            android:textSize="11sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tilTanggal" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilSupplier"
+            android:id="@+id/tilPemasok"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            app:boxBackgroundColor="#F2F4F2"
+            app:boxBackgroundColor="#F8F9FA"
             app:boxStrokeWidth="0dp"
-            app:boxCornerRadiusTopStart="8dp"
-            app:boxCornerRadiusTopEnd="8dp"
-            app:boxCornerRadiusBottomStart="8dp"
-            app:boxCornerRadiusBottomEnd="8dp"
-            app:layout_constraintTop_toBottomOf="@id/labelPemasok">
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:layout_constraintTop_toBottomOf="@id/lblPemasok">
 
-            <TextView
-                android:id="@+id/actvSupplier"
+            <AutoCompleteTextView
+                android:contentDescription="Deskripsi tombol"
+                android:importantForAccessibility="no"
+                android:id="@+id/spinnerPemasok"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Cari atau pilih supplier"
+                android:hint="Pilih Nama Pemasok"
                 android:inputType="none" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/lblBarang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="PILIH BARANG"
+            android:textColor="#888888"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilPemasok" />
+
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilNamaBarang"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/tilBarang"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:boxBackgroundColor="#F2F4F2"
+            android:layout_marginTop="8dp"
+            app:boxBackgroundColor="#F8F9FA"
             app:boxStrokeWidth="0dp"
-            app:boxCornerRadiusTopStart="8dp"
-            app:boxCornerRadiusTopEnd="8dp"
-            app:boxCornerRadiusBottomStart="8dp"
-            app:boxCornerRadiusBottomEnd="8dp"
-            app:endIconMode="custom"
-            app:endIconDrawable="@drawable/ic_search"
-            app:layout_constraintTop_toBottomOf="@id/tilSupplier">
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:layout_constraintTop_toBottomOf="@id/lblBarang">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etNamaBarang"
+            <AutoCompleteTextView
+                android:contentDescription="Deskripsi tombol"
+                android:importantForAccessibility="no"
+                android:id="@+id/spinnerBarang"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nama barang..."
-                android:inputType="text" />
+                android:hint="Barang akan muncul setelah pilih pemasok"
+                android:inputType="none" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <LinearLayout
+            android:id="@+id/layoutQtyHarga"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/tilBarang">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginEnd="8dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="JUMLAH (QTY)"
+                    android:textColor="#888888"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+                <EditText
+                    android:id="@+id/etQty"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_search_rounded"
+                    android:backgroundTint="#F8F9FA"
+                    android:hint="0"
+                    android:inputType="number"
+                    android:paddingHorizontal="16dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="8dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="HARGA BELI SATUAN"
+                    android:textColor="#888888"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+                <EditText
+                    android:id="@+id/etHargaBeli"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_search_rounded"
+                    android:backgroundTint="#F8F9FA"
+                    android:hint="Rp 0"
+                    android:inputType="number"
+                    android:paddingHorizontal="16dp" />
+            </LinearLayout>
+        </LinearLayout>
+
         <TextView
-            android:id="@+id/labelKuantitas"
+            android:id="@+id/tvTotalLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="KUANTITAS &amp; HARGA"
-            android:textSize="12sp"
-            android:textColor="#757575"
+            android:text="Estimasi Total Pengeluaran:"
+            android:textColor="#888888"
+            android:textSize="13sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutQtyHarga" />
+
+        <TextView
+            android:id="@+id/tvTotalHarga"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rp 0"
+            android:textColor="#2E7D5B"
+            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilNamaBarang" />
+            app:layout_constraintTop_toBottomOf="@id/tvTotalLabel" />
 
-        <LinearLayout
-            android:id="@+id/llKuantitasHarga"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp"
-            android:baselineAligned="false"
-            app:layout_constraintTop_toBottomOf="@id/labelKuantitas">
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginEnd="8dp"
-                app:boxBackgroundColor="#F2F4F2"
-                app:boxStrokeWidth="0dp"
-                app:boxCornerRadiusTopStart="8dp"
-                app:boxCornerRadiusTopEnd="8dp"
-                app:boxCornerRadiusBottomStart="8dp"
-                app:boxCornerRadiusBottomEnd="8dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etKuantitas"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Jumlah"
-                    android:inputType="number" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="8dp"
-                app:boxBackgroundColor="#F2F4F2"
-                app:boxStrokeWidth="0dp"
-                app:boxCornerRadiusTopStart="8dp"
-                app:boxCornerRadiusTopEnd="8dp"
-                app:boxCornerRadiusBottomStart="8dp"
-                app:boxCornerRadiusBottomEnd="8dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etHargaBeli"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Harga beli per pcs"
-                    android:inputType="numberDecimal" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilTotalHarga"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:boxBackgroundColor="#E6F2ED"
-            app:boxStrokeWidth="0dp"
-            app:boxCornerRadiusTopStart="8dp"
-            app:boxCornerRadiusTopEnd="8dp"
-            app:boxCornerRadiusBottomStart="8dp"
-            app:boxCornerRadiusBottomEnd="8dp"
-            app:layout_constraintTop_toBottomOf="@id/llKuantitasHarga">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etTotalHarga"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Rp 0"
-                android:enabled="false"
-                android:textColor="#006C4B"
-                android:textStyle="bold" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnTambahStok"
+        <Button
+            android:id="@+id/btnSimpan"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_marginTop="32dp"
-            android:text="TAMBAH STOK"
-            android:backgroundTint="#006C4B"
-            app:cornerRadius="8dp"
-            app:layout_constraintTop_toBottomOf="@id/tilTotalHarga" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnBatal"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="8dp"
-            android:text="BATAL"
-            android:textColor="#006C4B"
-            android:backgroundTint="#E6F2ED"
-            app:cornerRadius="8dp"
-            app:layout_constraintTop_toBottomOf="@id/btnTambahStok" />
+            android:background="@drawable/bg_btn_hijau"
+            android:text="CATAT RESTOCK"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/tvTotalHarga" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

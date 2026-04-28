@@ -33,3 +33,14 @@ data class BarangMasuk(
     @ColumnInfo(name = "Qty_Masuk") val qtyMasuk: Int,
     @ColumnInfo(name = "Harga_Beli") val hargaBeli: Double
 )
+
+data class DetailRestokLengkap(
+    val idRestok: Int,
+    val namaBarang: String,
+    val kategori: String,
+    val namaSupplier: String,
+    val asalSupplier: String,
+    val totalQty: Int,
+    val tanggalMasuk: String,
+    val hargaBeli: Double
+)

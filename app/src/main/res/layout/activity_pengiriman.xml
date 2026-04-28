@@ -2,11 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F5F5F5">
 
-    <!-- Tombol Back - Increased size for better touch target -->
+    <!-- Tombol Back -->
     <ImageView
         android:id="@+id/btnBack"
         android:layout_width="48dp"
@@ -85,7 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
-                android:hint="Cari"
+                android:hint="Cari ekspedisi, resi, transaksi..."
                 android:textSize="14sp"
                 android:textColor="#1A1A1A"
                 android:textColorHint="#AAAAAA"
@@ -93,7 +94,6 @@
                 android:inputType="text"
                 android:imeOptions="actionSearch"
                 android:singleLine="true" />
-
         </LinearLayout>
 
         <!-- Tombol Filter -->
@@ -124,9 +124,22 @@
                 android:textSize="13sp"
                 android:textColor="#444444"
                 android:textStyle="bold" />
-
         </LinearLayout>
     </LinearLayout>
+
+    <!-- Spinner Filter Status (tersembunyi awalnya) -->
+    <Spinner
+        android:id="@+id/spinnerFilter"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_search_rounded"
+        android:paddingHorizontal="12dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutSearchFilter" />
 
     <!-- Garis pemisah -->
     <View
@@ -138,26 +151,52 @@
         android:background="#DDDDDD"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layoutSearchFilter" />
+        app:layout_constraintTop_toBottomOf="@id/spinnerFilter" />
 
-    <!-- STATE KOSONG: tampil saat belum ada data -->
-    <TextView
-        android:id="@+id/tvKosong"
+    <!-- STATE KOSONG -->
+    <LinearLayout
+        android:id="@+id/layoutKosong"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Belum ada Daftar Pengiriman"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="#1A1A1A"
+        android:orientation="vertical"
+        android:gravity="center"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/divider"
-        app:layout_constraintBottom_toTopOf="@id/menuTambah" />
+        app:layout_constraintBottom_toTopOf="@id/menuTambah">
 
-    <!-- LIST SUPPLIER: tampil saat ada data -->
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_car_full_green"
+            android:alpha="0.3"
+            android:contentDescription="Kosong"
+            android:layout_marginBottom="12dp" />
+
+        <TextView
+            android:id="@+id/tvKosong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Belum ada Daftar Pengiriman"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#AAAAAA"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tap tombol + untuk menambah"
+            android:textSize="13sp"
+            android:textColor="#BBBBBB"
+            android:gravity="center"
+            android:layout_marginTop="4dp" />
+    </LinearLayout>
+
+    <!-- LIST PENGIRIMAN -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvSupplier"
+        android:id="@+id/rvPengiriman"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginHorizontal="16dp"
@@ -169,7 +208,7 @@
         app:layout_constraintTop_toBottomOf="@id/divider"
         app:layout_constraintBottom_toTopOf="@id/menuTambah" />
 
-    <!-- FAB Tambah Supplier -->
+    <!-- FAB Tambah -->
     <androidx.cardview.widget.CardView
         android:id="@+id/menuTambah"
         android:layout_width="56dp"
@@ -180,7 +219,7 @@
         android:focusable="true"
         app:cardBackgroundColor="#2E7D5B"
         app:cardCornerRadius="16dp"
-        app:cardElevation="4dp"
+        app:cardElevation="6dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -191,7 +230,6 @@
             android:src="@drawable/ic_add"
             android:contentDescription="Tambah"
             app:tint="#FFFFFF" />
-
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,4 +29,10 @@ interface BarangDao {
 
     @Query("UPDATE barang SET Stok = Stok + :jumlah WHERE ID_Barang = :id")
     suspend fun tambahStok(id: String, jumlah: Int)
+
+    @Query("DELETE FROM barang")
+    suspend fun hapusSemua()
+
+    @Query("UPDATE barang SET Stok = Stok - :qty WHERE ID_Barang = :idBarang")
+    suspend fun kurangiStok(idBarang: String, qty: Int)
 }

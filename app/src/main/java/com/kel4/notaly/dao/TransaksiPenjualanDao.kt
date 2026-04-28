@@ -14,9 +14,15 @@ interface TransaksiPenjualanDao {
     @Update
     suspend fun ubahStatusTransaksi(transaksi: TransaksiPenjualan)
 
+    @Query("DELETE FROM transaksi_penjualan")  // ← was: DELETE FROM barang
+    suspend fun hapusSemua()
+
     @Query("SELECT * FROM transaksi_penjualan ORDER BY Tanggal_Transaksi DESC")
     suspend fun ambilSemuaTransaksi(): List<TransaksiPenjualan>
 
     @Query("SELECT SUM(Total_Belanja) FROM transaksi_penjualan WHERE Status_Pembayaran = 'Lunas'")
     suspend fun hitungTotalPendapatan(): Int?
+
+    @Query("SELECT * FROM transaksi_penjualan WHERE id_Transaksi = :id LIMIT 1")
+    suspend fun cariTransaksiById(id: String): TransaksiPenjualan?
 }

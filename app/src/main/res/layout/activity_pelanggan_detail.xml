@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F5F5F5"
@@ -13,43 +14,56 @@
         <!-- Top Bar -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="56dp"
             android:background="#FFFFFF"
             android:gravity="center_vertical"
-            android:paddingStart="16dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="16dp"
             android:elevation="2dp">
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+
+            <ImageButton
+                android:id="@+id/ivBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:src="@drawable/ic_arrow_back"
-                android:layout_marginEnd="12dp"/>
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Kembali"
+                android:padding="12dp"
+                app:tint="#1A1A1A" />
+
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="DETAIL PELANGGAN"
                 android:textColor="#333333"
                 android:textSize="13sp"
                 android:textStyle="bold" />
+
         </LinearLayout>
 
-        <!-- Profile Header -->
+        <!-- Profile Header Card -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:padding="24dp"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="24dp"
+            android:paddingBottom="20dp"
             android:background="#FFFFFF">
 
-            <!-- Avatar -->
-            <ImageView
-                android:id="@+id/ivAvatar"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:src="@android:drawable/ic_menu_send"
+            <TextView
+                android:id="@+id/tvAvatar"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:gravity="center"
+                android:text="Y"
+                android:textColor="#2E7D5B"
+                android:textSize="28sp"
+                android:textStyle="bold"
                 android:background="#E8F5E9"
-                android:padding="12dp"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="12dp" />
 
             <TextView
                 android:id="@+id/tvNama"
@@ -57,15 +71,17 @@
                 android:layout_height="wrap_content"
                 android:text="Yongki Y"
                 android:textColor="#1A1A1A"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
+            <!-- Badge + ID -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginTop="4dp">
+                android:layout_marginTop="8dp">
+
                 <TextView
                     android:id="@+id/tvKategori"
                     android:layout_width="wrap_content"
@@ -73,12 +89,12 @@
                     android:text="MEMBER"
                     android:textColor="#FFFFFF"
                     android:textSize="11sp"
+                    android:textStyle="bold"
                     android:background="#2D6A4F"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:paddingTop="3dp"
-                    android:paddingBottom="3dp"
-                    android:layout_marginEnd="8dp" />
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4dp"
+                    android:layout_marginEnd="10dp" />
+
                 <TextView
                     android:id="@+id/tvId"
                     android:layout_width="wrap_content"
@@ -88,26 +104,28 @@
                     android:textSize="12sp" />
             </LinearLayout>
 
-            <!-- WhatsApp Button -->
+            <!-- WA Tap to Chat -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="16dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="WhatsApp"
+                    android:text="WhatsApp • "
                     android:textColor="#888888"
-                    android:textSize="12sp"
-                    android:layout_marginEnd="4dp" />
+                    android:textSize="12sp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hubungi Sekarang"
+                    android:text="Hubungi Sekarang →"
                     android:textColor="#2D6A4F"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <TextView
@@ -116,12 +134,16 @@
                 android:layout_height="wrap_content"
                 android:text="+62 812-3456-7890"
                 android:textColor="#2D6A4F"
-                android:textSize="14sp"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:textSize="15sp"
                 android:textStyle="bold"
-                android:layout_marginTop="4dp" />
+                android:layout_marginTop="4dp"
+                android:clickable="true"
+                android:focusable="true" />
         </LinearLayout>
 
-        <!-- Info Dasar -->
+        <!-- Info Card -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -135,9 +157,8 @@
                 android:textColor="#555555"
                 android:textSize="11sp"
                 android:textStyle="bold"
-                android:layout_marginBottom="12dp" />
+                android:layout_marginBottom="10dp" />
 
-            <!-- Detail Card -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -145,16 +166,17 @@
                 android:background="#FFFFFF"
                 android:padding="16dp">
 
+                <!-- Nama -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginBottom="12dp">
+                    android:layout_marginBottom="14dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="NAMA LENGKAP"
-                        android:textColor="#888888"
+                        android:textColor="#AAAAAA"
                         android:textSize="11sp"
                         android:layout_marginBottom="2dp" />
                     <TextView
@@ -163,19 +185,20 @@
                         android:layout_height="wrap_content"
                         android:text="Yongki Y"
                         android:textColor="#1A1A1A"
-                        android:textSize="14sp" />
+                        android:textSize="15sp" />
                 </LinearLayout>
 
+                <!-- ID -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginBottom="12dp">
+                    android:layout_marginBottom="14dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="ID PELANGGAN"
-                        android:textColor="#888888"
+                        android:textColor="#AAAAAA"
                         android:textSize="11sp"
                         android:layout_marginBottom="2dp" />
                     <TextView
@@ -184,19 +207,20 @@
                         android:layout_height="wrap_content"
                         android:text="001"
                         android:textColor="#1A1A1A"
-                        android:textSize="14sp" />
+                        android:textSize="15sp" />
                 </LinearLayout>
 
+                <!-- WA -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginBottom="12dp">
+                    android:layout_marginBottom="14dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="NOMOR WHATSAPP"
-                        android:textColor="#888888"
+                        android:textColor="#AAAAAA"
                         android:textSize="11sp"
                         android:layout_marginBottom="2dp" />
                     <TextView
@@ -205,9 +229,32 @@
                         android:layout_height="wrap_content"
                         android:text="+62 812-3456-7890"
                         android:textColor="#1A1A1A"
-                        android:textSize="14sp" />
+                        android:textSize="15sp" />
                 </LinearLayout>
 
+                <!-- Asal Daerah -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="14dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ASAL DAERAH"
+                        android:textColor="#AAAAAA"
+                        android:textSize="11sp"
+                        android:layout_marginBottom="2dp" />
+                    <TextView
+                        android:id="@+id/tvDetailDaerah"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:textColor="#1A1A1A"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <!-- Kategori -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -216,7 +263,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="KATEGORI"
-                        android:textColor="#888888"
+                        android:textColor="#AAAAAA"
                         android:textSize="11sp"
                         android:layout_marginBottom="2dp" />
                     <TextView
@@ -225,9 +272,47 @@
                         android:layout_height="wrap_content"
                         android:text="MEMBER ✦"
                         android:textColor="#2D6A4F"
-                        android:textSize="14sp"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
                 </LinearLayout>
+            </LinearLayout>
+
+            <!-- Tombol Edit + Hapus -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:id="@+id/tvHapus"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Hapus"
+                    android:textColor="#D32F2F"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:background="#FFF0F0"
+                    android:layout_marginEnd="8dp"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+                <TextView
+                    android:id="@+id/tvEditBottom"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Edit"
+                    android:textColor="#2E7D5B"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:background="#F0FAF5"
+                    android:clickable="true"
+                    android:focusable="true" />
+
             </LinearLayout>
         </LinearLayout>
 

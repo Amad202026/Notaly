@@ -2,9 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="#F5F5F5">
 
     <!-- Tombol Back -->
     <ImageView
@@ -21,6 +22,40 @@
         android:contentDescription="Kembali"
         app:tint="#2E7D5B"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Tombol Edit (kanan atas) -->
+    <ImageView
+        android:id="@+id/btnEdit"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginTop="10dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_write"
+        android:clickable="true"
+        android:focusable="true"
+        android:scaleType="centerInside"
+        android:contentDescription="Edit"
+        app:tint="#2E7D5B"
+        app:layout_constraintEnd_toStartOf="@id/btnHapus"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Tombol Hapus (pojok kanan atas) -->
+    <ImageView
+        android:id="@+id/btnHapus"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="10dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_delete"
+        android:clickable="true"
+        android:focusable="true"
+        android:scaleType="centerInside"
+        android:contentDescription="Hapus"
+        app:tint="#D32F2F"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Label atas -->
@@ -67,65 +102,74 @@
             android:orientation="vertical"
             android:paddingHorizontal="16dp"
             android:paddingTop="20dp"
-            android:paddingBottom="32dp">
+            android:paddingBottom="40dp">
 
-            <!-- Icon + Status Header -->
-            <LinearLayout
+            <!-- Status Header Card -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="20dp">
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF">
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="16dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="STATUS PENGIRIMAN"
-                        android:textSize="11sp"
-                        android:textColor="#888888"
-                        android:letterSpacing="0.04"
-                        android:layout_marginBottom="4dp" />
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/tvStatusPengiriman"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Dalam Perjalanan"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="#2E7D5B"
-                        android:layout_marginBottom="4dp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="STATUS PENGIRIMAN"
+                            android:textSize="11sp"
+                            android:textColor="#888888"
+                            android:letterSpacing="0.04"
+                            android:layout_marginBottom="4dp" />
 
-                    <TextView
-                        android:id="@+id/tvEstimasiTiba"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Estimasi tiba: 24 Okt 2023"
-                        android:textSize="13sp"
-                        android:textColor="#888888" />
+                        <TextView
+                            android:id="@+id/tvStatusPengiriman"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Diproses"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="#2E7D5B"
+                            android:layout_marginBottom="4dp" />
+
+                        <TextView
+                            android:id="@+id/tvEstimasiTiba"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tap edit untuk memperbarui status"
+                            android:textSize="12sp"
+                            android:textColor="#AAAAAA" />
+                    </LinearLayout>
+
+                    <!-- Icon truk -->
+                    <FrameLayout
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:background="@drawable/bg_white_rounded">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_car_full_green"
+                            android:scaleType="centerInside"
+                            android:contentDescription="Pengiriman" />
+                    </FrameLayout>
                 </LinearLayout>
-
-                <!-- Icon truk -->
-                <FrameLayout
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:background="@drawable/bg_white_rounded">
-
-                    <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_car_full_green"
-                        android:scaleType="centerInside"
-                        android:contentDescription="Status Pengiriman" />
-                </FrameLayout>
-            </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <!-- Card Detail Info -->
             <androidx.cardview.widget.CardView
@@ -156,7 +200,7 @@
                         android:id="@+id/tvIdPengiriman"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="123-456-789"
+                        android:text="-"
                         android:textSize="15sp"
                         android:textStyle="bold"
                         android:textColor="#1A1A1A"
@@ -176,7 +220,7 @@
                         android:id="@+id/tvIdTransaksi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="001-01"
+                        android:text="-"
                         android:textSize="15sp"
                         android:textStyle="bold"
                         android:textColor="#1A1A1A"
@@ -218,7 +262,7 @@
                             android:id="@+id/tvEkspedisi"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="J&amp;T Express (Reguler)"
+                            android:text="-"
                             android:textSize="15sp"
                             android:textStyle="bold"
                             android:textColor="#1A1A1A" />
@@ -249,12 +293,13 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="JT12388499201"
+                            android:text="-"
                             android:textSize="14sp"
                             android:textStyle="bold"
                             android:textColor="#1A1A1A" />
 
                         <ImageView
+                            android:id="@+id/ivSalinResi"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:src="@drawable/ic_salin"
@@ -262,10 +307,37 @@
                             android:scaleType="centerInside"
                             android:clickable="true"
                             android:focusable="true"
+                            android:padding="8dp"
                             android:contentDescription="Salin Resi" />
                     </LinearLayout>
 
-                    <!-- Status Pengiriman -->
+                    <!-- Alamat Lengkap -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ALAMAT TUJUAN"
+                        android:textSize="11sp"
+                        android:textColor="#888888"
+                        android:letterSpacing="0.04"
+                        android:layout_marginBottom="2dp" />
+
+                    <TextView
+                        android:id="@+id/tvAlamatLengkap"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:textSize="14sp"
+                        android:textColor="#1A1A1A"
+                        android:layout_marginBottom="14dp" />
+
+                    <!-- Garis -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#DDDDDD"
+                        android:layout_marginBottom="14dp" />
+
+                    <!-- Status Badge -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -319,7 +391,7 @@
                         android:letterSpacing="0.04"
                         android:layout_marginBottom="12dp" />
 
-                    <!-- Berat -->
+                    <!-- Biaya Kirim -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -330,39 +402,15 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Berat Total (1.2kg)"
+                            android:text="Ongkos Kirim"
                             android:textSize="13sp"
                             android:textColor="#555555" />
 
                         <TextView
-                            android:id="@+id/tvBiayaBerat"
+                            android:id="@+id/tvBiayaKirim"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Rp 15.000"
-                            android:textSize="13sp"
-                            android:textColor="#1A1A1A" />
-                    </LinearLayout>
-
-                    <!-- Asuransi -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="12dp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Asuransi"
-                            android:textSize="13sp"
-                            android:textColor="#555555" />
-
-                        <TextView
-                            android:id="@+id/tvBiayaAsuransi"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Rp 2.500"
+                            android:text="Rp 0"
                             android:textSize="13sp"
                             android:textColor="#1A1A1A" />
                     </LinearLayout>
@@ -374,7 +422,7 @@
                         android:background="#DDDDDD"
                         android:layout_marginBottom="12dp" />
 
-                    <!-- Total Ongkos -->
+                    <!-- Total -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -394,7 +442,7 @@
                             android:id="@+id/tvTotalOngkir"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Rp 17.500"
+                            android:text="Rp 0"
                             android:textSize="15sp"
                             android:textStyle="bold"
                             android:textColor="#2E7D5B" />

@@ -12,6 +12,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Notaly">
         <activity
+            android:name=".laporan.BarangLaporanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".laporan.KeuanganLaporanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".laporan.RiwayatLaporanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".barang.DetailBarangActivity"
+            android:exported="false" />
+        <activity
             android:name=".supplier.DetailSupplierActivity"
             android:exported="false" />
         <activity
@@ -49,9 +61,6 @@
             android:exported="false" />
         <activity
             android:name=".pengaturan.BerhasilNamatokoActivity"
-            android:exported="false" />
-        <activity
-            android:name=".laporan.LaporanActivity"
             android:exported="false" />
         <activity
             android:name=".pelanggan.DetailPelangganActivity"

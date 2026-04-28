@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="14dp">
+
+        <!-- Baris atas: Nama + Status + Stok Normal -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tvNamaBarang"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Nama Barang"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#1A1A1A"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+            <TextView
+                android:id="@+id/tvStatusKondisi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Normal"
+                android:textSize="11sp"
+                android:textColor="#2E7D5B"
+                android:layout_marginEnd="12dp" />
+
+            <TextView
+                android:id="@+id/tvStokNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Normal: 10 pcs"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="#1A1A1A" />
+        </LinearLayout>
+
+        <!--
+            layoutCacat: container varian cacat (BRG001-C, BRG001-C2, dst)
+            GONE by default, VISIBLE & diisi programmatically di adapter jika ada cacat
+        -->
+        <LinearLayout
+            android:id="@+id/layoutCacat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="6dp"
+            android:paddingTop="6dp"
+            android:visibility="gone">
+
+            <!-- TextView per varian cacat ditambahkan secara programmatic di adapter -->
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

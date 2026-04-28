@@ -12,6 +12,9 @@ interface PelangganDao {
     @Insert
     suspend fun tambahPelanggan(pelanggan: Pelanggan)
 
+    @Query("DELETE FROM pelanggan")  // ← was: DELETE FROM barang
+    suspend fun hapusSemua()
+
     @Update
     suspend fun ubahPelanggan(pelanggan: Pelanggan)
 

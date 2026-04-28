@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="14dp">
+
+        <!-- Baris atas: ID + Status + Aksi -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="10dp">
+
+            <!-- ID Pengiriman -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ID PENGIRIMAN"
+                    android:textSize="10sp"
+                    android:textColor="#AAAAAA"
+                    android:letterSpacing="0.04" />
+
+                <TextView
+                    android:id="@+id/tvIdPengiriman"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="#1"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:textColor="#1A1A1A" />
+            </LinearLayout>
+
+            <!-- Status badge -->
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Diproses"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:textColor="#FF8F00"
+                android:background="@drawable/bg_white_rounded"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp"
+                android:layout_marginEnd="8dp" />
+
+            <!-- Edit -->
+            <ImageView
+                android:id="@+id/ivEdit"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:padding="6dp"
+                android:src="@drawable/ic_write"
+                android:scaleType="centerInside"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="Edit"
+                app:tint="#2E7D5B" />
+
+            <!-- Delete -->
+            <ImageView
+                android:id="@+id/ivDelete"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:padding="6dp"
+                android:src="@drawable/ic_delete"
+                android:scaleType="centerInside"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="Hapus"
+                app:tint="#D32F2F" />
+        </LinearLayout>
+
+        <!-- Garis -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#F0F0F0"
+            android:layout_marginBottom="10dp" />
+
+        <!-- Nama Ekspedisi -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="6dp">
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_car_full_green"
+                android:scaleType="centerInside"
+                android:contentDescription="Ekspedisi"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:id="@+id/tvNamaEkspedisi"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="-"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#1A1A1A"
+                android:singleLine="true"
+                android:ellipsize="end" />
+        </LinearLayout>
+
+        <!-- Nomor Resi -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="6dp">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="No. Resi"
+                android:textSize="12sp"
+                android:textColor="#888888" />
+
+            <TextView
+                android:id="@+id/tvNoResi"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="-"
+                android:textSize="12sp"
+                android:textColor="#333333"
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:ellipsize="end" />
+        </LinearLayout>
+
+        <!-- Alamat -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="top"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="Alamat"
+                android:textSize="12sp"
+                android:textColor="#888888" />
+
+            <TextView
+                android:id="@+id/tvAlamat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="-"
+                android:textSize="12sp"
+                android:textColor="#555555"
+                android:maxLines="2"
+                android:ellipsize="end" />
+        </LinearLayout>
+
+        <!-- Garis -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#F0F0F0"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Biaya Kirim -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Biaya Kirim"
+                android:textSize="12sp"
+                android:textColor="#888888" />
+
+            <TextView
+                android:id="@+id/tvBiaya"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rp 0"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#2E7D5B" />
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

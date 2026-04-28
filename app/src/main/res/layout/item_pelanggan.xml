@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Baris 1: ID + Badge Kategori -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="4dp">
+
+            <TextView
+                android:id="@+id/tvIdPelanggan"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="001"
+                android:textColor="#AAAAAA"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tvKategoriPelanggan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MEMBER"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="4dp"
+                android:background="#2E7D5B" />
+
+        </LinearLayout>
+
+        <!-- Baris 2: Nama -->
+        <TextView
+            android:id="@+id/tvNamaPelanggan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Yongki Y"
+            android:textColor="#1A1A1A"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp" />
+
+        <!-- Divider tipis -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#F0F0F0"
+            android:layout_marginBottom="10dp" />
+
+        <!-- Baris 3: Lokasi -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_location_green"
+                android:layout_marginEnd="8dp"
+                app:tint="#888888" />
+
+            <TextView
+                android:id="@+id/tvLokasiPelanggan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Jakarta Pusat, DKI Jakarta"
+                android:textColor="#555555"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+        <!-- Baris 4: WA + Chevron -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="#F7FBF9"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="8dp">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_messages"
+                android:layout_marginEnd="8dp"
+                app:tint="#2E7D5B" />
+
+            <TextView
+                android:id="@+id/tvWaPelanggan"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="+62 812-3456-7890"
+                android:textColor="#2E7D5B"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_arrow_right"
+                app:tint="#AAAAAA" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
