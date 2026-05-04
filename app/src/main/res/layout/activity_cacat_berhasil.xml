@@ -4,71 +4,77 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    android:paddingHorizontal="24dp">
+    android:background="#F2F6F4">
 
-    <!-- Icon Sukses -->
-    <FrameLayout
-        android:id="@+id/frameIconSukses"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:background="@drawable/bg_btn_hijau"
+    <!-- ===================== ILUSTRASI SUKSES ===================== -->
+    <LinearLayout
+        android:id="@+id/successBlock"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingHorizontal="32dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/tvJudul"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintVertical_bias="0.13">
+        app:layout_constraintBottom_toTopOf="@id/cardRingkasan"
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintVertical_chainStyle="packed">
 
+        <!-- Icon lingkaran besar -->
         <FrameLayout
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:layout_gravity="center"
-            android:background="@drawable/ic_checklis_half_green"/>
-    </FrameLayout>
+            android:id="@+id/frameIconSukses"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:background="@drawable/bg_icon_circle_large">
 
-    <!-- Judul -->
-    <TextView
-        android:id="@+id/tvJudul"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Laporan berhasil Disimpan"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        android:textColor="#1A1A1A"
-        android:gravity="center"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/frameIconSukses"
-        app:layout_constraintBottom_toTopOf="@id/tvDeskripsi" />
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_cheklis"
+                android:contentDescription="Berhasil" />
+        </FrameLayout>
 
-    <!-- Deskripsi -->
-    <TextView
-        android:id="@+id/tvDeskripsi"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Data barang cacat telah berhasil dicatat."
-        android:textSize="14sp"
-        android:textColor="#888888"
-        android:gravity="center"
-        android:lineSpacingExtra="3dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvJudul"
-        app:layout_constraintBottom_toTopOf="@id/cardRingkasan" />
+        <!-- Badge chip -->
+
+        <!-- Judul -->
+        <TextView
+            android:id="@+id/tvJudul"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Laporan Berhasil Disimpan"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#0A3D26"
+            android:gravity="center" />
+
+        <!-- Deskripsi -->
+        <TextView
+            android:id="@+id/tvDeskripsi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Data barang cacat telah berhasil dicatat."
+            android:textSize="14sp"
+            android:textColor="#666666"
+            android:gravity="center"
+            android:lineSpacingExtra="4dp" />
+
+    </LinearLayout>
 
     <!-- Card Ringkasan Laporan -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardRingkasan"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
         android:layout_marginTop="24dp"
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
-        app:cardBackgroundColor="#F4F7F5"
-        app:layout_constraintTop_toBottomOf="@id/tvDeskripsi"
+        app:cardBackgroundColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/successBlock"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/btnInputLagi">
@@ -84,8 +90,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="RINGKASAN LAPORAN"
-                android:textSize="12sp"
-                android:textColor="#2E7D5B"
+                android:textSize="11sp"
+                android:textColor="#0D5C3A"
                 android:textStyle="bold"
                 android:letterSpacing="0.06"
                 android:layout_marginBottom="16dp" />
@@ -176,15 +182,14 @@
                 android:textSize="11sp"
                 android:textColor="#888888"
                 android:letterSpacing="0.04"
-                android:layout_marginBottom="10dp" />
+                android:layout_marginBottom="8dp" />
 
-            <!-- Box catatan -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="0dp"
-                app:cardBackgroundColor="#FFFFFF">
+                app:cardBackgroundColor="#F4F7F5">
 
                 <TextView
                     android:id="@+id/tvCatatanKerusakan"
@@ -202,33 +207,35 @@
     </androidx.cardview.widget.CardView>
 
     <!-- Tombol Input Lagi -->
-
-    <!-- Tombol Lihat Laporan -->
-
-    <Button
+    <TextView
         android:id="@+id/btnInputLagi"
         android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/bg_btn_hijau"
-        android:drawableStart="@drawable/ic_plus"
-        android:drawablePadding="8dp"
+        android:layout_height="58dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bg_white_rounded"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
         android:text="Input Lagi"
-        android:textColor="#FFFFFF"
+        android:textColor="#0D5C3A"
         android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/btnLihatLaporan"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
+    <!-- Tombol Lihat Laporan -->
+    <TextView
         android:id="@+id/btnLihatLaporan"
         android:layout_width="0dp"
-        android:layout_height="56dp"
+        android:layout_height="58dp"
+        android:layout_marginHorizontal="20dp"
         android:layout_marginBottom="28dp"
-        android:background="@drawable/bg_btn_hijau"
+        android:background="@drawable/bg_btn_hijau_round"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
         android:text="Lihat Laporan"
         android:textColor="#FFFFFF"
         android:textSize="15sp"

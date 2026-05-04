@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingVertical="8dp">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="12dp">
 
+        <!-- Nama + Qty x Harga -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:orientation="vertical"
             android:layout_marginEnd="8dp">
 
@@ -25,31 +28,41 @@
                 android:text="Nama Produk"
                 android:textColor="#1A1A1A"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginBottom="3dp" />
 
             <TextView
                 android:id="@+id/tvHargaQty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
                 android:text="1 x Rp 0"
-                android:textColor="#888888"
+                android:textColor="#AAAAAA"
                 android:textSize="12sp" />
+
         </LinearLayout>
 
+        <!-- QTY kolom -->
+
+        <!-- Harga Satuan kolom (diisi dari tvHargaQty logikanya di adapter) -->
+
+        <!-- Subtotal -->
         <TextView
             android:id="@+id/tvSubtotalItem"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1.8"
             android:text="Rp 0"
-            android:textColor="#1A1A1A"
-            android:textSize="14sp"
+            android:gravity="end"
+            android:textColor="#0D5C3A"
+            android:textSize="13sp"
             android:textStyle="bold" />
+
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="12dp"
-        android:background="#F0F0F0" />
+        android:background="#F5F5F5"
+        android:layout_marginHorizontal="14dp" />
+
 </LinearLayout>

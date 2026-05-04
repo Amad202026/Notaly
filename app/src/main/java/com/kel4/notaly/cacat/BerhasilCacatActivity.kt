@@ -18,11 +18,11 @@ class BerhasilCacatActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.tvKategori)        .text = intent.getStringExtra("kategori")   ?: "-"
         findViewById<TextView>(R.id.tvCatatanKerusakan).text = intent.getStringExtra("keterangan") ?: "-"
 
-        findViewById<Button>(R.id.btnInputLagi).setOnClickListener {
+        findViewById<TextView>(R.id.btnInputLagi).setOnClickListener {
             startActivity(Intent(this, TambahCacatActivity::class.java))
             finish()
         }
-        findViewById<Button>(R.id.btnLihatLaporan).setOnClickListener {
+        findViewById<TextView>(R.id.btnLihatLaporan).setOnClickListener {
             startActivity(Intent(this, CacatActivity::class.java))
             finish()
         }

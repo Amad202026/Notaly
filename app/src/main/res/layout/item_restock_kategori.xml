@@ -1,14 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tvHeaderKategori"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/headerKategoriRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#F8F9FA"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
     android:paddingHorizontal="16dp"
-    android:paddingVertical="8dp"
-    android:text="KATEGORI"
-    android:textColor="#2E7D5B"
-    android:textSize="11sp"
-    android:textStyle="bold"
-    android:letterSpacing="0.1" />
+    android:paddingVertical="10dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginBottom="2dp">
+
+    <!-- Garis aksen kiri -->
+    <View
+        android:layout_width="3dp"
+        android:layout_height="16dp"
+        android:background="@drawable/bg_btn_hijau_round"
+        android:layout_marginEnd="8dp" />
+
+    <TextView
+        android:id="@+id/tvHeaderKategori"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="KATEGORI"
+        android:textColor="#0D5C3A"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        android:letterSpacing="0.1" />
+
+</LinearLayout>

@@ -10,26 +10,26 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kel4.notaly.R
 import com.kel4.notaly.database.AppDatabase
+import com.kel4.notaly.home.BerandaActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
-// --- DATA CLASS KHUSUS RIWAYAT ---
-data class HeaderTanggal(val tanggalStr: String, val totalLabaHarian: Int)
-
+// Satu baris item penjualan per barang per transaksi
 data class ItemRiwayat(
-    val namaBarang: String,
-    val qty: Int,
-    val hargaJual: Int,   // Total pendapatan dari penjualan item ini
-    val hargaModal: Int,  // Total modal yang dikeluarkan untuk item ini
-    val labaBersih: Int   // Selisih
+    val namaBarang  : String,
+    val qty         : Int,
+    val hargaJual   : Int,   // subtotal harga jual
+    val hargaModal  : Int,   // subtotal harga modal
+    val labaBersih  : Int,   // hargaJual - hargaModal
+    val idTransaksi : String,
+    val statusBayar : String
 )
 
 class RiwayatLaporanActivity : AppCompatActivity() {
 
-    private lateinit var rvLaporan: RecyclerView
     private lateinit var adapter: LaporanAdapter
     private val db by lazy { AppDatabase.getDatabase(this) }
 
@@ -37,98 +37,94 @@ class RiwayatLaporanActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_laporan_riwayat)
 
-        rvLaporan = findViewById(R.id.rvLaporan)
-        findViewById<ImageView>(R.id.btnBack).setOnClickListener { finish() }
-
-        setupTopNav()
-        setupRecyclerView()
-        muatDataLaporan()
-    }
-
-    private fun setupRecyclerView() {
-        rvLaporan.layoutManager = LinearLayoutManager(this)
-        // Panggil adapter serbaguna kita
+        val rv = findViewById<RecyclerView>(R.id.rvLaporan)
+        rv.layoutManager = LinearLayoutManager(this)
         adapter = LaporanAdapter(emptyList())
-        rvLaporan.adapter = adapter
+        rv.adapter = adapter
+
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
+            startActivity(Intent(this, BerandaActivity::class.java)); finish()
+        }
+        setupTopNav()
+        muatDataRiwayat()
     }
 
-    private fun muatDataLaporan() {
-        lifecycleScope.launch {
-            val dataLengkap = mutableListOf<Any>()
+    private fun muatDataRiwayat() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val semuaTransaksi = db.transaksiPenjualanDao().ambilSemuaTransaksi()
+            val semuaDetail    = db.detailPenjualanDao().ambilSemuaDetail()
+            val semuaBarang    = db.barangDao().ambilSemuaBarang()
 
-            withContext(Dispatchers.IO) {
-                val semuaTransaksi = db.transaksiPenjualanDao().ambilSemuaTransaksi()
-                val semuaDetail = db.detailPenjualanDao().ambilSemuaDetail()
-                val semuaBarang = db.barangDao().ambilSemuaBarang()
+            // Kelompokkan transaksi per hari (prefix yyyy-MM-dd), urutkan DESC
+            val grouped = semuaTransaksi
+                .groupBy { it.tanggalTransaksi.take(10) }
+                .toSortedMap(reverseOrder())
 
-                // Kelompokkan transaksi berdasarkan tanggal (YYYY-MM-DD)
-                val groups = semuaTransaksi.groupBy { it.tanggalTransaksi.substring(0, 10) }
+            val listFinal = mutableListOf<Any>()
 
-                // Urutkan dari tanggal terbaru ke terlama
-                val sortedGroups = groups.toSortedMap(reverseOrder())
+            grouped.forEach { (tglRaw, transaksiList) ->
+                val itemsHariIni = mutableListOf<ItemRiwayat>()
+                var labaHarian = 0
 
-                sortedGroups.forEach { (tanggalRaw, transaksiList) ->
-                    var totalLabaHariIni = 0
-                    val daftarItemHariIni = mutableListOf<ItemRiwayat>()
+                transaksiList.forEach { trx ->
+                    val details = semuaDetail.filter { it.idTransaksi == trx.idTransaksi }
+                    details.forEach { d ->
+                        val barang    = semuaBarang.find { it.idBarang == d.idBarang }
+                        val nama      = barang?.namaBarang ?: d.idBarang
+                        val modal     = (barang?.hargaModal ?: 0) * d.qty
+                        val laba      = d.subtotal - modal
+                        labaHarian   += laba
 
-                    transaksiList.forEach { trx ->
-                        // Cari detail untuk transaksi ini
-                        val details = semuaDetail.filter { it.idTransaksi == trx.idTransaksi }
-
-                        details.forEach { d ->
-                            // Cari modal barang
-                            val barang = semuaBarang.find { it.idBarang == d.idBarang }
-                            val nama = barang?.namaBarang ?: d.idBarang
-                            val modalSatuan = barang?.hargaModal ?: 0
-
-                            val hargaJualTotal = d.subtotal
-                            val hargaModalTotal = modalSatuan * d.qty
-                            val labaItem = hargaJualTotal - hargaModalTotal
-
-                            totalLabaHariIni += labaItem
-
-                            daftarItemHariIni.add(
-                                ItemRiwayat(
-                                    namaBarang = nama,
-                                    qty = d.qty,
-                                    hargaJual = hargaJualTotal,
-                                    hargaModal = hargaModalTotal,
-                                    labaBersih = labaItem
-                                )
+                        itemsHariIni.add(
+                            ItemRiwayat(
+                                namaBarang  = nama,
+                                qty         = d.qty,
+                                hargaJual   = d.subtotal,
+                                hargaModal  = modal,
+                                labaBersih  = laba,
+                                idTransaksi = trx.idTransaksi,
+                                statusBayar = trx.statusPembayaran
                             )
-                        }
+                        )
                     }
-
-                    // 1. Masukkan Header Tanggal & Total Laba ke dalam list
-                    val tanggalCantik = formatTanggalHeader(tanggalRaw)
-                    dataLengkap.add(HeaderTanggal(tanggalCantik, totalLabaHariIni))
-
-                    // 2. Masukkan semua rincian barang di hari tersebut ke dalam list
-                    dataLengkap.addAll(daftarItemHariIni)
                 }
+
+                // Tambahkan header hari + ringkasan jumlah transaksi
+                val jumlahTrx = transaksiList.size
+                listFinal.add(
+                    HeaderTanggal(
+                        tanggalStr     = formatTanggal(tglRaw),
+                        totalLabaHarian = labaHarian,
+                        infoTambahan   = "$jumlahTrx transaksi"
+                    )
+                )
+                listFinal.addAll(itemsHariIni)
             }
 
             withContext(Dispatchers.Main) {
-                adapter.updateData(dataLengkap)
+                adapter.updateData(listFinal)
             }
         }
     }
 
-    private fun formatTanggalHeader(raw: String): String {
+    private fun formatTanggal(raw: String): String {
         return try {
-            val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(raw)
-            SimpleDateFormat("EEEE, dd MMMM yyyy", Locale("id", "ID")).format(date!!)
+            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val out = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale("id", "ID"))
+            out.format(sdf.parse(raw)!!)
         } catch (e: Exception) { raw }
     }
 
     private fun setupTopNav() {
         findViewById<TextView>(R.id.nav_keuangan).setOnClickListener {
-            startActivity(Intent(this, KeuanganLaporanActivity::class.java).apply { flags = Intent.FLAG_ACTIVITY_NO_ANIMATION })
-            finish()
+            startActivity(Intent(this, KeuanganLaporanActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
+            }); finish()
         }
         findViewById<TextView>(R.id.nav_barang).setOnClickListener {
-            startActivity(Intent(this, BarangLaporanActivity::class.java).apply { flags = Intent.FLAG_ACTIVITY_NO_ANIMATION })
-            finish()
+            startActivity(Intent(this, BarangLaporanActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
+            }); finish()
         }
     }
 }

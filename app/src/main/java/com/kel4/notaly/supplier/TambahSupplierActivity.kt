@@ -24,7 +24,6 @@ class TambahSupplierActivity : AppCompatActivity() {
     private lateinit var etAlamat: EditText
     private lateinit var spinnerKategori: Spinner
     private lateinit var btnSimpan: TextView
-    private lateinit var btnBatal: TextView
     private lateinit var btnBack: ImageView
     private lateinit var tvIdSupplier: TextView
     private lateinit var tvJudul: TextView
@@ -59,7 +58,6 @@ class TambahSupplierActivity : AppCompatActivity() {
         etAlamat        = findViewById(R.id.etAlamat)
         spinnerKategori = findViewById(R.id.spinnerKategori)
         btnSimpan       = findViewById(R.id.btnSimpan)
-        btnBatal        = findViewById(R.id.btnBatal)
         btnBack         = findViewById(R.id.btnBack)
         tvIdSupplier    = findViewById(R.id.tvIdSupplier)
         tvJudul         = findViewById(R.id.tvJudul)
@@ -67,7 +65,6 @@ class TambahSupplierActivity : AppCompatActivity() {
 
     private fun setupListeners() {
         btnBack.setOnClickListener { finish() }
-        btnBatal.setOnClickListener { finish() }
         btnSimpan.setOnClickListener { simpanData() }
     }
 

@@ -1,5 +1,6 @@
 package com.kel4.notaly.auth
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
@@ -40,7 +41,14 @@ class LoginActivity : AppCompatActivity() {
         }
 
         findViewById<TextView>(R.id.tvLupaPin).setOnClickListener {
-            startActivity(Intent(this, LupaPinActivity::class.java))
+            if (isReg){
+                startActivity(Intent(this, LupaPinActivity::class.java))
+            } else {
+                getSharedPreferences("DataToko",Context.MODE_PRIVATE).edit().clear().apply()
+                getSharedPreferences("UserPreferences",Context.MODE_PRIVATE).edit().clear().apply()
+                startActivity(Intent(this, RegisterActivity::class.java))
+                finish()
+            }
         }
     }
 }

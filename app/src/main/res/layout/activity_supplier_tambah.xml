@@ -1,351 +1,265 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
-    android:fillViewport="true">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#F2F6F4">
 
+    <!-- ===================== HERO HEADER ===================== -->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/headerSection"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="@drawable/bg_hero_green"
         android:orientation="vertical"
-        android:paddingBottom="32dp">
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingTop="48dp"
+        android:paddingBottom="32dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- TOP BAR: Back + Judul -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="16dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="12dp">
+            android:gravity="center_vertical">
 
             <ImageView
                 android:id="@+id/btnBack"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:contentDescription="Kembali"
-                android:focusable="true"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_badge_white"
                 android:padding="8dp"
-                android:scaleType="centerInside"
                 android:src="@drawable/ic_arrow_back"
-                app:tint="#2E7D5B" />
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="centerInside"
+                android:contentDescription="Kembali"
+                android:layout_marginEnd="14dp"
+                tools:ignore="TouchTargetSizeCheck"
+                app:tint="#0D5C3A" />
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:text="TAMBAH SUPPLIER"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:textColor="#2E7D5B"
-                android:letterSpacing="0.08" />
+                android:layout_weight="1"
+                android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/tvJudul"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tambah Supplier"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF" />
+
+                <TextView
+                    android:id="@+id/tvSubjudul"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Manajemen database supplier"
+                    android:textSize="12sp"
+                    android:textColor="#A8D5BC" />
+
+            </LinearLayout>
         </LinearLayout>
-
-        <!-- Header: Judul + Subjudul + Garis -->
-        <LinearLayout
-                android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="16dp">
-
-            <TextView
-                android:id="@+id/tvJudul"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Daftar Supplier"
-                android:textSize="28sp"
-                android:textStyle="bold"
-                android:textColor="#1A1A1A" />
-
-            <TextView
-                android:id="@+id/tvSubjudul"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="Manajemen database Supplier"
-                android:textSize="13sp"
-                android:textColor="#666666" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="12dp"
-                android:background="#DDDDDD" />
-
-        </LinearLayout>
-
-        <!-- ======================== -->
-        <!-- SECTION 1: IDENTITAS UTAMA -->
-        <!-- ======================== -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="16dp"
-            android:paddingTop="20dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="IDENTITAS UTAMA"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:textColor="#1A1A1A"
-                android:letterSpacing="0.05" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="Informasi fundamental untuk pelacakan sistem."
-                android:textSize="12sp"
-                android:textColor="#888888" />
-
-            <!-- ID Supplier -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="ID SUPPLIER"
-                android:textSize="11sp"
-                android:textStyle="bold"
-                android:textColor="#444444"
-                android:letterSpacing="0.05" />
-
-            <!-- ID otomatis, tidak bisa diedit -->
-            <TextView
-                android:id="@+id/tvIdSupplier"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="6dp"
-                android:background="@drawable/bg_search_rounded"
-                android:paddingHorizontal="14dp"
-                android:gravity="center_vertical"
-                android:text="001"
-                android:textSize="15sp"
-                android:textColor="#888888" />
-
-            <!-- Nama Supplier -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="NAMA SUPPLIER"
-                android:textSize="11sp"
-                android:textStyle="bold"
-                android:textColor="#444444"
-                android:letterSpacing="0.05" />
-
-            <EditText
-                android:id="@+id/etNamaSupplier"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="6dp"
-                android:background="@drawable/bg_search_rounded"
-                android:paddingHorizontal="14dp"
-                android:hint="Contoh: PT. Maju Jaya"
-                android:textSize="15sp"
-                android:textColor="#1A1A1A"
-                android:textColorHint="#AAAAAA"
-                android:inputType="textCapWords"
-                android:singleLine="true" />
-
-        </LinearLayout>
-
-        <!-- Spacer antar section -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="24dp" />
-
-        <!-- ======================== -->
-        <!-- SECTION 2: SALURAN KONTAK -->
-        <!-- ======================== -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SALURAN KONTAK"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:textColor="#1A1A1A"
-                android:letterSpacing="0.05" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="Detail komunikasi untuk koordinasi pengadaan."
-                android:textSize="12sp"
-                android:textColor="#888888" />
-
-            <!-- Nomor Telepon -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="NOMOR TELEPON/WHATSAPP"
-                android:textSize="11sp"
-                android:textStyle="bold"
-                android:textColor="#444444"
-                android:letterSpacing="0.05" />
-
-            <EditText
-                android:id="@+id/etNoTelp"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="6dp"
-                android:background="@drawable/bg_search_rounded"
-                android:paddingHorizontal="14dp"
-                android:hint="+62  812 3456 7890"
-                android:textSize="15sp"
-                android:textColor="#1A1A1A"
-                android:textColorHint="#AAAAAA"
-                android:inputType="phone"
-                android:singleLine="true" />
-
-            <!-- Kategori Produk (Spinner) -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="KATEGORI PRODUK"
-                android:textSize="11sp"
-                android:textStyle="bold"
-                android:textColor="#444444"
-                android:letterSpacing="0.05" />
-
-            <!-- Wrapper Spinner dengan ikon panah kanan -->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="6dp"
-                android:background="@drawable/bg_search_rounded">
-
-                <Spinner
-                    android:id="@+id/spinnerKategori"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingHorizontal="14dp"
-                    android:background="@null"
-                    android:hint="Pilih Kategori" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="14dp"
-                    android:src="@drawable/ic_arrow_down"
-                    android:contentDescription="Dropdown"
-                    app:tint="#888888" />
-
-            </RelativeLayout>
-
-        </LinearLayout>
-
-        <!-- Spacer antar section -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="24dp" />
-
-        <!-- ======================== -->
-        <!-- SECTION 3: GEOLOKASI & ALAMAT -->
-        <!-- ======================== -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="GEOLOKASI &amp; ALAMAT"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:textColor="#1A1A1A"
-                android:letterSpacing="0.05" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="Titik distribusi dan alamat operasional lengkap."
-                android:textSize="12sp"
-                android:textColor="#888888" />
-
-            <!-- Alamat Lengkap -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="ASAL DAERAH/ALAMAT LENGKAP"
-                android:textSize="11sp"
-                android:textStyle="bold"
-                android:textColor="#444444"
-                android:letterSpacing="0.05" />
-
-            <EditText
-                android:id="@+id/etAlamat"
-                android:layout_width="match_parent"
-                android:layout_height="110dp"
-                android:layout_marginTop="6dp"
-                android:background="@drawable/bg_search_rounded"
-                android:paddingHorizontal="14dp"
-                android:paddingVertical="12dp"
-                android:hint="Jl. Pahlawan No. 123, Blok C, Jakarta Selatan..."
-                android:textSize="15sp"
-                android:textColor="#1A1A1A"
-                android:textColorHint="#AAAAAA"
-                android:inputType="textMultiLine"
-                android:gravity="top"
-                android:minLines="3" />
-
-        </LinearLayout>
-
-        <!-- Spacer -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="24dp" />
-
-        <!-- Tombol Simpan -->
-        <TextView
-            android:id="@+id/btnSimpan"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginHorizontal="16dp"
-            android:background="@drawable/bg_btn_hijau"
-            android:gravity="center"
-            android:text="Simpan Supplier"
-            android:textColor="#FFFFFF"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:clickable="true"
-            android:focusable="true" />
-
-        <!-- Tombol Batal -->
-        <TextView
-            android:id="@+id/btnBatal"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="4dp"
-            android:gravity="center"
-            android:text="Batal"
-            android:textColor="#444444"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:clickable="true"
-            android:focusable="true" />
-
     </LinearLayout>
 
-</ScrollView>
+    <!-- ===================== SCROLL FORM ===================== -->
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        app:layout_constraintTop_toBottomOf="@id/headerSection"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btnSimpan">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_card_top_rounded"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="24dp"
+            android:paddingBottom="16dp">
+
+            <!-- SECTION 1: IDENTITAS UTAMA -->
+            <LinearLayout
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
+
+                <View android:layout_width="3dp" android:layout_height="16dp"
+                    android:background="@drawable/bg_btn_hijau_round" android:layout_marginEnd="10dp" />
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="IDENTITAS UTAMA" android:textSize="10sp"
+                    android:textColor="#0D5C3A" android:textStyle="bold" android:letterSpacing="0.08" />
+            </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="20dp" app:cardElevation="0dp" app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="vertical" android:padding="20dp">
+
+                    <!-- ID Supplier (read-only) -->
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="ID SUPPLIER" android:textSize="10sp" android:textColor="#AAAAAA"
+                        android:textStyle="bold" android:letterSpacing="0.08" android:layout_marginBottom="8dp" />
+
+                    <FrameLayout android:layout_width="match_parent" android:layout_height="52dp"
+                        android:background="@drawable/bg_input_disabled" android:layout_marginBottom="16dp">
+
+                        <TextView android:id="@+id/tvIdSupplier" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:layout_gravity="center_vertical"
+                            android:layout_marginStart="16dp" android:text="001"
+                            android:textSize="14sp" android:textColor="#AAAAAA" />
+                    </FrameLayout>
+
+                    <!-- Nama Supplier -->
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="NAMA SUPPLIER" android:textSize="10sp" android:textColor="#0D5C3A"
+                        android:textStyle="bold" android:letterSpacing="0.08" android:layout_marginBottom="8dp" />
+
+                    <EditText android:id="@+id/etNamaSupplier" android:layout_width="match_parent"
+                        android:layout_height="56dp" android:background="@drawable/bg_input_outline"
+                        android:paddingHorizontal="16dp" android:hint="Contoh: PT. Maju Jaya"
+                        android:textSize="14sp" android:textColor="#1A1A1A" android:textColorHint="#BBBBBB"
+                        android:inputType="textCapWords" android:singleLine="true" android:gravity="center_vertical" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- SECTION 2: SALURAN KONTAK -->
+            <LinearLayout
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
+
+                <View android:layout_width="3dp" android:layout_height="16dp"
+                    android:background="@drawable/bg_btn_hijau_round" android:layout_marginEnd="10dp" />
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="SALURAN KONTAK" android:textSize="10sp"
+                    android:textColor="#0D5C3A" android:textStyle="bold" android:letterSpacing="0.08" />
+            </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="20dp" app:cardElevation="0dp" app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="vertical" android:padding="20dp">
+
+                    <!-- Nomor Telepon -->
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="NOMOR TELEPON / WHATSAPP" android:textSize="10sp" android:textColor="#0D5C3A"
+                        android:textStyle="bold" android:letterSpacing="0.08" android:layout_marginBottom="8dp" />
+
+                    <FrameLayout android:layout_width="match_parent" android:layout_height="56dp"
+                        android:background="@drawable/bg_input_outline" android:layout_marginBottom="16dp">
+
+                        <ImageView android:layout_width="18dp" android:layout_height="18dp"
+                            android:layout_gravity="center_vertical|start" android:layout_marginStart="16dp"
+                            android:src="@drawable/ic_daftarpelanggan" app:tint="#0D5C3A"
+                            android:scaleType="centerInside" android:contentDescription="Telepon" />
+
+                        <EditText android:id="@+id/etNoTelp" android:layout_width="match_parent"
+                            android:layout_height="match_parent" android:paddingStart="44dp"
+                            android:paddingEnd="16dp" android:hint="+62 812 3456 7890"
+                            android:textSize="14sp" android:textColor="#1A1A1A" android:textColorHint="#BBBBBB"
+                            android:inputType="phone" android:singleLine="true"
+                            android:background="@null" android:gravity="center_vertical" />
+                    </FrameLayout>
+
+                    <!-- Kategori Produk -->
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="KATEGORI PRODUK" android:textSize="10sp" android:textColor="#0D5C3A"
+                        android:textStyle="bold" android:letterSpacing="0.08" android:layout_marginBottom="8dp" />
+
+                    <RelativeLayout android:layout_width="match_parent" android:layout_height="56dp"
+                        android:background="@drawable/bg_input_outline">
+
+                        <Spinner android:id="@+id/spinnerKategori" android:layout_width="match_parent"
+                            android:layout_height="match_parent" android:paddingStart="16dp"
+                            android:paddingEnd="40dp" android:background="@null" />
+
+                        <ImageView android:layout_width="18dp" android:layout_height="18dp"
+                            android:layout_alignParentEnd="true" android:layout_centerVertical="true"
+                            android:layout_marginEnd="14dp" android:src="@drawable/ic_arrow_down"
+                            android:contentDescription="Dropdown" app:tint="#AAAAAA" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- SECTION 3: GEOLOKASI & ALAMAT -->
+            <LinearLayout
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
+
+                <View android:layout_width="3dp" android:layout_height="16dp"
+                    android:background="@drawable/bg_btn_hijau_round" android:layout_marginEnd="10dp" />
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="GEOLOKASI &amp; ALAMAT" android:textSize="10sp"
+                    android:textColor="#0D5C3A" android:textStyle="bold" android:letterSpacing="0.08" />
+            </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:cardCornerRadius="20dp" app:cardElevation="0dp" app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="vertical" android:padding="20dp">
+
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="ASAL DAERAH / ALAMAT LENGKAP" android:textSize="10sp" android:textColor="#0D5C3A"
+                        android:textStyle="bold" android:letterSpacing="0.08" android:layout_marginBottom="8dp" />
+
+                    <EditText android:id="@+id/etAlamat" android:layout_width="match_parent"
+                        android:layout_height="110dp" android:background="@drawable/bg_input_outline"
+                        android:paddingHorizontal="16dp" android:paddingVertical="14dp"
+                        android:hint="Jl. Pahlawan No. 123, Blok C, Jakarta Selatan..."
+                        android:textSize="14sp" android:textColor="#1A1A1A" android:textColorHint="#BBBBBB"
+                        android:inputType="textMultiLine" android:gravity="top" android:minLines="3" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- TOMBOL SIMPAN -->
+    <TextView
+        android:id="@+id/btnSimpan"
+        android:layout_width="0dp"
+        android:layout_height="58dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="28dp"
+        android:background="@drawable/bg_btn_hijau_round"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="Simpan Supplier"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

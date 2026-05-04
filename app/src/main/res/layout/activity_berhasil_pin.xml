@@ -4,78 +4,95 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    android:paddingHorizontal="24dp">
+    android:background="#F2F6F4">
 
-    <!-- Icon Sukses -->
-    <FrameLayout
-        android:id="@+id/frameIconSukses"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:background="@drawable/bg_btn_hijau"
+    <!-- ===================== ILUSTRASI SUKSES ===================== -->
+    <LinearLayout
+        android:id="@+id/successBlock"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingHorizontal="32dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/tvJudul"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintVertical_bias="0.42">
+        app:layout_constraintBottom_toTopOf="@id/btnKembali"
+        app:layout_constraintVertical_bias="0.44"
+        app:layout_constraintVertical_chainStyle="packed">
 
-        <!-- Lingkaran putih transparan di dalam kotak hijau -->
+        <!-- Icon lingkaran besar -->
         <FrameLayout
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:layout_gravity="center"
-            android:background="@drawable/ic_cheklis_full_green"/>
-    </FrameLayout>
+            android:id="@+id/frameIconSukses"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:background="@drawable/bg_icon_circle_large">
 
-    <!-- Judul -->
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_cheklis"
+                android:contentDescription="Berhasil" />
+        </FrameLayout>
+
+        <!-- Badge chip -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_chip_green"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="5dp"
+            android:text="✓ BERHASIL"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:textColor="#0D5C3A"
+            android:letterSpacing="0.06" />
+
+        <!-- Judul -->
+        <TextView
+            android:id="@+id/tvJudul"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Berhasil Ganti PIN"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#0A3D26"
+            android:gravity="center" />
+
+        <!-- Deskripsi -->
+        <TextView
+            android:id="@+id/tvDeskripsi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="PIN keamanan Anda telah diperbarui. Gunakan PIN baru ini untuk transaksi berikutnya."
+            android:textSize="14sp"
+            android:textColor="#666666"
+            android:gravity="center"
+            android:lineSpacingExtra="4dp" />
+
+    </LinearLayout>
+
+    <!-- ===================== TOMBOL KEMBALI ===================== -->
     <TextView
-        android:id="@+id/tvJudul"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:text="Berhasil Ganti PIN"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="#1A1A1A"
-        android:gravity="center"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/frameIconSukses"
-        app:layout_constraintBottom_toTopOf="@id/tvDeskripsi" />
-
-    <!-- Deskripsi -->
-    <TextView
-        android:id="@+id/tvDeskripsi"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginHorizontal="8dp"
-        android:text="PIN keamanan Anda telah diperbarui. Gunakan PIN baru ini untuk transaksi dan akses akun berikutnya."
-        android:textSize="15sp"
-        android:textColor="#666666"
-        android:gravity="center"
-        android:lineSpacingExtra="4dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvJudul"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0" />
-
-    <!-- Tombol Kembali ke Pengaturan -->
-    <Button
         android:id="@+id/btnKembali"
         android:layout_width="0dp"
         android:layout_height="58dp"
-        android:layout_marginBottom="32dp"
-        android:background="@drawable/bg_btn_hijau"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="28dp"
+        android:background="@drawable/bg_btn_hijau_round"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
         android:text="Kembali ke Pengaturan"
         android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        android:textStyle="normal"
-        android:letterSpacing="0.01"
+        android:textSize="15sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

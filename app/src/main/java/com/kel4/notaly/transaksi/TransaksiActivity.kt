@@ -2,6 +2,7 @@ package com.kel4.notaly.transaksi
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -49,7 +50,7 @@ class TransaksiActivity : AppCompatActivity() {
     private var metodeBayar: String = "Transfer"
 
     // Status DP / Lunas
-    private var statusPembayaran: String = "DP"
+    private var statusPembayaran: String = "Lunas"
 
     // ===================== VIEW =====================
     private lateinit var containerItem: LinearLayout
@@ -60,9 +61,18 @@ class TransaksiActivity : AppCompatActivity() {
     private lateinit var rbTransfer: RadioButton
     private lateinit var rbQris: RadioButton
     private lateinit var rbTunai: RadioButton
-    private lateinit var btnBayarDp: Button
-    private lateinit var btnLunas: Button
-    private lateinit var btnSimpan: Button
+
+    // View untuk Toggle DP/Lunas yang baru
+    private lateinit var btnBayarDp: LinearLayout
+    private lateinit var btnLunas: LinearLayout
+    private lateinit var tvBayarDp: TextView
+    private lateinit var tvLunas: TextView
+    private lateinit var indicatorDp: View
+    private lateinit var indicatorLunas: View
+    private lateinit var layoutInputDp: LinearLayout
+    private lateinit var etJumlahDp: EditText
+
+    private lateinit var btnSimpan: TextView
     private lateinit var btnBack: ImageView
 
     // ID transaksi yang di-generate saat activity dibuka
@@ -99,8 +109,17 @@ class TransaksiActivity : AppCompatActivity() {
         rbTransfer      = findViewById(R.id.rbTransfer)
         rbQris          = findViewById(R.id.rbQris)
         rbTunai         = findViewById(R.id.rbTunai)
+
+        // Bind UI Toggle DP/Lunas yang baru
         btnBayarDp      = findViewById(R.id.btnBayarDp)
         btnLunas        = findViewById(R.id.btnLunas)
+        tvBayarDp       = findViewById(R.id.tvBayarDp)
+        tvLunas         = findViewById(R.id.tvLunas)
+        indicatorDp     = findViewById(R.id.indicatorDp)
+        indicatorLunas  = findViewById(R.id.indicatorLunas)
+        layoutInputDp   = findViewById(R.id.layoutInputDp)
+        etJumlahDp      = findViewById(R.id.etJumlahDp)
+
         btnSimpan       = findViewById(R.id.btnSimpan)
         btnBack         = findViewById(R.id.btnBack)
 
@@ -119,7 +138,7 @@ class TransaksiActivity : AppCompatActivity() {
             updateTotal()
         }
 
-        // Radio metode pembayaran (YANG BARU)
+        // Radio metode pembayaran
         rbTransfer.setOnClickListener { setMetodePembayaran("Transfer") }
         rbQris.setOnClickListener     { setMetodePembayaran("QRIS") }
         rbTunai.setOnClickListener    { setMetodePembayaran("Tunai") }
@@ -128,21 +147,11 @@ class TransaksiActivity : AppCompatActivity() {
         btnBayarDp.setOnClickListener  { setStatusDP() }
         btnLunas.setOnClickListener    { setStatusLunas() }
 
-        // Default saat halaman pertama dibuka: Transfer dipilih, DP aktif
+        btnSimpan.setOnClickListener { konfirmasiSimpan() }
+
+        // Default saat halaman pertama dibuka: Transfer dipilih, Lunas aktif
         setMetodePembayaran("Transfer")
-        setStatusDP()
-
-        btnSimpan.setOnClickListener { konfirmasiSimpan() }
-
-        // Tombol DP / Lunas toggle
-        btnBayarDp.setOnClickListener  { setStatusDP() }
-        btnLunas.setOnClickListener    { setStatusLunas() }
-
-        // Default: Transfer dipilih, DP aktif
-        rbTransfer.isChecked = true
-        setStatusDP()
-
-        btnSimpan.setOnClickListener { konfirmasiSimpan() }
+        setStatusLunas()
     }
 
     // ─────────────────────────────────────────────────────────
@@ -151,7 +160,6 @@ class TransaksiActivity : AppCompatActivity() {
     private fun muatBarang() {
         lifecycleScope.launch {
             semuaBarang = withContext(Dispatchers.IO) { barangDao.ambilSemuaBarang() }
-            // Render baris pertama setelah barang dimuat
             containerItem.removeAllViews()
             daftarItem.forEachIndexed { idx, _ -> tambahBarisItemUI(idx) }
         }
@@ -173,24 +181,20 @@ class TransaksiActivity : AppCompatActivity() {
 
         tvLabel.text = "ITEM #${index + 1}"
 
-        // Sembunyikan tombol hapus jika hanya 1 item
         btnHapus.visibility = if (daftarItem.size > 1) View.VISIBLE else View.GONE
         btnHapus.setOnClickListener {
             daftarItem.removeAt(index)
             containerItem.removeView(view)
-            // Re-render semua label nomor item
             refreshLabelItem()
             updateTotal()
         }
 
-        // Adapter spinner barang
         val namaBarang = semuaBarang.map { "${it.namaBarang} (Stok: ${it.stok})" }.toMutableList()
         namaBarang.add(0, "-- Pilih Barang --")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, namaBarang)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
 
-        // Restore pilihan jika ada
         daftarItem[index].barang?.let { b ->
             val posisi = semuaBarang.indexOfFirst { it.idBarang == b.idBarang }
             if (posisi >= 0) spinner.setSelection(posisi + 1)
@@ -203,7 +207,6 @@ class TransaksiActivity : AppCompatActivity() {
                 } else {
                     val barang = semuaBarang[pos - 1]
                     daftarItem[index].barang = barang
-                    // Hitung subtotal otomatis
                     hitungSubtotal(index, etHargaNego, etJumlah, tvSubtotal)
                 }
                 updateTotal()
@@ -211,7 +214,6 @@ class TransaksiActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        // Watcher harga nego & jumlah
         val watcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -226,7 +228,6 @@ class TransaksiActivity : AppCompatActivity() {
         containerItem.addView(view)
     }
 
-    // Hitung subtotal per baris
     private fun hitungSubtotal(
         index: Int,
         etNego: EditText,
@@ -248,21 +249,16 @@ class TransaksiActivity : AppCompatActivity() {
         tvSubtotal.text = "Rp ${rupiahFormat.format(subtotal)}"
     }
 
-    // Refresh ulang label "ITEM #N" setelah ada yang dihapus
     private fun refreshLabelItem() {
         for (i in 0 until containerItem.childCount) {
             val child = containerItem.getChildAt(i)
             val tv = child.findViewById<TextView>(R.id.tvLabelItem)
             tv?.text = "ITEM #${i + 1}"
-            // Hapus button visibility
             val btnHapus = child.findViewById<ImageView>(R.id.btnHapusItem)
             btnHapus?.visibility = if (containerItem.childCount > 1) View.VISIBLE else View.GONE
         }
     }
 
-    // ─────────────────────────────────────────────────────────
-    //  UPDATE TOTAL BAWAH
-    // ─────────────────────────────────────────────────────────
     private fun updateTotal() {
         var total = 0
         var itemCount = 0
@@ -273,27 +269,46 @@ class TransaksiActivity : AppCompatActivity() {
             total += sub
             if (item.jumlah > 0) itemCount++
         }
-        tvTotalPenjualan.text = "Rp ${rupiahFormat.format(total)},00"
+        tvTotalPenjualan.text = "Rp ${rupiahFormat.format(total)}"
         tvItemTerpilih.text   = "$itemCount Item Terpilih"
     }
 
     // ─────────────────────────────────────────────────────────
-    //  STATUS DP / LUNAS TOGGLE
+    //  STATUS DP / LUNAS TOGGLE (UI BARU)
     // ─────────────────────────────────────────────────────────
     private fun setStatusDP() {
         statusPembayaran = "DP"
+
+        // Aktifkan visual tombol DP
         btnBayarDp.setBackgroundResource(R.drawable.bg_white_rounded)
-        btnBayarDp.setTextColor(getColor(R.color.black))
-        btnLunas.setBackgroundResource(R.drawable.bg_search_rounded)
-        btnLunas.setTextColor(getColor(android.R.color.darker_gray))
+        tvBayarDp.setTextColor(Color.parseColor("#1A1A1A"))
+        indicatorDp.visibility = View.VISIBLE
+
+        // Matikan visual tombol Lunas
+        btnLunas.setBackgroundResource(android.R.color.transparent)
+        tvLunas.setTextColor(Color.parseColor("#888888"))
+        indicatorLunas.visibility = View.GONE
+
+        // Tampilkan Form Input DP
+        layoutInputDp.visibility = View.VISIBLE
     }
 
     private fun setStatusLunas() {
         statusPembayaran = "Lunas"
+
+        // Aktifkan visual tombol Lunas
         btnLunas.setBackgroundResource(R.drawable.bg_white_rounded)
-        btnLunas.setTextColor(getColor(R.color.black))
-        btnBayarDp.setBackgroundResource(R.drawable.bg_search_rounded)
-        btnBayarDp.setTextColor(getColor(android.R.color.darker_gray))
+        tvLunas.setTextColor(Color.parseColor("#1A1A1A"))
+        indicatorLunas.visibility = View.VISIBLE
+
+        // Matikan visual tombol DP
+        btnBayarDp.setBackgroundResource(android.R.color.transparent)
+        tvBayarDp.setTextColor(Color.parseColor("#888888"))
+        indicatorDp.visibility = View.GONE
+
+        // Sembunyikan & Kosongkan Form Input DP
+        layoutInputDp.visibility = View.GONE
+        etJumlahDp.text.clear()
     }
 
     // ─────────────────────────────────────────────────────────
@@ -318,13 +333,30 @@ class TransaksiActivity : AppCompatActivity() {
     }
 
     // ─────────────────────────────────────────────────────────
-    //  KONFIRMASI SIMPAN (AlertDialog)
+    //  KONFIRMASI SIMPAN
     // ─────────────────────────────────────────────────────────
     private fun konfirmasiSimpan() {
         if (!validasiForm()) return
 
         val total = hitungTotalKeseluruhan()
+        var nominalDp = 0
+
+        // Validasi khusus jika memilih DP
+        if (statusPembayaran == "DP") {
+            val teksDp = etJumlahDp.text.toString().trim()
+            if (teksDp.isEmpty()) {
+                Toast.makeText(this, "Masukkan nominal DP terlebih dahulu", Toast.LENGTH_SHORT).show()
+                return
+            }
+            nominalDp = teksDp.toIntOrNull() ?: 0
+            if (nominalDp <= 0 || nominalDp >= total) {
+                Toast.makeText(this, "Nominal DP tidak valid. Harus lebih dari 0 dan kurang dari total.", Toast.LENGTH_SHORT).show()
+                return
+            }
+        }
+
         val totalFormatted = "Rp ${rupiahFormat.format(total)}"
+        val dpInfo = if (statusPembayaran == "DP") "\nNominal DP : Rp ${rupiahFormat.format(nominalDp)}" else ""
 
         AlertDialog.Builder(this)
             .setTitle("Konfirmasi Transaksi")
@@ -333,16 +365,13 @@ class TransaksiActivity : AppCompatActivity() {
                         "ID       : $idTransaksi\n" +
                         "Total    : $totalFormatted\n" +
                         "Metode   : $metodeBayar\n" +
-                        "Status   : $statusPembayaran"
+                        "Status   : $statusPembayaran" + dpInfo
             )
-            .setPositiveButton("Ya, Simpan") { _, _ -> simpanTransaksi() }
+            .setPositiveButton("Ya, Simpan") { _, _ -> simpanTransaksi(nominalDp) }
             .setNegativeButton("Batal", null)
             .show()
     }
 
-    // ─────────────────────────────────────────────────────────
-    //  HITUNG TOTAL KESELURUHAN
-    // ─────────────────────────────────────────────────────────
     private fun hitungTotalKeseluruhan(): Int {
         return daftarItem.sumOf { item ->
             val barang = item.barang ?: return@sumOf 0
@@ -352,9 +381,9 @@ class TransaksiActivity : AppCompatActivity() {
     }
 
     // ─────────────────────────────────────────────────────────
-    //  SIMPAN TRANSAKSI ke DB
+    //  SIMPAN TRANSAKSI ke DB & KIRIM INTENT DP
     // ─────────────────────────────────────────────────────────
-    private fun simpanTransaksi() {
+    private fun simpanTransaksi(nominalDp: Int) {
         val total        = hitungTotalKeseluruhan()
         val tanggalNow   = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
         val totalDiskon  = daftarItem.sumOf { item ->
@@ -363,6 +392,7 @@ class TransaksiActivity : AppCompatActivity() {
             if (nego != null && nego < b.hargaJual) (b.hargaJual - nego) * item.jumlah else 0
         }
 
+        // HANYA 7 FIELD SESUAI DATABASE ASLI KAMU (Tanpa NominalDP)
         val transaksi = TransaksiPenjualan(
             idTransaksi      = idTransaksi,
             idPelanggan      = null,
@@ -387,11 +417,8 @@ class TransaksiActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
-                // 1. Simpan header transaksi
                 transaksiDao.buatTransaksi(transaksi)
-                // 2. Simpan detail
                 detailDao.tambahDetailBelanja(listDetail)
-                // 3. Kurangi stok barang
                 listDetail.forEach { d ->
                     barangDao.kurangiStok(d.idBarang, d.qty)
                 }
@@ -402,28 +429,26 @@ class TransaksiActivity : AppCompatActivity() {
             // Pindah ke detail transaksi
             val intent = Intent(this@TransaksiActivity, DetailTransaksiActivity::class.java)
             intent.putExtra("ID_TRANSAKSI", idTransaksi)
+
+            // 🔥 LEMPAR DATA NOMINAL DP KE HALAMAN DETAIL LEWAT INTENT
+            if (statusPembayaran == "DP") {
+                intent.putExtra("NOMINAL_DP", nominalDp)
+            }
+
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)
             finish()
         }
     }
 
-    // ─────────────────────────────────────────────────────────
-    //  GENERATE ID TRANSAKSI  (TX-YYYYMMDD-XXXX)
-    // ─────────────────────────────────────────────────────────
     private fun generateIdTransaksi(): String {
         val tgl    = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Date())
         val random = (1000..9999).random()
         return "TX-$tgl-$random"
     }
 
-    // ─────────────────────────────────────────────────────────
-    //  PILIH METODE PEMBAYARAN
-    // ─────────────────────────────────────────────────────────
     private fun setMetodePembayaran(metode: String) {
         metodeBayar = metode
-
-        // Hanya akan bernilai 'true' (tercentang) jika metodenya cocok
         rbTransfer.isChecked = (metode == "Transfer")
         rbQris.isChecked     = (metode == "QRIS")
         rbTunai.isChecked    = (metode == "Tunai")

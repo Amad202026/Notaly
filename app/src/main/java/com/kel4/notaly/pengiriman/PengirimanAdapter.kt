@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -35,7 +36,7 @@ class PengirimanAdapter(
         val tvAlamat: TextView = itemView.findViewById(R.id.tvAlamat)
         val tvBiaya: TextView = itemView.findViewById(R.id.tvBiaya)
         val tvStatus: TextView = itemView.findViewById(R.id.tvStatus)
-        val ivEdit: ImageView = itemView.findViewById(R.id.ivEdit)
+//        val ivEdit: CardView = itemView.findViewById(R.id.ivEdit)
         val ivDelete: ImageView = itemView.findViewById(R.id.ivDelete)
     }
 
@@ -71,7 +72,7 @@ class PengirimanAdapter(
         holder.tvStatus.setTextColor(statusColor)
 
         holder.itemView.setOnClickListener { onItemClick(item) }
-        holder.ivEdit.setOnClickListener { onEditClick(item) }
+//        holder.ivEdit.setOnClickListener { onEditClick(item) }
         holder.ivDelete.setOnClickListener { onDeleteClick(item) }
     }
 }

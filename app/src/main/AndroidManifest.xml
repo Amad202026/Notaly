@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
+        android:hasFragileUserData="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -11,6 +12,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Notaly">
+        <activity
+            android:name=".auth.SplashActivity"
+            android:theme="@style/Theme.Notaly.Splash"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".laporan.BarangLaporanActivity"
             android:exported="false" />
@@ -90,9 +101,6 @@
             android:name=".daftransaksi.DafTransaksiActivity"
             android:exported="false" />
         <activity
-            android:name=".kirim.KirimActivity"
-            android:exported="false" />
-        <activity
             android:name=".restock.StockActivity"
             android:exported="false" />
         <activity
@@ -127,12 +135,7 @@
             android:exported="false" />
         <activity
             android:name=".auth.MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="false">
         </activity>
     </application>
 

@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kel4.notaly.R
 import com.kel4.notaly.database.AppDatabase
 import androidx.lifecycle.lifecycleScope
+import com.kel4.notaly.home.BerandaActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -22,13 +24,17 @@ import java.util.Locale
 
 class CacatActivity : AppCompatActivity() {
 
-    // Satu baris data = satu entri cacat, representasi sederhana tanpa data class
     // index 0=nama, 1=kategori, 2=jumlah, 3=harga, 4=keterangan, 5=tanggal
     private var dataFull : List<Array<String>> = emptyList()
 
+    // ===================== STATE FILTER & SORTIR =====================
+    private var filterKategori: String = "Semua"   // "Semua" atau nama kategori
+    private var urutanAktif   : String = "Terbaru" // label urutan
+
     private lateinit var rvCacat  : RecyclerView
-    private lateinit var tvKosong : TextView
+    private lateinit var tvKosong : LinearLayout
     private lateinit var adapter  : InlineAdapter
+    private lateinit var etCari   : EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,22 +42,30 @@ class CacatActivity : AppCompatActivity() {
 
         rvCacat  = findViewById(R.id.rvCacat)
         tvKosong = findViewById(R.id.tvKosong)
+        etCari   = findViewById(R.id.etCari)
 
         rvCacat.layoutManager = LinearLayoutManager(this)
         adapter = InlineAdapter(emptyList())
         rvCacat.adapter = adapter
 
-        findViewById<ImageView>(R.id.btnBack).setOnClickListener { finish() }
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
+            startActivity(Intent(this, BerandaActivity::class.java))
+            finish()
+        }
         findViewById<CardView>(R.id.menuTambah).setOnClickListener {
             startActivity(Intent(this, TambahCacatActivity::class.java))
         }
 
-        val etCari = findViewById<EditText>(R.id.etCari)
         etCari.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) { filterData(s.toString()) }
+            override fun afterTextChanged(s: Editable?) { terapkanFilterDanSortir() }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
+
+        // Tombol filter menggunakan btnFilter di layout
+        findViewById<LinearLayout>(R.id.btnFilter).setOnClickListener {
+            tampilkanDialogFilterDanSortir()
+        }
     }
 
     override fun onResume() {
@@ -67,7 +81,7 @@ class CacatActivity : AppCompatActivity() {
             val hasil   = mutableListOf<Array<String>>()
 
             for (barang in semua) {
-                val id      = barang.idBarang
+                val id         = barang.idBarang
                 val jumlahList = prefs.getString("CACAT_JUMLAH_$id", "")!!.split("|").filter { it.isNotEmpty() }
                 val hargaList  = prefs.getString("CACAT_HARGA_$id",  "")!!.split("|").filter { it.isNotEmpty() }
                 val ketList    = prefs.getString("CACAT_KET_$id",    "")!!.split("|").filter { it.isNotEmpty() }
@@ -85,18 +99,82 @@ class CacatActivity : AppCompatActivity() {
                 }
             }
 
-            dataFull = hasil.reversed() // terbaru di atas
+            dataFull = hasil.reversed() // indeks urutan data asli = posisi entry (terbaru di atas)
 
-            withContext(Dispatchers.Main) { tampilkan(dataFull) }
+            withContext(Dispatchers.Main) { terapkanFilterDanSortir() }
         }
     }
 
-    private fun filterData(query: String) {
-        if (query.isBlank()) { tampilkan(dataFull); return }
-        val lower = query.lowercase()
-        tampilkan(dataFull.filter {
-            it[0].lowercase().contains(lower) || it[1].lowercase().contains(lower) || it[4].lowercase().contains(lower)
-        })
+    // ─────────────────────────────────────────────────────────
+    //  DIALOG FILTER + SORTIR
+    // ─────────────────────────────────────────────────────────
+    private fun tampilkanDialogFilterDanSortir() {
+        // Kumpulkan kategori unik dari data
+        val kategoriList = mutableListOf("Semua")
+        dataFull.map { it[1] }.distinct().sorted().forEach { kategoriList.add(it) }
+
+        val opsiUrutkan = arrayOf("Terbaru", "Terlama", "Jumlah Terbanyak", "Jumlah Tersedikit", "Harga Tertinggi", "Harga Terendah")
+
+        val pilihan = mutableListOf<String>()
+        pilihan.add("── FILTER KATEGORI ──")
+        kategoriList.forEach { pilihan.add("   Kategori: $it") }
+        pilihan.add("── URUTKAN ──")
+        opsiUrutkan.forEach { pilihan.add("   Urut: $it") }
+
+        AlertDialog.Builder(this)
+            .setTitle("Filter & Urutkan Barang Cacat")
+            .setItems(pilihan.toTypedArray()) { _, which ->
+                val headerKat   = 0
+                val startKat    = 1
+                val endKat      = kategoriList.size  // inklusif index terakhir kategori
+                val headerUrut  = endKat + 1
+                val startUrut   = endKat + 2
+
+                when {
+                    which in startKat..endKat -> {
+                        filterKategori = kategoriList[which - startKat]
+                        terapkanFilterDanSortir()
+                    }
+                    which >= startUrut -> {
+                        urutanAktif = opsiUrutkan[which - startUrut]
+                        terapkanFilterDanSortir()
+                    }
+                }
+            }
+            .show()
+    }
+
+    // ─────────────────────────────────────────────────────────
+    //  TERAPKAN FILTER + SORTIR
+    // ─────────────────────────────────────────────────────────
+    private fun terapkanFilterDanSortir() {
+        val q = etCari.text.toString().trim().lowercase()
+
+        // 1. Filter teks: nama barang, kategori, keterangan
+        var hasil = if (q.isBlank()) dataFull
+        else dataFull.filter {
+            it[0].lowercase().contains(q) ||
+                    it[1].lowercase().contains(q) ||
+                    it[4].lowercase().contains(q)
+        }
+
+        // 2. Filter kategori
+        if (filterKategori != "Semua") {
+            hasil = hasil.filter { it[1].equals(filterKategori, ignoreCase = true) }
+        }
+
+        // 3. Sortir
+        hasil = when (urutanAktif) {
+            "Terbaru"          -> hasil // data sudah reversed (terbaru di atas) saat muatData
+            "Terlama"          -> hasil.reversed()
+            "Jumlah Terbanyak" -> hasil.sortedByDescending { it[2].toIntOrNull() ?: 0 }
+            "Jumlah Tersedikit"-> hasil.sortedBy { it[2].toIntOrNull() ?: 0 }
+            "Harga Tertinggi"  -> hasil.sortedByDescending { it[3].toIntOrNull() ?: 0 }
+            "Harga Terendah"   -> hasil.sortedBy { it[3].toIntOrNull() ?: 0 }
+            else               -> hasil
+        }
+
+        tampilkan(hasil)
     }
 
     private fun tampilkan(data: List<Array<String>>) {
@@ -105,7 +183,7 @@ class CacatActivity : AppCompatActivity() {
         adapter.update(data)
     }
 
-    // ── Adapter inline, tidak perlu file terpisah ─────────────────────────────
+    // ── Adapter inline ────────────────────────────────────────────────────────
     inner class InlineAdapter(
         private var data: List<Array<String>>
     ) : RecyclerView.Adapter<InlineAdapter.VH>() {

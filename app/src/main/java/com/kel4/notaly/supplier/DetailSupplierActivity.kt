@@ -24,7 +24,7 @@ class DetailSupplierActivity : AppCompatActivity() {
     private lateinit var tvBadgeKategori: TextView
     private lateinit var tvIdSupplier: TextView
     private lateinit var tvNoWa: TextView
-    private lateinit var btnHubungiWa: TextView
+//    private lateinit var btnHubungiWa: TextView
 
     private lateinit var tvDetailNama: TextView
     private lateinit var tvDetailId: TextView
@@ -35,7 +35,7 @@ class DetailSupplierActivity : AppCompatActivity() {
     private lateinit var btnBack: ImageView
     private lateinit var btnEdit: ImageView
     private lateinit var btnHapus: ImageView
-    private lateinit var btnWhatsapp: Button
+    private lateinit var btnWhatsapp: TextView
 
     private var supplier: Supplier? = null
 
@@ -58,7 +58,6 @@ class DetailSupplierActivity : AppCompatActivity() {
         tvBadgeKategori    = findViewById(R.id.tvBadgeKategori)
         tvIdSupplier       = findViewById(R.id.tvIdSupplier)
         tvNoWa             = findViewById(R.id.tvNoWa)
-        btnHubungiWa       = findViewById(R.id.btnHubungiWa)
 
         tvDetailNama       = findViewById(R.id.tvDetailNama)
         tvDetailId         = findViewById(R.id.tvDetailId)
@@ -89,7 +88,6 @@ class DetailSupplierActivity : AppCompatActivity() {
         }
 
         btnWhatsapp.setOnClickListener { bukaWhatsApp() }
-        btnHubungiWa.setOnClickListener { bukaWhatsApp() }
     }
 
     private fun muatDataSupplier() {

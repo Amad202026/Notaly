@@ -25,7 +25,7 @@ class TambahCacatActivity : AppCompatActivity() {
         setContentView(R.layout.activity_cacat_tambah)
 
         findViewById<ImageView>(R.id.btnBack).setOnClickListener { finish() }
-        findViewById<Button>(R.id.btnSimpan).setOnClickListener { validasiDanSimpan() }
+        findViewById<TextView>(R.id.btnSimpan).setOnClickListener { validasiDanSimpan() }
 
         muatSpinner()
     }

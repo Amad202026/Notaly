@@ -5,7 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
-    app:cardCornerRadius="12dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardCornerRadius="20dp"
     app:cardElevation="2dp"
     app:cardBackgroundColor="#FFFFFF">
 
@@ -15,56 +18,90 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Baris 1: ID + Badge Kategori -->
+        <!-- Baris 1: Avatar + Info utama -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="4dp">
+            android:layout_marginBottom="12dp">
 
-            <TextView
-                android:id="@+id/tvIdPelanggan"
+            <!-- Avatar inisial -->
+            <FrameLayout
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:background="@drawable/bg_icon_circle_large"
+                android:layout_marginEnd="14dp">
+
+                <TextView
+                    android:id="@+id/tvInisial"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Y"
+                    android:textColor="#0D5C3A"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
+
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="001"
-                android:textColor="#AAAAAA"
-                android:textSize="12sp" />
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvKategoriPelanggan"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="MEMBER"
-                android:textColor="#FFFFFF"
-                android:textSize="11sp"
-                android:textStyle="bold"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="4dp"
-                android:background="#2E7D5B" />
+                <!-- Nama -->
+                <TextView
+                    android:id="@+id/tvNamaPelanggan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Yongki Y"
+                    android:textColor="#1A1A1A"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="4dp" />
 
+                <!-- Badge + ID row -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tvKategoriPelanggan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="MEMBER"
+                        android:textColor="#0D5C3A"
+                        android:textSize="9sp"
+                        android:textStyle="bold"
+                        android:background="@drawable/bg_chip_green"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="3dp"
+                        android:layout_marginEnd="8dp"
+                        android:letterSpacing="0.04" />
+
+                    <TextView
+                        android:id="@+id/tvIdPelanggan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ID: 001"
+                        android:textColor="#AAAAAA"
+                        android:textSize="11sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
         </LinearLayout>
 
-        <!-- Baris 2: Nama -->
-        <TextView
-            android:id="@+id/tvNamaPelanggan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Yongki Y"
-            android:textColor="#1A1A1A"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="10dp" />
-
-        <!-- Divider tipis -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#F0F0F0"
+            android:background="#F5F5F5"
             android:layout_marginBottom="10dp" />
 
-        <!-- Baris 3: Lokasi -->
+        <!-- Lokasi -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -73,38 +110,40 @@
             android:layout_marginBottom="8dp">
 
             <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:src="@drawable/ic_location_green"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_location"
                 android:layout_marginEnd="8dp"
-                app:tint="#888888" />
+                android:contentDescription="Lokasi"
+                app:tint="#AAAAAA" />
 
             <TextView
                 android:id="@+id/tvLokasiPelanggan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Jakarta Pusat, DKI Jakarta"
-                android:textColor="#555555"
-                android:textSize="13sp" />
+                android:textColor="#888888"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
-        <!-- Baris 4: WA + Chevron -->
+        <!-- WA Strip -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:background="#F7FBF9"
+            android:background="@drawable/bg_info_strip"
             android:paddingHorizontal="12dp"
-            android:paddingVertical="8dp">
+            android:paddingVertical="10dp">
 
             <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@drawable/ic_messages"
+                android:layout_width="11dp"
+                android:layout_height="13dp"
                 android:layout_marginEnd="8dp"
-                app:tint="#2E7D5B" />
+                android:contentDescription="WA"
+                android:src="@drawable/ic_phone"
+                app:tint="#0D5C3A" />
 
             <TextView
                 android:id="@+id/tvWaPelanggan"
@@ -112,18 +151,18 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="+62 812-3456-7890"
-                android:textColor="#2E7D5B"
-                android:textSize="14sp"
+                android:textColor="#0D5C3A"
+                android:textSize="13sp"
                 android:textStyle="bold" />
 
             <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:src="@drawable/ic_arrow_right"
-                app:tint="#AAAAAA" />
+                android:contentDescription="Detail"
+                app:tint="#0D5C3A" />
 
         </LinearLayout>
 
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>

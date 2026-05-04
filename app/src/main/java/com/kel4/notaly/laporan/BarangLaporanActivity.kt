@@ -10,103 +10,119 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kel4.notaly.R
 import com.kel4.notaly.database.AppDatabase
+import com.kel4.notaly.home.BerandaActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-// 1. DATA CLASS DIGABUNG DI SINI SAJA (Tidak perlu file baru)
 data class MutasiBarang(
-    val nama: String,
-    val masuk: Int,
-    val keluar: Int,
-    val sisa: Int
+    val tanggal : String,   // untuk sorting
+    val nama    : String,
+    val keterangan: String, // "Restock dari Supplier X" atau "Terjual - ID Transaksi"
+    val masuk   : Int,      // > 0 jika barang masuk, 0 jika keluar
+    val keluar  : Int       // > 0 jika barang keluar, 0 jika masuk
 )
 
 class BarangLaporanActivity : AppCompatActivity() {
 
-    private lateinit var rvBarang: RecyclerView
     private lateinit var adapter: LaporanAdapter
     private val db by lazy { AppDatabase.getDatabase(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_laporan_barang) // Pastikan nama XML-nya sesuai
+        setContentView(R.layout.activity_laporan_barang)
 
-        rvBarang = findViewById(R.id.rvLaporan) // ID RecyclerView di XML
-        findViewById<ImageView>(R.id.btnBack).setOnClickListener { finish() }
+        val rv = findViewById<RecyclerView>(R.id.rvLaporan)
+        rv.layoutManager = LinearLayoutManager(this)
+        adapter = LaporanAdapter(emptyList())
+        rv.adapter = adapter
 
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
+            startActivity(Intent(this, BerandaActivity::class.java)); finish()
+        }
         setupTopNav()
-        setupRecyclerView()
         muatDataMutasi()
     }
 
-    private fun setupRecyclerView() {
-        rvBarang.layoutManager = LinearLayoutManager(this)
-        // Kita menggunakan Adapter serbaguna yang sudah dibuat sebelumnya
-        adapter = LaporanAdapter(emptyList())
-        rvBarang.adapter = adapter
-    }
-
     private fun muatDataMutasi() {
-        lifecycleScope.launch {
-            val listMutasi = mutableListOf<Any>()
+        lifecycleScope.launch(Dispatchers.IO) {
+            val semuaBarang      = db.barangDao().ambilSemuaBarang()
+            val semuaBarangMasuk = db.barangMasukDao().riwayatBarangMasuk()
+            val semuaDetail      = db.detailPenjualanDao().ambilSemuaDetail()
+            val semuaTransaksi   = db.transaksiPenjualanDao().ambilSemuaTransaksi()
+            val semuaSupplier    = db.supplierDao().ambilSemuaSupplier()
 
-            withContext(Dispatchers.IO) {
-                // Ambil semua barang dari gudang
-                val semuaBarang = db.barangDao().ambilSemuaBarang()
-                // Ambil semua detail transaksi yang pernah terjadi
-                val semuaDetailTerjual = db.detailPenjualanDao().ambilSemuaDetail() // Pastikan fungsi ini ada di DAO kamu
+            val listMutasi = mutableListOf<MutasiBarang>()
 
-                // Proses setiap barang
-                for (barang in semuaBarang) {
-                    // Hitung total barang ini yang sudah terjual
-                    val totalKeluar = semuaDetailTerjual
-                        .filter { it.idBarang == barang.idBarang }
-                        .sumOf { it.qty }
-
-                    val sisaSekarang = barang.stok
-
-                    // Trik Logika Sederhana:
-                    // Jika Sisa = Total Masuk - Total Keluar
-                    // Maka Total Masuk = Sisa + Total Keluar
-                    val totalMasuk = sisaSekarang + totalKeluar
-
-                    // Masukkan ke dalam data class lokal kita
-                    listMutasi.add(
-                        MutasiBarang(
-                            nama = barang.namaBarang,
-                            masuk = totalMasuk,
-                            keluar = totalKeluar,
-                            sisa = sisaSekarang
-                        )
+            // ── BARANG MASUK: dari tabel barang_masuk (restock) ───────────
+            semuaBarangMasuk.forEach { bm ->
+                val namaBarang  = semuaBarang.find { it.idBarang == bm.idBarang }?.namaBarang ?: bm.idBarang
+                val namaSupplier = semuaSupplier.find { it.idSupplier == bm.idSupplier }?.namaSupplier ?: "Supplier"
+                listMutasi.add(
+                    MutasiBarang(
+                        tanggal    = bm.tanggalMasuk,
+                        nama       = namaBarang,
+                        keterangan = "Restock · $namaSupplier",
+                        masuk      = bm.qtyMasuk,
+                        keluar     = 0
                     )
-                }
+                )
+            }
+
+            // ── BARANG KELUAR: dari detail_penjualan ──────────────────────
+            semuaDetail.forEach { detail ->
+                val namaBarang = semuaBarang.find { it.idBarang == detail.idBarang }?.namaBarang ?: detail.idBarang
+                val tanggalTrx = semuaTransaksi.find { it.idTransaksi == detail.idTransaksi }
+                    ?.tanggalTransaksi ?: ""
+                listMutasi.add(
+                    MutasiBarang(
+                        tanggal    = tanggalTrx,
+                        nama       = namaBarang,
+                        keterangan = "Terjual · ${detail.idTransaksi}",
+                        masuk      = 0,
+                        keluar     = detail.qty
+                    )
+                )
+            }
+
+            // Kelompokkan per tanggal, urutkan DESC
+            val grouped = listMutasi
+                .groupBy { it.tanggal.take(10).ifEmpty { "Tanpa Tanggal" } }
+                .toSortedMap(reverseOrder())
+
+            val listFinal = mutableListOf<Any>()
+            grouped.forEach { (tglRaw, items) ->
+                val totalMasukHarian  = items.sumOf { it.masuk }
+                val totalKeluarHarian = items.sumOf { it.keluar }
+                // Gunakan HeaderTanggal dengan total selisih (masuk - keluar) sebagai info ringkas
+                listFinal.add(HeaderTanggal(formatTanggal(tglRaw), totalMasukHarian - totalKeluarHarian))
+                listFinal.addAll(items)
             }
 
             withContext(Dispatchers.Main) {
-                // Urutkan berdasarkan barang yang paling banyak terjual
-                val dataSorted = listMutasi.sortedByDescending { (it as MutasiBarang).keluar }
-                adapter.updateData(dataSorted)
+                adapter.updateData(listFinal)
             }
         }
     }
 
-    private fun setupTopNav() {
-        val navKeuangan = findViewById<TextView>(R.id.nav_keuangan)
-        val navRiwayat  = findViewById<TextView>(R.id.nav_riwayat)
+    private fun formatTanggal(raw: String): String {
+        return try {
+            val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+            val out = java.text.SimpleDateFormat("EEEE, dd MMMM yyyy", java.util.Locale("id", "ID"))
+            out.format(sdf.parse(raw)!!)
+        } catch (e: Exception) { raw }
+    }
 
-        navKeuangan.setOnClickListener {
+    private fun setupTopNav() {
+        findViewById<TextView>(R.id.nav_keuangan).setOnClickListener {
             startActivity(Intent(this, KeuanganLaporanActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
-            })
-            finish()
+            }); finish()
         }
-
-        navRiwayat.setOnClickListener {
+        findViewById<TextView>(R.id.nav_riwayat).setOnClickListener {
             startActivity(Intent(this, RiwayatLaporanActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
-            })
-            finish()
+            }); finish()
         }
     }
 }

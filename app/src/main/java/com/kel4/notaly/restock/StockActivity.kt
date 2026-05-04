@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kel4.notaly.R
 import com.kel4.notaly.database.AppDatabase
+import com.kel4.notaly.home.BerandaActivity
 import com.kel4.notaly.model.Barang
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,11 +25,23 @@ import java.util.Locale
 class StockActivity : AppCompatActivity() {
 
     private lateinit var rvStock  : RecyclerView
-    private lateinit var tvKosong : TextView
+    private lateinit var tvKosong : LinearLayout
     private lateinit var etCari   : EditText
+    private lateinit var btnFilter: LinearLayout
     private lateinit var adapter  : StockAdapter
 
-    private var dataFull: List<Any> = emptyList()
+    // ===================== STATE DATA =====================
+    // dataFull menyimpan semua BarangGroup (tanpa header String)
+    // agar filter/sortir bisa dijalankan ulang kapan saja
+    private var groupFull: List<BarangGroup> = emptyList()
+
+    // ===================== STATE FILTER & SORTIR =====================
+    private var filterKategori : String = "Semua"   // "Semua" atau nama kategori
+    private var filterStatusStok: String = "Semua"  // "Semua" | "Normal" | "Menipis" | "Habis" | "Ada Cacat"
+    private var urutanAktif    : String = "Kategori" // label urutan
+
+    // Batas stok menipis — sesuaikan kebutuhan bisnis
+    private val BATAS_MENIPIS = 5
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,95 +55,205 @@ class StockActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        rvStock  = findViewById(R.id.rvStock)
-        tvKosong = findViewById(R.id.tvKosong)
-        etCari   = findViewById(R.id.etCari)
+        rvStock   = findViewById(R.id.rvStock)
+        tvKosong  = findViewById(R.id.tvKosong)
+        etCari    = findViewById(R.id.etCari)
+        btnFilter = findViewById(R.id.btnFilter)
 
         rvStock.layoutManager = LinearLayoutManager(this)
         adapter = StockAdapter(emptyList())
         rvStock.adapter = adapter
 
-        findViewById<ImageView>(R.id.btnBack).setOnClickListener { finish() }
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
+            startActivity(Intent(this, BerandaActivity::class.java))
+            finish()
+        }
         findViewById<CardView>(R.id.menuTambah).setOnClickListener {
             startActivity(Intent(this, RestockActivity::class.java))
         }
 
         etCari.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) { filterData(s.toString()) }
+            override fun afterTextChanged(s: Editable?) { terapkanFilterDanSortir() }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
+
+        btnFilter.setOnClickListener { tampilkanDialogFilterDanSortir() }
     }
 
+    // ─────────────────────────────────────────────────────────
+    //  MUAT DATA
+    // ─────────────────────────────────────────────────────────
     private fun muatDataBarang() {
         lifecycleScope.launch(Dispatchers.IO) {
             val semua = AppDatabase.getDatabase(this@StockActivity)
                 .barangDao().ambilSemuaBarang()
 
-            dataFull = buatGrouping(semua)
+            // Simpan sebagai flat list BarangGroup, header dibuat saat render
+            groupFull = buatGroupList(semua)
 
             withContext(Dispatchers.Main) {
-                adapter = StockAdapter(dataFull)
-                rvStock.adapter = adapter
-                tampilkanData(dataFull)
+                terapkanFilterDanSortir()
             }
         }
     }
 
     /**
-     * Grouping:
-     * 1. Pisahkan barang normal dan varian cacat (mengandung "-C")
-     * 2. Setiap barang normal dikumpulkan bersama varian cacatnya
-     * 3. Dikelompokkan per kategori dengan header String
+     * Ubah List<Barang> → List<BarangGroup> (tanpa header String).
+     * Pemisahan normal vs cacat tetap sama seperti sebelumnya.
      */
-    private fun buatGrouping(semua: List<Barang>): List<Any> {
-        val normal = semua.filter { !it.idBarang.contains("-C") }.sortedBy { it.kategori }
+    private fun buatGroupList(semua: List<Barang>): List<BarangGroup> {
+        val normal = semua.filter { !it.idBarang.contains("-C") }
         val cacat  = semua.filter {  it.idBarang.contains("-C") }
 
-        val hasil       = mutableListOf<Any>()
-        var katSekarang = ""
-
-        for (b in normal) {
-            if (b.kategori != katSekarang) {
-                katSekarang = b.kategori
-                hasil.add(katSekarang)
-            }
+        return normal.map { b ->
             val varianCacat = cacat
                 .filter { it.idBarang.startsWith("${b.idBarang}-C") }
                 .sortedBy { it.idBarang }
-            hasil.add(BarangGroup(b, varianCacat))
+            BarangGroup(b, varianCacat)
         }
-        return hasil
     }
 
-    private fun filterData(query: String) {
-        if (query.isBlank()) { tampilkanData(dataFull); return }
-        val lower    = query.lowercase()
-        val filtered = dataFull
-            .filterIsInstance<BarangGroup>()
-            .filter {
-                it.normal.namaBarang.lowercase().contains(lower) ||
-                        it.normal.kategori.lowercase().contains(lower)
+    // ─────────────────────────────────────────────────────────
+    //  DIALOG FILTER + SORTIR
+    // ─────────────────────────────────────────────────────────
+    private fun tampilkanDialogFilterDanSortir() {
+        // Kategori dinamis dari data
+        val kategoriList = mutableListOf("Semua")
+        groupFull.map { it.normal.kategori }
+            .distinct().sorted()
+            .forEach { kategoriList.add(it) }
+
+        val opsiStatus  = arrayOf(
+            "Semua",
+            "Normal (Stok > $BATAS_MENIPIS)",
+            "Menipis (1–$BATAS_MENIPIS)",
+            "Habis (Stok = 0)",
+            "Ada Varian Cacat/Obral"
+        )
+        val opsiUrutkan = arrayOf(
+            "Kategori (A-Z)",
+            "Nama Barang A-Z",
+            "Nama Barang Z-A",
+            "Stok Terbanyak",
+            "Stok Tersedikit"
+        )
+
+        val pilihan = mutableListOf<String>()
+
+        // Section: Kategori
+        pilihan.add("── FILTER KATEGORI ──")
+        kategoriList.forEach { pilihan.add("   Kategori: $it") }
+
+        val headerStatus = pilihan.size
+        pilihan.add("── FILTER STATUS STOK ──")
+        opsiStatus.forEach { pilihan.add("   Status: $it") }
+
+        val headerUrut = pilihan.size
+        pilihan.add("── URUTKAN ──")
+        opsiUrutkan.forEach { pilihan.add("   Urut: $it") }
+
+        val startKat    = 1
+        val endKat      = kategoriList.size
+        val startStatus = headerStatus + 1
+        val endStatus   = headerStatus + opsiStatus.size
+        val startUrut   = headerUrut + 1
+
+        AlertDialog.Builder(this)
+            .setTitle("Filter & Urutkan Stok")
+            .setItems(pilihan.toTypedArray()) { _, which ->
+                when {
+                    which in startKat..endKat -> {
+                        filterKategori = kategoriList[which - startKat]
+                        terapkanFilterDanSortir()
+                    }
+                    which in startStatus..endStatus -> {
+                        filterStatusStok = opsiStatus[which - startStatus]
+                        terapkanFilterDanSortir()
+                    }
+                    which >= startUrut -> {
+                        urutanAktif = opsiUrutkan[which - startUrut]
+                        terapkanFilterDanSortir()
+                    }
+                }
             }
-        val rebuilt = mutableListOf<Any>()
-        var kat = ""
-        for (g in filtered) {
-            if (g.normal.kategori != kat) { kat = g.normal.kategori; rebuilt.add(kat) }
-            rebuilt.add(g)
+            .show()
+    }
+
+    // ─────────────────────────────────────────────────────────
+    //  TERAPKAN FILTER + SORTIR → rebuild list dengan header
+    // ─────────────────────────────────────────────────────────
+    private fun terapkanFilterDanSortir() {
+        val q = etCari.text.toString().trim().lowercase()
+
+        // 1. Filter teks: nama barang atau kategori
+        var hasil = if (q.isBlank()) groupFull
+        else groupFull.filter {
+            it.normal.namaBarang.lowercase().contains(q) ||
+                    it.normal.kategori.lowercase().contains(q)
         }
-        tampilkanData(rebuilt)
+
+        // 2. Filter kategori
+        if (filterKategori != "Semua") {
+            hasil = hasil.filter { it.normal.kategori.equals(filterKategori, ignoreCase = true) }
+        }
+
+        // 3. Filter status stok
+        hasil = when {
+            filterStatusStok.startsWith("Normal") ->
+                hasil.filter { it.normal.stok > BATAS_MENIPIS }
+            filterStatusStok.startsWith("Menipis") ->
+                hasil.filter { it.normal.stok in 1..BATAS_MENIPIS }
+            filterStatusStok.startsWith("Habis") ->
+                hasil.filter { it.normal.stok == 0 }
+            filterStatusStok.startsWith("Ada Varian") ->
+                hasil.filter { it.cacat.isNotEmpty() }
+            else -> hasil
+        }
+
+        // 4. Sortir
+        hasil = when (urutanAktif) {
+            "Kategori (A-Z)"   -> hasil.sortedWith(compareBy({ it.normal.kategori }, { it.normal.namaBarang }))
+            "Nama Barang A-Z"  -> hasil.sortedBy    { it.normal.namaBarang.lowercase() }
+            "Nama Barang Z-A"  -> hasil.sortedByDescending { it.normal.namaBarang.lowercase() }
+            "Stok Terbanyak"   -> hasil.sortedByDescending { it.normal.stok }
+            "Stok Tersedikit"  -> hasil.sortedBy    { it.normal.stok }
+            else               -> hasil
+        }
+
+        // 5. Rebuild list dengan header kategori (hanya jika urutan per kategori)
+        val rendered = rebuildDenganHeader(hasil)
+        tampilkanData(rendered)
+    }
+
+    /**
+     * Sisipkan header String di antara BarangGroup jika kategori berubah.
+     * Header hanya muncul saat urutan "Kategori (A-Z)" atau filter spesifik satu kategori.
+     */
+    private fun rebuildDenganHeader(groups: List<BarangGroup>): List<Any> {
+        val pakai = urutanAktif == "Kategori (A-Z)" || filterKategori == "Semua"
+        val result = mutableListOf<Any>()
+        var katSekarang = ""
+        for (g in groups) {
+            if (pakai && g.normal.kategori != katSekarang) {
+                katSekarang = g.normal.kategori
+                result.add(katSekarang)
+            }
+            result.add(g)
+        }
+        return result
     }
 
     private fun tampilkanData(data: List<Any>) {
-        tvKosong.visibility = if (data.isEmpty()) View.VISIBLE else View.GONE
-        rvStock.visibility  = if (data.isEmpty()) View.GONE    else View.VISIBLE
+        tvKosong.visibility = if (data.filterIsInstance<BarangGroup>().isEmpty()) View.VISIBLE else View.GONE
+        rvStock.visibility  = if (data.filterIsInstance<BarangGroup>().isEmpty()) View.GONE    else View.VISIBLE
         adapter.updateData(data)
     }
 
     // ── Data wrapper ──────────────────────────────────────────────────────────
     data class BarangGroup(
-        val normal : Barang,
-        val cacat  : List<Barang>
+        val normal: Barang,
+        val cacat : List<Barang>
     )
 
     // ── Adapter ───────────────────────────────────────────────────────────────
@@ -140,17 +264,15 @@ class StockActivity : AppCompatActivity() {
         private val TYPE_HEADER = 0
         private val TYPE_ITEM   = 1
 
-        // Header ViewHolder — pakai item_restock_kategori (TextView sederhana)
         inner class HeaderVH(v: View) : RecyclerView.ViewHolder(v) {
             val tv: TextView = v.findViewById(R.id.tvHeaderKategori)
         }
 
-        // Item ViewHolder — pakai item_restock (CardView dengan layoutCacat)
         inner class BarangVH(v: View) : RecyclerView.ViewHolder(v) {
-            val tvNama       : TextView     = v.findViewById(R.id.tvNamaBarang)
-            val tvStokNormal : TextView     = v.findViewById(R.id.tvStokNormal)
-            val tvStatus     : TextView     = v.findViewById(R.id.tvStatusKondisi)
-            val layoutCacat  : LinearLayout = v.findViewById(R.id.layoutCacat)
+            val tvNama      : TextView     = v.findViewById(R.id.tvNamaBarang)
+            val tvStokNormal: TextView     = v.findViewById(R.id.tvStokNormal)
+            val tvStatus    : TextView     = v.findViewById(R.id.tvStatusKondisi)
+            val layoutCacat : LinearLayout = v.findViewById(R.id.layoutCacat)
         }
 
         override fun getItemViewType(pos: Int) = if (data[pos] is String) TYPE_HEADER else TYPE_ITEM
@@ -158,10 +280,8 @@ class StockActivity : AppCompatActivity() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             val inf = LayoutInflater.from(parent.context)
             return if (viewType == TYPE_HEADER)
-            // PERBAIKAN: header pakai item_restock_kategori
                 HeaderVH(inf.inflate(R.layout.item_restock_kategori, parent, false))
             else
-            // PERBAIKAN: item barang pakai item_restock
                 BarangVH(inf.inflate(R.layout.item_restock, parent, false))
         }
 
@@ -176,16 +296,35 @@ class StockActivity : AppCompatActivity() {
 
                     holder.tvNama      .text = b.namaBarang
                     holder.tvStokNormal.text = "Normal: ${b.stok} pcs"
-                    holder.tvStatus    .text = b.statusKondisi ?: "Normal"
 
-                    // Bersihkan dulu sebelum isi ulang (ViewHolder di-recycle)
+                    // Warnai status stok agar langsung terlihat kondisinya
+                    val statusText: String
+                    val statusColor: Int
+                    when {
+                        b.stok == 0 -> {
+                            statusText  = "HABIS"
+                            statusColor = 0xFFE53935.toInt() // merah
+                        }
+                        b.stok <= BATAS_MENIPIS -> {
+                            statusText  = "MENIPIS"
+                            statusColor = 0xFFFB8C00.toInt() // oranye
+                        }
+                        else -> {
+                            statusText  = b.statusKondisi ?: "Normal"
+                            statusColor = 0xFF43A047.toInt() // hijau
+                        }
+                    }
+                    holder.tvStatus.text     = statusText
+                    holder.tvStatus.setTextColor(statusColor)
+
+                    // Bersihkan sebelum isi ulang (ViewHolder di-recycle)
                     holder.layoutCacat.removeAllViews()
 
                     if (group.cacat.isNotEmpty()) {
                         holder.layoutCacat.visibility = View.VISIBLE
                         for (c in group.cacat) {
                             val tv = TextView(holder.layoutCacat.context).apply {
-                                text     = "${c.idBarang}: Cacat/Obral — ${c.stok} pcs  |  " +
+                                text = "${c.idBarang}: Cacat/Obral — ${c.stok} pcs  |  " +
                                         fmt.format(c.hargaJual).replace("Rp", "Rp ")
                                 textSize = 11f
                                 setTextColor(0xFFE53935.toInt())

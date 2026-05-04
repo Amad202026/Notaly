@@ -4,10 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="12dp"
-    android:layout_marginHorizontal="4dp"
+    android:layout_marginBottom="10dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
     app:cardBackgroundColor="#FFFFFF"
-    app:cardCornerRadius="12dp"
+    app:cardCornerRadius="20dp"
     app:cardElevation="2dp">
 
     <LinearLayout
@@ -16,77 +18,121 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <RelativeLayout
+        <!-- Baris atas: Avatar + Info + Hapus -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
 
-            <TextView
-                android:id="@+id/tvKategoriPill"
-                android:layout_width="wrap_content"
+            <!-- Avatar inisial -->
+            <FrameLayout
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:background="@drawable/bg_icon_circle_large"
+                android:layout_marginEnd="14dp">
+
+                <TextView
+                    android:id="@+id/tvInisialSupplier"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="M"
+                    android:textColor="#0D5C3A"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:background="@drawable/bg_search_rounded"
-                android:backgroundTint="#E0F7FA"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="4dp"
-                android:text="ALAT OLAHRAGA"
-                android:textColor="#006064"
-                android:textSize="10sp"
-                android:textStyle="bold" />
+                android:layout_weight="1"
+                android:orientation="vertical">
 
+                <!-- Badge Kategori -->
+                <TextView
+                    android:id="@+id/tvKategoriPill"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ALAT OLAHRAGA"
+                    android:textColor="#0D5C3A"
+                    android:textSize="9sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/bg_chip_green"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="3dp"
+                    android:layout_marginBottom="4dp"
+                    android:letterSpacing="0.04" />
+
+                <!-- Nama Supplier -->
+                <TextView
+                    android:id="@+id/tvNamaSupplier"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Mahkota Sport"
+                    android:textColor="#1A1A1A"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
+
+            </LinearLayout>
+
+            <!-- Tombol Hapus -->
             <ImageView
                 android:id="@+id/btnDelete"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:contentDescription="Hapus"
                 android:src="@drawable/ic_delete"
-                app:tint="#888888"
-                android:contentDescription="Delete" />
-        </RelativeLayout>
+                app:tint="#E53935" />
 
-        <TextView
-            android:id="@+id/tvNamaSupplier"
+        </LinearLayout>
+
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="Mahkota Sport"
-            android:textColor="#1A1A1A"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:layout_height="1dp"
+            android:background="#F5F5F5"
+            android:layout_marginBottom="10dp" />
 
+        <!-- Nomor Telepon -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_marginBottom="12dp">
 
             <ImageView
                 android:layout_width="14dp"
                 android:layout_height="14dp"
-                android:src="@drawable/ic_add"
-                app:tint="#666666"
-                android:contentDescription="Phone" />
+                android:src="@drawable/ic_phone"
+                app:tint="#0D5C3A"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="Telepon" />
 
             <TextView
                 android:id="@+id/tvNoTelp"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
                 android:text="+62 811-2233-4455"
                 android:textColor="#444444"
                 android:textSize="13sp" />
+
         </LinearLayout>
 
+        <!-- Tombol Detail -->
         <TextView
             android:id="@+id/btnDetail"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/bg_btn_hijau"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_btn_hijau_round"
+            android:clickable="true"
+            android:focusable="true"
             android:gravity="center"
-            android:text="Detail"
+            android:text="Lihat Detail"
             android:textColor="#FFFFFF"
             android:textSize="13sp"
             android:textStyle="bold" />

@@ -12,12 +12,25 @@ import com.kel4.notaly.R
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        lateinit var btnGetStarted: Button
-
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
 
+        // 1. Cek laci SharedPreferences DULU sebelum memuat tampilan apapun
+        val userPref = getSharedPreferences("UserPreferences", MODE_PRIVATE)
+        val isReg = userPref.getBoolean("IS_REG", false)
+
+        if (isReg) {
+            // 2. Jika sudah registrasi, langsung "Terbangkan" ke LoginActivity
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish() // Tutup MainActivity agar tidak bisa di-back
+            return   // PENTING: Hentikan eksekusi kode di bawahnya!
+        }
+
+        // ====================================================================
+        // KODE DI BAWAH INI HANYA BERJALAN JIKA USER BELUM REGISTRASI (isReg = false)
+        // ====================================================================
+
+        enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -26,21 +39,14 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        btnGetStarted = findViewById(R.id.btnGetStarted)
-        val userPref = getSharedPreferences("UserPreferences", MODE_PRIVATE)
-        var isReg = userPref.getBoolean("IS_REG", false)
+        val btnGetStarted = findViewById<Button>(R.id.btnGetStarted)
 
+        // Karena user yang sudah registrasi sudah dialihkan ke Login di atas,
+        // maka tombol ini sekarang FOKUS untuk mengarahkan ke halaman Register.
         btnGetStarted.setOnClickListener {
-
-            if(isReg) {
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-                finish()
-            } else{
-                val intent = Intent(this, RegisterActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 }

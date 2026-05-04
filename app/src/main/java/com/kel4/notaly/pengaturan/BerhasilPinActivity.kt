@@ -3,6 +3,7 @@ package com.kel4.notaly.pengaturan
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.ButtonBarLayout
@@ -12,7 +13,7 @@ import com.kel4.notaly.R
 
 class BerhasilPinActivity : AppCompatActivity() {
 
-    lateinit var btnKembali : Button
+    lateinit var btnKembali : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
 

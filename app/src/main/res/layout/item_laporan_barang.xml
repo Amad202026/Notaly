@@ -1,47 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
-    android:padding="14dp">
+    android:orientation="vertical"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
 
-    <TextView
-        android:id="@+id/tvNamaBarang"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2.5"
-        android:text="Nama Barang"
-        android:textStyle="bold"
-        android:textColor="#1A1A1A"
-        android:textSize="13sp" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="14dp">
 
-    <TextView
-        android:id="@+id/tvHargaJual"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1.5"
-        android:text="Jual"
-        android:gravity="center"
-        android:textSize="12sp" />
+        <!-- Nama Barang -->
+        <TextView
+            android:id="@+id/tvNamaBarang"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2.5"
+            android:text="Nama Barang"
+            android:textStyle="bold"
+            android:textColor="#1A1A1A"
+            android:textSize="13sp" />
 
-    <TextView
-        android:id="@+id/tvHargaModal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1.5"
-        android:text="Modal"
-        android:gravity="center"
-        android:textSize="12sp" />
+        <!-- Harga Jual -->
+        <TextView
+            android:id="@+id/tvHargaJual"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:text="Rp 0"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textColor="#444444" />
 
-    <TextView
-        android:id="@+id/tvLabaBersih"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1.5"
-        android:text="Laba"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:textColor="#2E7D5B"
-        android:textSize="12sp" />
+        <!-- Harga Modal -->
+        <TextView
+            android:id="@+id/tvHargaModal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:text="Rp 0"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textColor="#888888" />
+
+        <!-- Laba -->
+        <TextView
+            android:id="@+id/tvLabaBersih"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:text="Rp 0"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="#0D5C3A"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#F5F5F5"
+        android:layout_marginHorizontal="16dp" />
+
 </LinearLayout>

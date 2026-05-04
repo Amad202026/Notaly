@@ -30,13 +30,13 @@ class DetailPengirimanActivity : AppCompatActivity() {
 
         pengirimanId = intent.getIntExtra("ID_PENGIRIMAN", -1)
 
-        findViewById<View>(R.id.btnBack).setOnClickListener { finish() }
-        findViewById<View>(R.id.btnEdit).setOnClickListener {
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener { finish() }
+        findViewById<ImageView>(R.id.btnEdit).setOnClickListener {
             val intent = Intent(this, TambahPengirimanActivity::class.java)
             intent.putExtra("ID_PENGIRIMAN", pengirimanId)
             startActivity(intent)
         }
-        findViewById<View>(R.id.btnHapus).setOnClickListener {
+        findViewById<ImageView>(R.id.btnHapus).setOnClickListener {
             showDeleteDialog()
         }
 
@@ -65,7 +65,6 @@ class DetailPengirimanActivity : AppCompatActivity() {
                 "Rp ${NumberFormat.getNumberInstance(Locale("id","ID")).format(it)}"
             } ?: "Rp 0"
             findViewById<TextView>(R.id.tvTotalOngkir).text = biayaFormatted
-            findViewById<TextView>(R.id.tvBiayaKirim).text = biayaFormatted
 
             val status = p.statusKirim ?: "Diproses"
             findViewById<TextView>(R.id.tvStatusPengiriman).text = status

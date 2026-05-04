@@ -2,9 +2,8 @@ package com.kel4.notaly.pelanggan
 
 import android.os.Bundle
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
@@ -23,12 +22,10 @@ class TambahPelangganActivity : AppCompatActivity() {
     private lateinit var etWa:          EditText
     private lateinit var etDaerah:      EditText
     private lateinit var spinnerKat:    Spinner
-    private lateinit var btnSimpan:     Button
-    private lateinit var btnBatal:      Button
-    private lateinit var btnBack:       ImageButton
+    private lateinit var btnSimpan:     TextView
+    private lateinit var btnBack:       ImageView
     private lateinit var tvIdPelanggan: TextView
     private lateinit var tvJudul:       TextView
-    private lateinit var tvTopBarJudul: TextView
 
     private var pelangganLama: Pelanggan? = null
     private val isEditMode get() = pelangganLama != null
@@ -53,7 +50,6 @@ class TambahPelangganActivity : AppCompatActivity() {
         } else {
             tvIdPelanggan.text  = "Otomatis"
             tvJudul.text        = "Tambah Pelanggan"
-            tvTopBarJudul.text  = "TAMBAH PELANGGAN"
         }
     }
 
@@ -63,16 +59,13 @@ class TambahPelangganActivity : AppCompatActivity() {
         etDaerah      = findViewById(R.id.etAsalDaerah)
         spinnerKat    = findViewById(R.id.spinnerKategori)
         btnSimpan     = findViewById(R.id.btnSimpanPelanggan)
-        btnBatal      = findViewById(R.id.btnBatal)
         btnBack       = findViewById(R.id.btnBack)
         tvIdPelanggan = findViewById(R.id.tvIdPelanggan)
         tvJudul       = findViewById(R.id.tvJudul)
-        tvTopBarJudul = findViewById(R.id.tvTopBarJudul)
     }
 
     private fun setupListeners() {
         btnBack.setOnClickListener { finish() }
-        btnBatal.setOnClickListener { finish() }
         btnSimpan.setOnClickListener { simpanData() }
     }
 
@@ -100,7 +93,6 @@ class TambahPelangganActivity : AppCompatActivity() {
 
                 pelangganLama       = p
                 tvJudul.text        = "Edit Pelanggan"
-                tvTopBarJudul.text  = "EDIT PELANGGAN"
                 tvIdPelanggan.text  = String.format("%03d", p.idPelanggan)
 
                 etNama.setText(p.namaPelanggan)

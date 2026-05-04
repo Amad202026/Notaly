@@ -1,212 +1,325 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#F8FAF9"
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#FFFFFF"
-        android:paddingHorizontal="5dp">
+        android:layout_height="wrap_content">
 
+        <!-- Header strip hijau -->
+        <View
+            android:id="@+id/viewHeader"
+            android:layout_width="0dp"
+            android:layout_height="6dp"
+            android:background="#0D5C3A"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Tombol Back (di luar card, kiri atas) -->
         <ImageView
             android:id="@+id/btnBack"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="14dp"
             android:src="@drawable/ic_arrow_back"
+            android:background="@drawable/bg_icon_circle"
+            android:padding="8dp"
             android:clickable="true"
             android:focusable="true"
-            android:scaleType="centerInside"
+            android:scaleType="fitCenter"
             android:contentDescription="Kembali"
-            app:tint="#2E7D5B"
+            app:tint="#0D5C3A"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/viewHeader"
+            tools:ignore="TouchTargetSizeCheck"/>
 
-        <ImageView
-            android:id="@+id/ivIcon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="48dp"
-            android:contentDescription="Icon"
-            android:src="@drawable/ic_protection"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="#2E7D5B" />
-
-        <TextView
-            android:id="@+id/tvJudul"
+        <!-- White card utama -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clCard"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="Lupa PIN"
-            android:textColor="#2A2A2A"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@id/ivIcon"
+            android:background="@drawable/bg_card_full"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="24dp"
+            android:paddingHorizontal="28dp"
+            android:paddingTop="36dp"
+            android:paddingBottom="32dp"
+            app:layout_constraintTop_toBottomOf="@id/btnBack"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent">
 
-        <TextView
-            android:id="@+id/tvSubJudul"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Verifikasi identitas Anda untuk mengatur ulang PIN"
-            android:textColor="#666666"
-            android:textSize="13sp"
-            android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@id/tvJudul"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            <!-- Icon (terpusat, lebih besar, untuk nuansa "verifikasi") -->
+            <ImageView
+                android:id="@+id/ivIcon"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/ic_protection"
+                android:contentDescription="Icon"
+                android:background="@drawable/bg_icon_circle_large"
+                android:padding="14dp"
+                android:scaleType="fitCenter"
+                app:tint="#0D5C3A"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tvNamaToko"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:text="Masukkan nama toko anda"
-            android:textColor="#000000"
-            android:textSize="14sp"
-            android:paddingLeft="32dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvJudul" />
-
-        <LinearLayout
-            android:id="@+id/llNamaToko"
-            android:layout_width="0dp"
-            android:layout_height="58dp"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:paddingHorizontal="32dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvNamaToko">
-
-            <EditText
-                android:id="@+id/etNamaToko"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:background="@drawable/bg_search_rounded"
-                android:hint="Nama Toko"
-                android:paddingLeft="10dp"
-                android:inputType="text"
-                android:singleLine="true"
-                android:textColor="#1A1A1A"
-                android:textColorHint="#AAAAAA"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tvTanggalLahir"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Masukkan tanggal lahir anda"
-            android:textColor="#000000"
-            android:textSize="14sp"
-            android:paddingLeft="32dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/llNamaToko" />
-
-        <LinearLayout
-            android:id="@+id/llTanggalLahir"
-            android:layout_width="0dp"
-            android:layout_height="58dp"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:weightSum="5"
-            android:paddingHorizontal="32dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvTanggalLahir">
-
-            <EditText
-                android:id="@+id/etHariLahir"
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_margin="5dp"
-                android:background="@drawable/bg_search_rounded"
-                android:hint="dd"
-                android:gravity="center"
-                android:inputType="number"
-                android:singleLine="true"
-                android:textColor="#1A1A1A"
-                android:textColorHint="#AAAAAA"
-                android:textSize="14sp" />
+            <!-- Judul (tengah) -->
             <TextView
+                android:id="@+id/tvJudul"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginTop="16dp"
+                android:text="Lupa PIN"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="#1A2E25"
                 android:gravity="center"
-                android:layout_margin="5dp"
-                android:text="-"
-                android:textSize="35dp"/>
-            <EditText
-                android:id="@+id/etBulanLahir"
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_margin="5dp"
-                android:background="@drawable/bg_search_rounded"
-                android:hint="mm"
-                android:gravity="center"
-                android:inputType="number"
-                android:singleLine="true"
-                android:textColor="#1A1A1A"
-                android:textColorHint="#AAAAAA"
-                android:textSize="14sp" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ivIcon" />
+
+            <!-- Subjudul (tengah) -->
             <TextView
+                android:id="@+id/tvSubJudul"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginTop="8dp"
+                android:text="Verifikasi identitas Anda untuk mengatur ulang PIN"
+                android:textSize="14sp"
+                android:textColor="#6B7A72"
                 android:gravity="center"
-                android:layout_margin="5dp"
-                android:text="-"
-                android:textSize="35dp"/>
-            <EditText
-                android:id="@+id/etTahunLahir"
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_margin="5dp"
-                android:background="@drawable/bg_search_rounded"
-                android:hint="yy"
-                android:gravity="center"
-                android:inputType="number"
-                android:singleLine="true"
-                android:textColor="#1A1A1A"
-                android:textColorHint="#AAAAAA"
-                android:textSize="14sp" />
-        </LinearLayout>
+                android:lineSpacingExtra="3dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvJudul" />
 
-        <TextView
-            android:id="@+id/btnVerifikasi"
-            android:layout_width="0dp"
-            android:layout_height="54dp"
-            android:layout_marginBottom="32dp"
-            android:background="@drawable/bg_btn_hijau"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:layout_marginVertical="350dp"
-            android:layout_marginHorizontal="32dp"
-            android:letterSpacing="0.08"
-            android:text="Verifikasi dan Reset PIN"
-            android:textColor="#FFFFFF"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            <!-- Divider -->
+            <View
+                android:id="@+id/viewLine"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="28dp"
+                android:background="#E8EDE9"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvSubJudul" />
+
+            <!-- === SECTION: Nama Toko === -->
+            <TextView
+                android:id="@+id/tvNamaToko"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Nama Toko"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#3D5249"
+                android:letterSpacing="0.03"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/viewLine" />
+
+            <LinearLayout
+                android:id="@+id/llNamaToko"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvNamaToko">
+
+                <EditText
+                    android:id="@+id/etNamaToko"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_input_outline"
+                    android:hint="Masukkan nama toko"
+                    android:paddingHorizontal="16dp"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textColor="#1A2E25"
+                    android:textColorHint="#B0BDB7"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <!-- === SECTION: Tanggal Lahir === -->
+            <TextView
+                android:id="@+id/tvTanggalLahir"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Tanggal Lahir"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#3D5249"
+                android:letterSpacing="0.03"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llNamaToko" />
+
+            <TextView
+                android:id="@+id/tvHintTanggal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="Harus sama dengan yang didaftarkan"
+                android:textSize="12sp"
+                android:textColor="#A0AEA7"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvTanggalLahir" />
+
+            <LinearLayout
+                android:id="@+id/llTanggalLahir"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="8"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvHintTanggal">
+
+                <!-- DD -->
+                <Spinner
+                    android:id="@+id/spHariLahir"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@drawable/bg_input_outline"
+                    android:hint="DD"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:textColor="#1A2E25"
+                    android:textColorHint="#B0BDB7"
+                    android:textSize="15sp"
+                    android:maxLength="2" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="/"
+                    android:textSize="20sp"
+                    android:textColor="#6B7A72"
+                    android:textStyle="bold" />
+
+                <!-- MM -->
+                <Spinner
+                    android:id="@+id/spBulanLahir"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@drawable/bg_input_outline"
+                    android:hint="MM"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:textColor="#1A2E25"
+                    android:textColorHint="#B0BDB7"
+                    android:textSize="15sp"
+                    android:maxLength="2" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="/"
+                    android:textSize="20sp"
+                    android:textColor="#6B7A72"
+                    android:textStyle="bold" />
+
+                <!-- YYYY -->
+                <Spinner
+                    android:id="@+id/spTahunLahir"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@drawable/bg_input_outline"
+                    android:hint="YYYY"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:textColor="#1A2E25"
+                    android:textColorHint="#B0BDB7"
+                    android:textSize="15sp"
+                    android:maxLength="4" />
+            </LinearLayout>
+
+            <!-- Warning strip -->
+            <LinearLayout
+                android:id="@+id/llWarning"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_warning_strip"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llTanggalLahir">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_warning"
+                    android:contentDescription="Peringatan"
+                    app:tint="#B45309"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="PIN bisa diubah setelah verifikasi berhasil"
+                    android:textColor="#92400E"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- Spacer -->
+            <View
+                android:id="@+id/viewSpacer"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llWarning" />
+
+            <!-- Tombol Verifikasi -->
+            <TextView
+                android:id="@+id/btnVerifikasi"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:background="@drawable/bg_btn_hijau_round"
+                android:gravity="center"
+                android:text="Verifikasi &amp; Reset PIN"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.03"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/viewSpacer" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

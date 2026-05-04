@@ -1,10 +1,12 @@
 package com.kel4.notaly.barang
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.kel4.notaly.R
 import com.kel4.notaly.model.Barang
@@ -23,7 +25,6 @@ class BarangAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BarangViewHolder {
-        // Menggunakan item_barang.xml yang baru dibuat
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_barang, parent, false)
         return BarangViewHolder(view)
     }
@@ -43,16 +44,24 @@ class BarangAdapter(
         private val btnDetail: TextView      = itemView.findViewById(R.id.btnDetail)
 
         fun bind(barang: Barang) {
-            // Memasukkan data dari Entity Barang ke UI
             tvKategoriPill.text = barang.kategori.uppercase()
-            tvNamaBarang.text = barang.namaBarang
-            tvStokBarang.text = "Stok: ${barang.stok} Pcs"
+            tvNamaBarang.text   = barang.namaBarang
 
-            // Format angka menjadi Rupiah otomatis (opsional biar rapi)
+            // Ambil stokMin dari SharedPreferences
+            val sharedPref = itemView.context.getSharedPreferences("DataEkstraBarang", Context.MODE_PRIVATE)
+            val stokMin    = sharedPref.getInt("STOKMIN_${barang.idBarang}", 0)
+
+            // Tampilkan label stok, warna merah jika stok kritis
+            tvStokBarang.text = "Stok: ${barang.stok} Pcs"
+            if (stokMin > 0 && barang.stok <= stokMin) {
+                tvStokBarang.setTextColor(ContextCompat.getColor(itemView.context, android.R.color.holo_red_dark))
+            } else {
+                tvStokBarang.setTextColor(ContextCompat.getColor(itemView.context, android.R.color.darker_gray))
+            }
+
             val formatRupiah = NumberFormat.getCurrencyInstance(Locale("in", "ID"))
             tvHargaBarang.text = formatRupiah.format(barang.hargaJual).replace("Rp", "Rp ")
 
-            // Aksi tombol
             btnDetail.setOnClickListener { onClick(barang) }
             btnDelete.setOnClickListener { onDelete(barang) }
         }

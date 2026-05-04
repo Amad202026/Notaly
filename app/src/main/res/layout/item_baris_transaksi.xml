@@ -4,22 +4,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp"
+    android:layout_marginBottom="12dp"
     app:cardBackgroundColor="#FFFFFF"
-    app:cardCornerRadius="12dp"
+    app:cardCornerRadius="20dp"
     app:cardElevation="2dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="18dp">
 
+        <!-- Header: Label + Hapus -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:layout_marginBottom="14dp">
 
             <TextView
                 android:id="@+id/tvLabelItem"
@@ -27,134 +29,194 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="ITEM #1"
-                android:textColor="#2E7D5B"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textColor="#0D5C3A"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.08" />
 
             <ImageView
                 android:id="@+id/btnHapusItem"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@android:drawable/ic_menu_delete"
-                android:contentDescription="Hapus Item"
-                app:tint="#E53935"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:focusable="true"/>
+                android:layout_gravity="center"
+                android:contentDescription="Hapus"
+                android:src="@drawable/ic_delete"
+                app:tint="#E53935" />
+
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="12dp"
-            android:background="#F0F0F0" />
-
+        <!-- Pilih Barang -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="PILIH BARANG"
-            android:textColor="#888888"
-            android:textSize="11sp"
-            android:textStyle="bold" />
+            android:textColor="#0D5C3A"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="8dp" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="6dp"
-            android:background="@drawable/bg_search_rounded"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="4dp">
+            android:layout_height="52dp"
+            android:background="@drawable/bg_input_outline"
+            android:layout_marginBottom="14dp">
 
             <Spinner
                 android:id="@+id/spinnerBarang"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@null" />
-        </LinearLayout>
+                android:paddingStart="14dp"
+                android:paddingEnd="40dp"
+                android:background="@null"
+                android:spinnerMode="dropdown" />
 
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="14dp"
+                android:src="@drawable/ic_arrow_down"
+                android:contentDescription="Dropdown"
+                app:tint="#AAAAAA" />
+        </RelativeLayout>
+
+        <!-- Harga Nego + QTY berdampingan -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="14dp">
 
+            <!-- Harga Satuan -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.5"
+                android:layout_weight="3"
                 android:orientation="vertical"
                 android:layout_marginEnd="8dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="HARGA SATUAN (OPSIONAL)"
+                    android:text="HARGA SATUAN"
                     android:textColor="#888888"
                     android:textSize="10sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:letterSpacing="0.08"
+                    android:layout_marginBottom="8dp" />
 
-                <EditText
-                    android:id="@+id/etHargaNego"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_marginTop="6dp"
-                    android:background="@drawable/bg_search_rounded"
-                    android:hint="Harga Normal"
-                    android:inputType="number"
-                    android:paddingHorizontal="12dp"
-                    android:textSize="14sp" />
+                    android:layout_height="52dp"
+                    android:background="@drawable/bg_input_outline">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|start"
+                        android:layout_marginStart="12dp"
+                        android:text="Rp"
+                        android:textSize="13sp"
+                        android:textColor="#AAAAAA" />
+
+                    <EditText
+                        android:id="@+id/etHargaNego"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingStart="38dp"
+                        android:paddingEnd="12dp"
+                        android:hint="Normal"
+                        android:inputType="numberDecimal"
+                        android:textSize="14sp"
+                        android:textColor="#1A1A1A"
+                        android:textColorHint="#BBBBBB"
+                        android:background="@null"
+                        android:gravity="center_vertical" />
+                </FrameLayout>
             </LinearLayout>
 
+            <!-- QTY -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:layout_weight="2"
+                android:orientation="vertical"
+                android:layout_marginStart="8dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="JUMLAH (QTY)"
-                    android:textColor="#888888"
+                    android:text="QTY"
+                    android:textColor="#0D5C3A"
                     android:textSize="10sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:letterSpacing="0.08"
+                    android:layout_marginBottom="8dp" />
 
-                <EditText
-                    android:id="@+id/etJumlahTerjual"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_marginTop="6dp"
-                    android:background="@drawable/bg_search_rounded"
-                    android:hint="0"
-                    android:inputType="number"
-                    android:paddingHorizontal="12dp"
-                    android:textSize="14sp" />
+                    android:layout_height="52dp"
+                    android:background="@drawable/bg_input_green_outline">
+
+                    <EditText
+                        android:id="@+id/etJumlahTerjual"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="36dp"
+                        android:hint="0"
+                        android:inputType="number"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="#0D5C3A"
+                        android:textColorHint="#BBBBBB"
+                        android:background="@null"
+                        android:gravity="center_vertical" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_marginEnd="10dp"
+                        android:text="x"
+                        android:textSize="14sp"
+                        android:textColor="#0D5C3A"
+                        android:textStyle="bold" />
+                </FrameLayout>
             </LinearLayout>
+
         </LinearLayout>
 
+        <!-- Subtotal baris -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_info_strip"
             android:orientation="horizontal"
-            android:gravity="end|center_vertical">
+            android:gravity="center_vertical"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="10dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Subtotal: "
-                android:textColor="#888888"
-                android:textSize="13sp" />
+                android:layout_weight="1"
+                android:text="Subtotal Item"
+                android:textColor="#0D5C3A"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/tvSubtotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Rp 0"
-                android:textColor="#2E7D5B"
+                android:textColor="#0A3D26"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:letterSpacing="-0.01" />
+
         </LinearLayout>
 
     </LinearLayout>

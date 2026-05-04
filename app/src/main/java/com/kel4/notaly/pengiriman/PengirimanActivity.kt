@@ -5,35 +5,41 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.Spinner
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kel4.notaly.R
 import com.kel4.notaly.database.AppDatabase
-import com.kel4.notaly.pengiriman.TambahPengirimanActivity
+import com.kel4.notaly.home.BerandaActivity
+import com.kel4.notaly.model.Pengiriman
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PengirimanActivity : AppCompatActivity() {
 
-    private lateinit var rvPengiriman: RecyclerView
-    private lateinit var tvKosong: TextView
-    private lateinit var etCari: EditText
-    private lateinit var spinnerFilter: Spinner
-    private lateinit var btnFilter: LinearLayout
-    private lateinit var menuTambah: View
+    private lateinit var rvPengiriman : RecyclerView
+    private lateinit var tvKosong     : LinearLayout
+    private lateinit var etCari       : EditText
+    private lateinit var btnFilter    : LinearLayout
+    private lateinit var menuTambah   : View
+    private lateinit var tvPesanKosong: TextView
 
     private lateinit var adapter: PengirimanAdapter
     private val db by lazy { AppDatabase.getDatabase(this) }
 
-    private var filterStatus: String = "Semua"
-    private var isFilterVisible = false
+    // ===================== STATE DATA =====================
+    private var dataFull: List<Pengiriman> = emptyList()
+
+    // ===================== STATE FILTER & SORTIR =====================
+    private var filterStatus   : String = "Semua"    // "Semua" | "Diproses" | "Dikirim" | "Terkirim" | "Dibatalkan"
+    private var filterEkspedisi: String = "Semua"    // "Semua" atau nama ekspedisi spesifik
+    private var urutanAktif    : String = "Terbaru"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,25 +48,29 @@ class PengirimanActivity : AppCompatActivity() {
         initViews()
         setupRecyclerView()
         setupSearch()
-        setupFilter()
         setupFab()
-        loadData()
+        muatData()
     }
 
     override fun onResume() {
         super.onResume()
-        loadData()
+        muatData()
     }
 
     private fun initViews() {
-        rvPengiriman = findViewById(R.id.rvPengiriman)
-        tvKosong    = findViewById(R.id.tvKosong)
-        etCari      = findViewById(R.id.etCari)
-        btnFilter   = findViewById(R.id.btnFilter)
-        spinnerFilter = findViewById(R.id.spinnerFilter)
-        menuTambah  = findViewById(R.id.menuTambah)
+        rvPengiriman  = findViewById(R.id.rvPengiriman)
+        tvKosong      = findViewById(R.id.tvKosong)
+        etCari        = findViewById(R.id.etCari)
+        btnFilter     = findViewById(R.id.btnFilter)
+        menuTambah    = findViewById(R.id.menuTambah)
+        tvPesanKosong = findViewById(R.id.tvPesanKosong)
 
-        findViewById<View>(R.id.btnBack).setOnClickListener { finish() }
+        findViewById<View>(R.id.btnBack).setOnClickListener {
+            startActivity(Intent(this, BerandaActivity::class.java))
+            finish()
+        }
+
+        btnFilter.setOnClickListener { tampilkanDialogFilterDanSortir() }
     }
 
     private fun setupRecyclerView() {
@@ -75,9 +85,7 @@ class PengirimanActivity : AppCompatActivity() {
                 intent.putExtra("ID_PENGIRIMAN", pengiriman.idPengiriman)
                 startActivity(intent)
             },
-            onDeleteClick = { pengiriman ->
-                showDeleteDialog(pengiriman.idPengiriman)
-            }
+            onDeleteClick = { pengiriman -> showDeleteDialog(pengiriman.idPengiriman) }
         )
         rvPengiriman.layoutManager = LinearLayoutManager(this)
         rvPengiriman.adapter = adapter
@@ -86,32 +94,9 @@ class PengirimanActivity : AppCompatActivity() {
     private fun setupSearch() {
         etCari.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                filterAndDisplay(s.toString(), filterStatus)
-            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { terapkanFilterDanSortir() }
             override fun afterTextChanged(s: Editable?) {}
         })
-    }
-
-    private fun setupFilter() {
-        val statusList = listOf("Semua", "Diproses", "Dikirim", "Terkirim", "Dibatalkan")
-        val adapterSpinner = ArrayAdapter(this, android.R.layout.simple_spinner_item, statusList)
-        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerFilter.adapter = adapterSpinner
-
-        spinnerFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                filterStatus = statusList[position]
-                filterAndDisplay(etCari.text.toString(), filterStatus)
-            }
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
-
-        btnFilter.setOnClickListener {
-            isFilterVisible = !isFilterVisible
-            spinnerFilter.visibility = if (isFilterVisible) View.VISIBLE else View.GONE
-            if (isFilterVisible) spinnerFilter.performClick()
-        }
     }
 
     private fun setupFab() {
@@ -120,61 +105,138 @@ class PengirimanActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadData() {
-        lifecycleScope.launch {
-            val semua = db.pengirimanDao().getAllPengiriman()
-            filterAndDisplayList(semua, etCari.text.toString(), filterStatus)
+    // ─────────────────────────────────────────────────────────
+    //  MUAT DATA
+    // ─────────────────────────────────────────────────────────
+    private fun muatData() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            dataFull = db.pengirimanDao().getAllPengiriman()
+            withContext(Dispatchers.Main) { terapkanFilterDanSortir() }
         }
     }
 
-    private fun filterAndDisplay(query: String, status: String) {
-        lifecycleScope.launch {
-            val semua = db.pengirimanDao().getAllPengiriman()
-            filterAndDisplayList(semua, query, status)
-        }
-    }
+    // ─────────────────────────────────────────────────────────
+    //  DIALOG FILTER + SORTIR
+    // ─────────────────────────────────────────────────────────
+    private fun tampilkanDialogFilterDanSortir() {
+        val opsiStatus  = arrayOf("Semua", "Diproses", "Dikirim", "Terkirim", "Dibatalkan")
+        val opsiUrutkan = arrayOf("Terbaru", "Terlama", "Ekspedisi A-Z", "Ekspedisi Z-A", "No. Resi A-Z")
 
-    private fun filterAndDisplayList(
-        list: List<com.kel4.notaly.model.Pengiriman>,
-        query: String,
-        status: String
-    ) {
-        var hasil = list
-        if (status != "Semua") {
-            hasil = hasil.filter { it.statusKirim == status }
-        }
-        if (query.isNotBlank()) {
-            hasil = hasil.filter {
-                it.namaEkspedisi?.contains(query, ignoreCase = true) == true ||
-                        it.noResi?.contains(query, ignoreCase = true) == true ||
-                        it.idTransaksi?.contains(query, ignoreCase = true) == true ||
-                        it.alamatLengkap?.contains(query, ignoreCase = true) == true
+        // Kumpulkan ekspedisi unik dari data
+        val ekspedisiList = mutableListOf("Semua")
+        dataFull.mapNotNull { it.namaEkspedisi }
+            .filter { it.isNotBlank() }
+            .distinct().sorted()
+            .forEach { ekspedisiList.add(it) }
+
+        val pilihan = mutableListOf<String>()
+
+        // Section: Status Pengiriman
+        pilihan.add("── FILTER STATUS PENGIRIMAN ──")
+        opsiStatus.forEach { pilihan.add("   Status: $it") }
+
+        // Section: Ekspedisi
+        val headerEksp = pilihan.size
+        pilihan.add("── FILTER EKSPEDISI ──")
+        ekspedisiList.forEach { pilihan.add("   Ekspedisi: $it") }
+
+        // Section: Urutkan
+        val headerUrut = pilihan.size
+        pilihan.add("── URUTKAN ──")
+        opsiUrutkan.forEach { pilihan.add("   Urut: $it") }
+
+        val startStatus = 1
+        val endStatus   = opsiStatus.size
+        val startEksp   = headerEksp + 1
+        val endEksp     = headerEksp + ekspedisiList.size
+        val startUrut   = headerUrut + 1
+
+        AlertDialog.Builder(this)
+            .setTitle("Filter & Urutkan Pengiriman")
+            .setItems(pilihan.toTypedArray()) { _, which ->
+                when {
+                    which in startStatus..endStatus -> {
+                        filterStatus = opsiStatus[which - startStatus]
+                        terapkanFilterDanSortir()
+                    }
+                    which in startEksp..endEksp -> {
+                        filterEkspedisi = ekspedisiList[which - startEksp]
+                        terapkanFilterDanSortir()
+                    }
+                    which >= startUrut -> {
+                        urutanAktif = opsiUrutkan[which - startUrut]
+                        terapkanFilterDanSortir()
+                    }
+                }
             }
+            .show()
+    }
+
+    // ─────────────────────────────────────────────────────────
+    //  TERAPKAN FILTER + SORTIR
+    // ─────────────────────────────────────────────────────────
+    private fun terapkanFilterDanSortir() {
+        val q = etCari.text.toString().trim()
+
+        // 1. Filter teks: ekspedisi, resi, id transaksi, alamat
+        var hasil = if (q.isBlank()) dataFull
+        else dataFull.filter {
+            it.namaEkspedisi?.contains(q, ignoreCase = true) == true ||
+                    it.noResi?.contains(q, ignoreCase = true) == true ||
+                    it.idTransaksi?.contains(q, ignoreCase = true) == true ||
+                    it.alamatLengkap?.contains(q, ignoreCase = true) == true
+        }
+
+        // 2. Filter status
+        if (filterStatus != "Semua") {
+            hasil = hasil.filter { it.statusKirim == filterStatus }
+        }
+
+        // 3. Filter ekspedisi
+        if (filterEkspedisi != "Semua") {
+            hasil = hasil.filter { it.namaEkspedisi.equals(filterEkspedisi, ignoreCase = true) }
+        }
+
+        // 4. Sortir
+        // Catatan: urutan "Terbaru"/"Terlama" mengandalkan idPengiriman sebagai proxy waktu input
+        // karena model Pengiriman kemungkinan tidak memiliki field tanggal terpisah.
+        // Jika ada field tanggal, ganti dengan field tersebut.
+        hasil = when (urutanAktif) {
+            "Terbaru"       -> hasil.sortedByDescending { it.idPengiriman }
+            "Terlama"       -> hasil.sortedBy    { it.idPengiriman }
+            "Ekspedisi A-Z" -> hasil.sortedBy    { it.namaEkspedisi?.lowercase() ?: "" }
+            "Ekspedisi Z-A" -> hasil.sortedByDescending { it.namaEkspedisi?.lowercase() ?: "" }
+            "No. Resi A-Z"  -> hasil.sortedBy    { it.noResi ?: "" }
+            else            -> hasil
         }
 
         adapter.submitList(hasil)
 
         if (hasil.isEmpty()) {
             rvPengiriman.visibility = View.GONE
-            tvKosong.visibility = View.VISIBLE
-            tvKosong.text = if (query.isNotBlank() || status != "Semua")
-                "Tidak ada hasil yang cocok"
-            else
-                "Belum ada Daftar Pengiriman"
+            tvKosong.visibility     = View.VISIBLE
+            tvPesanKosong.text      =
+                if (q.isNotBlank() || filterStatus != "Semua" || filterEkspedisi != "Semua")
+                    "Tidak ada hasil yang cocok"
+                else
+                    "Belum ada Daftar Pengiriman"
         } else {
             rvPengiriman.visibility = View.VISIBLE
-            tvKosong.visibility = View.GONE
+            tvKosong.visibility     = View.GONE
         }
     }
 
+    // ─────────────────────────────────────────────────────────
+    //  HAPUS PENGIRIMAN
+    // ─────────────────────────────────────────────────────────
     private fun showDeleteDialog(idPengiriman: Int) {
-        androidx.appcompat.app.AlertDialog.Builder(this)
+        AlertDialog.Builder(this)
             .setTitle("Hapus Pengiriman")
             .setMessage("Apakah Anda yakin ingin menghapus data pengiriman ini?")
             .setPositiveButton("Hapus") { _, _ ->
-                lifecycleScope.launch {
+                lifecycleScope.launch(Dispatchers.IO) {
                     db.pengirimanDao().deletePengirimanById(idPengiriman)
-                    loadData()
+                    muatData()
                 }
             }
             .setNegativeButton("Batal", null)

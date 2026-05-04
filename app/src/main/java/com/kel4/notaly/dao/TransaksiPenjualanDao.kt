@@ -14,6 +14,9 @@ interface TransaksiPenjualanDao {
     @Update
     suspend fun ubahStatusTransaksi(transaksi: TransaksiPenjualan)
 
+    @Update
+    suspend fun updateTransaksi(transaksi: TransaksiPenjualan)
+
     @Query("DELETE FROM transaksi_penjualan")  // ← was: DELETE FROM barang
     suspend fun hapusSemua()
 

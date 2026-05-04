@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -38,7 +39,7 @@ class DetailPelangganActivity : AppCompatActivity() {
         idPelanggan = intent.getIntExtra("ID_PELANGGAN", -1)
         if (idPelanggan == -1) { finish(); return }
 
-        findViewById<ImageButton>(R.id.ivBack).setOnClickListener { finish() }
+        findViewById<ImageView>(R.id.ivBack).setOnClickListener { finish() }
 
         muatDetail(idPelanggan)
     }
@@ -96,10 +97,10 @@ class DetailPelangganActivity : AppCompatActivity() {
         }
 
 
-        findViewById<TextView>(R.id.tvEditBottom).setOnClickListener { bukaEdit() }
+        findViewById<ImageView>(R.id.tvEditBottom).setOnClickListener { bukaEdit() }
 
         // Hapus
-        findViewById<TextView>(R.id.tvHapus).setOnClickListener {
+        findViewById<ImageView>(R.id.tvHapus).setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("Hapus Pelanggan")
                 .setMessage("Hapus \"${p.namaPelanggan}\" dari daftar?")

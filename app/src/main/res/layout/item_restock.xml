@@ -5,8 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="2dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="0dp"
     app:cardBackgroundColor="#FFFFFF">
 
     <LinearLayout
@@ -23,53 +26,75 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
+            <!-- Nama Barang -->
             <TextView
                 android:id="@+id/tvNamaBarang"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Nama Barang"
-                android:textSize="14sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 android:textColor="#1A1A1A"
                 android:maxLines="1"
-                android:ellipsize="end" />
+                android:ellipsize="end"
+                android:layout_marginEnd="8dp" />
 
+            <!-- Status Kondisi -->
             <TextView
                 android:id="@+id/tvStatusKondisi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Normal"
-                android:textSize="11sp"
-                android:textColor="#2E7D5B"
-                android:layout_marginEnd="12dp" />
+                android:textSize="10sp"
+                android:textColor="#0D5C3A"
+                android:textStyle="bold"
+                android:background="@drawable/bg_chip_green"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:layout_marginEnd="8dp" />
 
-            <TextView
-                android:id="@+id/tvStokNormal"
+            <!-- Stok Normal -->
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Normal: 10 pcs"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:textColor="#1A1A1A" />
+                android:background="@drawable/bg_info_strip"
+                android:orientation="vertical"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="STOK"
+                    android:textSize="8sp"
+                    android:textColor="#0D5C3A"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.06" />
+
+                <TextView
+                    android:id="@+id/tvStokNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10 pcs"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:textColor="#0A3D26" />
+            </LinearLayout>
+
         </LinearLayout>
 
-        <!--
-            layoutCacat: container varian cacat (BRG001-C, BRG001-C2, dst)
-            GONE by default, VISIBLE & diisi programmatically di adapter jika ada cacat
-        -->
+        <!-- Varian cacat (GONE by default, diisi adapter) -->
         <LinearLayout
             android:id="@+id/layoutCacat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="6dp"
-            android:paddingTop="6dp"
-            android:visibility="gone">
-
-            <!-- TextView per varian cacat ditambahkan secara programmatic di adapter -->
-
-        </LinearLayout>
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_mutasi_out"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="8dp"
+            android:visibility="gone" />
 
     </LinearLayout>
 

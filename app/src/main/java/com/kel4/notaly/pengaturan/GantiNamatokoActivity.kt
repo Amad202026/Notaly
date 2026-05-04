@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,7 @@ class GantiNamatokoActivity : AppCompatActivity() {
 
     lateinit var etNamaToko: EditText
     lateinit var btnSimpan: TextView
+    lateinit var btnBack: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +23,12 @@ class GantiNamatokoActivity : AppCompatActivity() {
 
         btnSimpan = findViewById(R.id.btnSimpan)
         etNamaToko = findViewById(R.id.etNamaToko)
+        btnBack = findViewById(R.id.btnBack)
+
+        btnBack.setOnClickListener {
+            startActivity(Intent(this, PengaturanActivity::class.java))
+            finish()
+        }
 
         btnSimpan.setOnClickListener{
             val inputNamaToko = etNamaToko.text.toString()

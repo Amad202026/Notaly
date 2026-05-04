@@ -39,6 +39,11 @@ class PengaturanActivity : AppCompatActivity() {
         btnBack.setOnClickListener         { startActivity(Intent(this, BerandaActivity::class.java)); finish() }
 
         findViewById<CardView>(R.id.btnKeluar).setOnClickListener { konfirmasiReset() }
+
+        btnBack.setOnClickListener {
+            startActivity(Intent(this, BerandaActivity::class.java))
+            finish()
+        }
     }
 
     private fun konfirmasiReset() {
@@ -59,6 +64,8 @@ class PengaturanActivity : AppCompatActivity() {
             getSharedPreferences("KategoriPrefs",    Context.MODE_PRIVATE).edit().clear().apply()
             getSharedPreferences("NotalyPrefs",      Context.MODE_PRIVATE).edit().clear().apply()
             getSharedPreferences("DataEkstraBarang", Context.MODE_PRIVATE).edit().clear().apply()
+            getSharedPreferences("UserPreferences", Context.MODE_PRIVATE).edit().clear().apply()
+            getSharedPreferences("DataToko",        Context.MODE_PRIVATE).edit().clear().apply()
 
             withContext(Dispatchers.Main) {
                 Toast.makeText(this@PengaturanActivity, "Semua data berhasil direset.", Toast.LENGTH_SHORT).show()

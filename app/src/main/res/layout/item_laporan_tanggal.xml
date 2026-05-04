@@ -1,39 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/headerTanggalRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_marginHorizontal="16dp"
-    android:layout_marginTop="16dp">
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="4dp">
 
-    <LinearLayout
+    <!-- Row tanggal + total laba -->
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#EDF2EF"
-        android:orientation="vertical"
-        android:padding="14dp">
+        android:background="@drawable/bg_info_strip"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp">
+
+        <!-- Garis aksen kiri -->
+        <View
+            android:id="@+id/accentBar"
+            android:layout_width="3dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/bg_btn_hijau_round" />
 
         <TextView
             android:id="@+id/tvTanggal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TANGGAL"
+            android:layout_toEndOf="@id/accentBar"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:text="Senin, 10 April 2026"
             android:textStyle="bold"
-            android:textColor="#1A1A1A" />
+            android:textColor="#0A3D26"
+            android:textSize="13sp" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal">
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            android:gravity="end">
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="TOTAL LABA HARI INI :"
-                android:textSize="11sp"
-                android:textColor="#888888" />
+                android:text="LABA HARI INI"
+                android:textSize="9sp"
+                android:textColor="#0D5C3A"
+                android:textStyle="bold"
+                android:letterSpacing="0.06" />
 
             <TextView
                 android:id="@+id/tvTotalLaba"
@@ -41,12 +60,10 @@
                 android:layout_height="wrap_content"
                 android:text="Rp 0"
                 android:textStyle="bold"
-                android:textColor="#2E7D5B" />
+                android:textColor="#0D5C3A"
+                android:textSize="14sp" />
         </LinearLayout>
-    </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#DDDDDD" />
+    </RelativeLayout>
+
 </LinearLayout>

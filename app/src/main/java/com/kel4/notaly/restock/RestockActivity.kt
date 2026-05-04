@@ -4,16 +4,16 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.Button
-import android.widget.ImageButton
+import android.widget.EditText
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.textfield.TextInputEditText
 import com.kel4.notaly.R
 import com.kel4.notaly.database.AppDatabase
 import com.kel4.notaly.model.Barang
@@ -28,11 +28,11 @@ import java.util.*
 
 class RestockActivity : AppCompatActivity() {
 
-    private lateinit var etTanggal:      TextInputEditText
-    private lateinit var spinnerPemasok: AutoCompleteTextView
-    private lateinit var spinnerBarang:  AutoCompleteTextView
-    private lateinit var etQty:          android.widget.EditText
-    private lateinit var etHargaBeli:    android.widget.EditText
+    private lateinit var etTanggal:      EditText
+    private lateinit var spinnerPemasok: Spinner
+    private lateinit var spinnerBarang:  Spinner
+    private lateinit var etQty:          EditText
+    private lateinit var etHargaBeli:    EditText
     private lateinit var tvTotalHarga:   TextView
 
     private var daftarSupplier:   List<Supplier> = emptyList()
@@ -59,8 +59,11 @@ class RestockActivity : AppCompatActivity() {
         etHargaBeli    = findViewById(R.id.etHargaBeli)
         tvTotalHarga   = findViewById(R.id.tvTotalHarga)
 
-        findViewById<ImageButton>(R.id.btnBack).setOnClickListener { finish() }
-        findViewById<Button>(R.id.btnSimpan).setOnClickListener { validasiLaluKonfirmasi() }
+        // Set adapter kosong sementara untuk Spinner Barang
+        spinnerBarang.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listOf("Pilih Barang"))
+
+        findViewById<View>(R.id.btnBack).setOnClickListener { finish() }
+        findViewById<TextView>(R.id.btnSimpan).setOnClickListener { validasiLaluKonfirmasi() }
 
         updateLabelTanggal()
     }
@@ -101,39 +104,71 @@ class RestockActivity : AppCompatActivity() {
     }
 
     private fun setupSupplierDropdown() {
-        val namaSuppliers = daftarSupplier.map { it.namaSupplier }
-        val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, namaSuppliers)
-        spinnerPemasok.setAdapter(adapter)
+        // Tambahkan "Pilih Pemasok" di index ke-0
+        val namaSuppliers = mutableListOf("Pilih Pemasok")
+        namaSuppliers.addAll(daftarSupplier.map { it.namaSupplier })
 
-        spinnerPemasok.setOnItemClickListener { _, _, position, _ ->
-            supplierTerpilih = daftarSupplier[position]
-            spinnerBarang.setText("")
-            barangTerpilih = null
-            filterBarangBerdasarkanSupplier(supplierTerpilih?.kategoriSuplai)
+        // Gunakan .adapter (bukan .setAdapter)
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, namaSuppliers)
+        spinnerPemasok.adapter = adapter
+
+        // Gunakan onItemSelectedListener untuk Spinner
+        spinnerPemasok.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (position == 0) {
+                    // Jika memilih "Pilih Pemasok", kosongkan pilihan
+                    supplierTerpilih = null
+                    barangTerpilih = null
+                    filterBarangBerdasarkanSupplier(null)
+                } else {
+                    // Karena index 0 adalah "Pilih Pemasok", index data asli dikurangi 1
+                    supplierTerpilih = daftarSupplier[position - 1]
+                    barangTerpilih = null
+                    filterBarangBerdasarkanSupplier(supplierTerpilih?.kategoriSuplai)
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
 
     private fun filterBarangBerdasarkanSupplier(kategori: String?) {
-        if (kategori == null) return
+        if (kategori == null || kategori.isEmpty()) {
+            spinnerBarang.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listOf("Pilih Barang"))
+            return
+        }
 
+        // Filter barang sesuai kategori supplier yang dipilih
         val barangFiltered = daftarBarangAsli.filter {
             it.kategori.equals(kategori, ignoreCase = true)
         }
 
         if (barangFiltered.isEmpty()) {
-            spinnerBarang.hint = "Tidak ada barang kategori $kategori"
-            spinnerBarang.setAdapter(null)
+            spinnerBarang.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listOf("Tidak ada barang di kategori ini"))
             return
         }
 
-        val namaBarang = barangFiltered.map { it.namaBarang }
-        val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, namaBarang)
-        spinnerBarang.setAdapter(adapter)
+        // Tambahkan "Pilih Barang" di index ke-0
+        val namaBarang = mutableListOf("Pilih Barang")
+        namaBarang.addAll(barangFiltered.map { it.namaBarang })
 
-        spinnerBarang.setOnItemClickListener { _, _, position, _ ->
-            barangTerpilih = barangFiltered[position]
-            etHargaBeli.setText(barangTerpilih?.hargaModal?.toString() ?: "")
-            hitungTotal()
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, namaBarang)
+        spinnerBarang.adapter = adapter
+
+        spinnerBarang.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (position == 0) {
+                    barangTerpilih = null
+                    etHargaBeli.setText("") // Kosongkan harga jika belum memilih
+                } else {
+                    barangTerpilih = barangFiltered[position - 1]
+                    // Set harga otomatis saat barang dipilih
+                    etHargaBeli.setText(barangTerpilih?.hargaModal?.toString() ?: "")
+                    hitungTotal()
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
 

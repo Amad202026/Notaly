@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -17,6 +18,7 @@ class GantiPinActivity : AppCompatActivity() {
     lateinit var etPinLama: EditText
     lateinit var etPinBaru: EditText
     lateinit var btnSimpan: TextView
+    lateinit var btnBack: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,9 +27,15 @@ class GantiPinActivity : AppCompatActivity() {
         etPinLama = findViewById(R.id.etPinLama)
         etPinBaru = findViewById(R.id.etPinBaru)
         btnSimpan = findViewById(R.id.btnSimpan)
+        btnBack = findViewById(R.id.btnBack)
 
         val sharedPref = getSharedPreferences("DataToko", MODE_PRIVATE)
         val pinLama = sharedPref.getString("PIN", "")
+
+        btnBack.setOnClickListener {
+            startActivity(Intent(this, PengaturanActivity::class.java))
+            finish()
+        }
 
         btnSimpan.setOnClickListener {
             val inputPinLama = etPinLama.text.toString()

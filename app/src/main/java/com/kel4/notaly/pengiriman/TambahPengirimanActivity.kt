@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
@@ -18,14 +19,13 @@ import kotlinx.coroutines.launch
 class TambahPengirimanActivity : AppCompatActivity() {
 
     private lateinit var tvJudul: TextView
-    private lateinit var tvLabelAtas: TextView
     private lateinit var spinnerIdTransaksi: Spinner
     private lateinit var etNamaEkspedisi: EditText
     private lateinit var etNomorResi: EditText
     private lateinit var etAlamatTujuan: EditText
     private lateinit var etBiayaKirim: EditText
     private lateinit var spinnerStatusPengiriman: Spinner
-    private lateinit var btnSimpan: Button
+    private lateinit var btnSimpan: TextView
 
     private val db by lazy { AppDatabase.getDatabase(this) }
     private var editId: Int = -1
@@ -47,7 +47,6 @@ class TambahPengirimanActivity : AppCompatActivity() {
         setupStatusSpinner()
 
         if (editId != -1) {
-            tvLabelAtas.text = "EDIT PENGIRIMAN"
             tvJudul.text = "Edit Logistik"
             btnSimpan.text = "Simpan Perubahan"
         }
@@ -56,12 +55,11 @@ class TambahPengirimanActivity : AppCompatActivity() {
         loadTransaksiListThenFillForm()
 
         btnSimpan.setOnClickListener { simpanData() }
-        findViewById<View>(R.id.btnBack).setOnClickListener { finish() }
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener { finish() }
     }
 
     private fun initViews() {
         tvJudul                 = findViewById(R.id.tvJudul)
-        tvLabelAtas             = findViewById(R.id.tvLabelAtas)
         spinnerIdTransaksi      = findViewById(R.id.spinnerIdTransaksi)
         etNamaEkspedisi         = findViewById(R.id.etNamaEkspedisi)
         etNomorResi             = findViewById(R.id.etNomorResi)
