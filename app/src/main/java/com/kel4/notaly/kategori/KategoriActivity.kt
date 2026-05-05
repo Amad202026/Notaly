@@ -42,7 +42,6 @@ class KategoriActivity : AppCompatActivity() {
         rvKategori.adapter = adapter
 
         findViewById<ImageView>(R.id.btnBack).setOnClickListener {
-            startActivity(Intent(this, BerandaActivity::class.java))
             finish()
         }
         findViewById<CardView>(R.id.menuTambah).setOnClickListener {

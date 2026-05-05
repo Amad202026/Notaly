@@ -65,7 +65,6 @@ class SupplierActivity : AppCompatActivity() {
         rvSupplier.adapter = adapter
 
         findViewById<View>(R.id.btnBack).setOnClickListener {
-            startActivity(Intent(this, BerandaActivity::class.java))
             finish()
         }
         findViewById<CardView>(R.id.menuTambahSupplier).setOnClickListener {

@@ -67,7 +67,6 @@ class LupaPinActivity : AppCompatActivity() {
             }
         }
         findViewById<ImageView>(R.id.btnBack)?.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
     }

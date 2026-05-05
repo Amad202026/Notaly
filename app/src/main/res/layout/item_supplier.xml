@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
@@ -18,7 +19,6 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Baris atas: Avatar + Info + Hapus -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,7 +26,6 @@
             android:gravity="center_vertical"
             android:layout_marginBottom="12dp">
 
-            <!-- Avatar inisial -->
             <FrameLayout
                 android:layout_width="46dp"
                 android:layout_height="46dp"
@@ -38,7 +37,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="M"
+                    tools:text="M"
                     android:textColor="#0D5C3A"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -50,12 +49,11 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <!-- Badge Kategori -->
                 <TextView
                     android:id="@+id/tvKategoriPill"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ALAT OLAHRAGA"
+                    tools:text="ALAT OLAHRAGA"
                     android:textColor="#0D5C3A"
                     android:textSize="9sp"
                     android:textStyle="bold"
@@ -65,12 +63,11 @@
                     android:layout_marginBottom="4dp"
                     android:letterSpacing="0.04" />
 
-                <!-- Nama Supplier -->
                 <TextView
                     android:id="@+id/tvNamaSupplier"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Mahkota Sport"
+                    tools:text="Mahkota Sport"
                     android:textColor="#1A1A1A"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -79,7 +76,6 @@
 
             </LinearLayout>
 
-            <!-- Tombol Hapus -->
             <ImageView
                 android:id="@+id/btnDelete"
                 android:layout_width="24dp"
@@ -97,7 +93,6 @@
             android:background="#F5F5F5"
             android:layout_marginBottom="10dp" />
 
-        <!-- Nomor Telepon -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -117,13 +112,12 @@
                 android:id="@+id/tvNoTelp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="+62 811-2233-4455"
+                tools:text="+62 811-2233-4455"
                 android:textColor="#444444"
                 android:textSize="13sp" />
 
         </LinearLayout>
 
-        <!-- Tombol Detail -->
         <TextView
             android:id="@+id/btnDetail"
             android:layout_width="match_parent"
@@ -132,7 +126,7 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:text="Lihat Detail"
+            android:text="Detail"
             android:textColor="#FFFFFF"
             android:textSize="13sp"
             android:textStyle="bold" />

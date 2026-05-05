@@ -139,12 +139,12 @@
 
                         <ImageView android:layout_width="18dp" android:layout_height="18dp"
                             android:layout_gravity="center_vertical|start" android:layout_marginStart="16dp"
-                            android:src="@drawable/ic_daftarpelanggan" app:tint="#0D5C3A"
+                            android:src="@drawable/ic_phone" app:tint="#0D5C3A"
                             android:scaleType="centerInside" android:contentDescription="WA" />
 
                         <EditText android:id="@+id/etNomorWA" android:layout_width="match_parent"
                             android:layout_height="match_parent" android:paddingStart="44dp" android:paddingEnd="16dp"
-                            android:hint="+62 812-3456-7890" android:inputType="phone" android:singleLine="true"
+                            android:hint="+62" android:inputType="phone" android:singleLine="true"
                             android:textSize="14sp" android:textColor="#1A1A1A" android:textColorHint="#BBBBBB"
                             android:background="@null" android:gravity="center_vertical" />
                     </FrameLayout>
@@ -182,6 +182,139 @@
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
+            <!-- ===================== SECTION: DISKON (hanya muncul untuk Member / Grosir) ===================== -->
+            <LinearLayout
+                android:id="@+id/sectionDiskon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_marginBottom="20dp">
+
+                <!-- Label section -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="12dp">
+                    <View android:layout_width="3dp" android:layout_height="16dp"
+                        android:background="@drawable/bg_btn_hijau_round" android:layout_marginEnd="10dp" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="DISKON PELANGGAN" android:textSize="10sp"
+                        android:textColor="#0D5C3A" android:textStyle="bold" android:letterSpacing="0.08" />
+                </LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="#FFFFFF">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="20dp">
+
+                        <!-- Info badge -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:background="@drawable/bg_badge_green"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="10dp"
+                            android:layout_marginBottom="16dp">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/bg_dot_red"
+                                app:tint="#0D5C3A"
+                                android:scaleType="centerInside"
+                                android:contentDescription="Info"
+                                android:layout_marginEnd="8dp" />
+
+                            <TextView
+                                android:id="@+id/tvInfoDiskon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Diskon ini berlaku saat transaksi penjualan"
+                                android:textSize="12sp"
+                                android:textColor="#0D5C3A" />
+                        </LinearLayout>
+
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="BESAR DISKON (%)" android:textSize="10sp" android:textColor="#0D5C3A"
+                            android:textStyle="bold" android:letterSpacing="0.08" android:layout_marginBottom="8dp" />
+
+                        <!-- Input diskon dengan suffix % -->
+                        <FrameLayout android:layout_width="match_parent" android:layout_height="56dp"
+                            android:background="@drawable/bg_input_outline">
+
+                            <EditText
+                                android:id="@+id/etDiskon"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:paddingStart="16dp"
+                                android:paddingEnd="48dp"
+                                android:hint="0"
+                                android:inputType="numberDecimal"
+                                android:singleLine="true"
+                                android:textSize="16sp"
+                                android:textColor="#1A1A1A"
+                                android:textColorHint="#BBBBBB"
+                                android:background="@null"
+                                android:gravity="center_vertical" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical|end"
+                                android:layout_marginEnd="16dp"
+                                android:text="%"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="#0D5C3A" />
+                        </FrameLayout>
+
+                        <!-- Preview diskon -->
+                        <LinearLayout
+                            android:id="@+id/layoutPreviewDiskon"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginTop="12dp"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Pelanggan ini dapat diskon "
+                                android:textSize="13sp"
+                                android:textColor="#666666" />
+
+                            <TextView
+                                android:id="@+id/tvPreviewDiskon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0%"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:textColor="#0D5C3A" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" dari setiap transaksi"
+                                android:textSize="13sp"
+                                android:textColor="#666666" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

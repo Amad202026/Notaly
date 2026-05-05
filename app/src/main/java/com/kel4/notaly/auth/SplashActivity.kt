@@ -30,13 +30,13 @@ class SplashActivity : AppCompatActivity() {
     // ─── Konstanta ───────────────────────────────────────────
     companion object {
         private const val APP_NAME             = "notaly"
-        private const val TYPEWRITER_DELAY_MS  = 70L    // jeda antar karakter
-        private const val DELAY_LOGO           = 0L
-        private const val DELAY_CURSOR_START   = 380L
-        private const val DELAY_TYPEWRITER     = 400L
-        private const val DELAY_TAGLINE        = 1000L   // tepat setelah typewriter
-        private const val DELAY_SOUND          = 380L
-        private const val DELAY_NAVIGATE       = 1500L
+        private const val TYPEWRITER_DELAY_MS  = 100L    // jeda antar karakter
+        private const val DELAY_LOGO           = 100L
+        private const val DELAY_CURSOR_START   = 2000L
+        private const val DELAY_TYPEWRITER     = 3000L
+        private const val DELAY_TAGLINE        = 4000L   // tepat setelah typewriter
+        private const val DELAY_SOUND          = 0L
+        private const val DELAY_NAVIGATE       = 5000L
         private const val PREFS_NAME           = "UserPreferences"
         private const val KEY_IS_LOGGED_IN     = "IS_REG"
     }
@@ -45,6 +45,17 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+        bindViews()
+        startSplashSequence()
+
+        onBackPressedDispatcher.addCallback(this, object : androidx.activity.OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Biarkan kosong.
+                // Karena kosong, saat user menekan back, aplikasi tidak akan melakukan apa-apa.
+            }
+        })
+        // -------------------------------------------------------
+
         bindViews()
         startSplashSequence()
     }
@@ -68,24 +79,18 @@ class SplashActivity : AppCompatActivity() {
 
     // ─── 1. Logo scale up ────────────────────────────────────
     private fun animateLogo() {
-        val anim = AnimationUtils.loadAnimation(this, R.anim.anim_logo_scale_up)
+        ivLogo.scaleX = 1f
+        ivLogo.scaleY = 1f
+        ivLogo.alpha = 0f
         ivLogo.visibility = View.VISIBLE
 
-        ivLogo.scaleX = 0.3f
-        ivLogo.scaleY = 0.3f
-        ivLogo.alpha  = 0f
-
-        anim.setAnimationListener(object : android.view.animation.Animation.AnimationListener {
-            override fun onAnimationStart(a: android.view.animation.Animation?) {}
-            override fun onAnimationRepeat(a: android.view.animation.Animation?) {}
-            override fun onAnimationEnd(a: android.view.animation.Animation?) {
-                ivLogo.scaleX = 1f
-                ivLogo.scaleY = 1f
-                ivLogo.alpha  = 1f
+        ivLogo.animate()
+            .alpha(1f)
+            .setDuration(1000)
+            .withEndAction {
+                // ivLogo.alpha = 1f
             }
-        })
-
-        ivLogo.startAnimation(anim)
+            .start()
     }
 
     // ─── 2. Tampilkan cursor berkedip ─────────────────────────
@@ -159,9 +164,9 @@ class SplashActivity : AppCompatActivity() {
     // ─── 6. Navigasi ─────────────────────────────────────────
     private fun navigateToNext() {
         val destination = if (isUserLoggedIn()) {
-            MainActivity::class.java
-        } else {
             LoginActivity::class.java
+        } else {
+            MainActivity::class.java
         }
 
         startActivity(
@@ -171,10 +176,9 @@ class SplashActivity : AppCompatActivity() {
         )
 
         overridePendingTransition(
-            R.anim.anim_enter_slide,
-            R.anim.anim_exit_fade
+            android.R.anim.fade_in,
+            android.R.anim.fade_out
         )
-
         finish()
     }
 
@@ -194,9 +198,4 @@ class SplashActivity : AppCompatActivity() {
         }
         mediaPlayer = null
     }
-
-    // Blokir back button saat splash
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        super.onBackPressed() /* sengaja dikosongkan */ }
 }

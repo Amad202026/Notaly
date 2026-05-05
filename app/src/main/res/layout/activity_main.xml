@@ -55,7 +55,7 @@
             android:background="@drawable/bg_badge_white"
             android:paddingHorizontal="12dp"
             android:paddingVertical="5dp"
-            android:text="v2.0"
+            android:text="v1.0"
             android:textColor="#0D5C3A"
             android:textSize="12sp"
             android:textStyle="bold"

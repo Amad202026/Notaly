@@ -37,9 +37,7 @@ class BarangLaporanActivity : AppCompatActivity() {
         adapter = LaporanAdapter(emptyList())
         rv.adapter = adapter
 
-        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
-            startActivity(Intent(this, BerandaActivity::class.java)); finish()
-        }
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {finish()}
         setupTopNav()
         muatDataMutasi()
     }
@@ -94,8 +92,7 @@ class BarangLaporanActivity : AppCompatActivity() {
             grouped.forEach { (tglRaw, items) ->
                 val totalMasukHarian  = items.sumOf { it.masuk }
                 val totalKeluarHarian = items.sumOf { it.keluar }
-                // Gunakan HeaderTanggal dengan total selisih (masuk - keluar) sebagai info ringkas
-                listFinal.add(HeaderTanggal(formatTanggal(tglRaw), totalMasukHarian - totalKeluarHarian))
+                listFinal.add(HeaderTanggal(formatTanggal(tglRaw), 0))
                 listFinal.addAll(items)
             }
 
@@ -115,14 +112,20 @@ class BarangLaporanActivity : AppCompatActivity() {
 
     private fun setupTopNav() {
         findViewById<TextView>(R.id.nav_keuangan).setOnClickListener {
-            startActivity(Intent(this, KeuanganLaporanActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
-            }); finish()
+            val intent = Intent(this, KeuanganLaporanActivity::class.java).apply { flags = Intent.FLAG_ACTIVITY_NO_ANIMATION }
+            val options = android.app.ActivityOptions.makeCustomAnimation(this, 0, 0)
+            startActivity(intent, options.toBundle())
+            finish()
+            @Suppress("DEPRECATION")
+            overridePendingTransition(0, 0)
         }
         findViewById<TextView>(R.id.nav_riwayat).setOnClickListener {
-            startActivity(Intent(this, RiwayatLaporanActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
-            }); finish()
+            val intent = Intent(this, RiwayatLaporanActivity::class.java).apply { flags = Intent.FLAG_ACTIVITY_NO_ANIMATION }
+            val options = android.app.ActivityOptions.makeCustomAnimation(this, 0, 0)
+            startActivity(intent, options.toBundle())
+            finish()
+            @Suppress("DEPRECATION")
+            overridePendingTransition(0, 0)
         }
     }
 }

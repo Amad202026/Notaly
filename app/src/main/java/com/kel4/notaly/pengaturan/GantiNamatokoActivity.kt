@@ -26,7 +26,6 @@ class GantiNamatokoActivity : AppCompatActivity() {
         btnBack = findViewById(R.id.btnBack)
 
         btnBack.setOnClickListener {
-            startActivity(Intent(this, PengaturanActivity::class.java))
             finish()
         }
 

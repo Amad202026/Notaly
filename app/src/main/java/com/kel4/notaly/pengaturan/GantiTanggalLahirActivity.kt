@@ -48,7 +48,6 @@ class GantiTanggalLahirActivity : AppCompatActivity() {
         spTahunLahir.adapter = adapterTahun
 
         btnBack.setOnClickListener {
-            startActivity(Intent(this, PengaturanActivity::class.java))
             finish()
         }
 

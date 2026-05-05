@@ -100,7 +100,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
-                    android:hint="Cari ekspedisi, resi, transaksi..."
+                    android:hint="Cari"
                     android:textSize="14sp"
                     android:textColor="#1A1A1A"
                     android:textColorHint="#AAAAAA"

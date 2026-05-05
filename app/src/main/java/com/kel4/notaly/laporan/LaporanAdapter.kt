@@ -78,14 +78,26 @@ class LaporanAdapter(private var listData: List<Any>) : RecyclerView.Adapter<Rec
                     else -> ""
                 }
                 // tvTotalLaba selalu tampil sebagai laba/saldo hari itu
-                holder.tvTotalLaba?.text = if (item.totalLabaHarian >= 0)
-                    "Rp ${rupiah.format(item.totalLabaHarian)}"
-                else
-                    "- Rp ${rupiah.format(-item.totalLabaHarian.toLong())}"
+                if (item.totalLabaHarian == 0) {
+                    // Jika 0, berarti ini di Laporan Barang (tidak perlu info rupiah/laba)
+                    holder.tvTotalLaba?.visibility = View.GONE
 
-                holder.tvTotalLaba?.setTextColor(
-                    if (item.totalLabaHarian >= 0) 0xFF0D5C3A.toInt() else 0xFFE53935.toInt()
-                )
+                    // Jika kamu punya tvLaba (tulisan "Laba:"), sembunyikan juga di sini:
+                     holder.itemView.findViewById<TextView>(R.id.tvLaba)?.visibility = View.GONE
+                } else {
+                    // Tampilkan kembali jika ini di Laporan Keuangan
+                    holder.tvTotalLaba?.visibility = View.VISIBLE
+                     holder.itemView.findViewById<TextView>(R.id.tvLaba)?.visibility = View.VISIBLE
+
+                    holder.tvTotalLaba?.text = if (item.totalLabaHarian >= 0)
+                        "Rp ${rupiah.format(item.totalLabaHarian)}"
+                    else
+                        "- Rp ${rupiah.format(-item.totalLabaHarian.toLong())}"
+
+                    holder.tvTotalLaba?.setTextColor(
+                        if (item.totalLabaHarian >= 0) 0xFF0D5C3A.toInt() else 0xFFE53935.toInt()
+                    )
+                }
             }
 
             // ── LAPORAN KEUANGAN (item_laporan_keuangan.xml) ───────────────

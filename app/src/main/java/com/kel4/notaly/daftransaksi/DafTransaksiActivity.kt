@@ -95,7 +95,6 @@ class DafTransaksiActivity : AppCompatActivity() {
     // ─────────────────────────────────────────────────────────
     private fun setupListeners() {
         btnBack.setOnClickListener {
-            startActivity(Intent(this, BerandaActivity::class.java))
             finish()
         }
 

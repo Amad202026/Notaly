@@ -31,6 +31,7 @@ class PelangganAdapter(
     override fun getItemCount(): Int = listData.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val tvInisial:   TextView = view.findViewById(R.id.tvInisial) // Tambahan baru
         private val tvId:        TextView = view.findViewById(R.id.tvIdPelanggan)
         private val tvNama:      TextView = view.findViewById(R.id.tvNamaPelanggan)
         private val tvKategori:  TextView = view.findViewById(R.id.tvKategoriPelanggan)
@@ -38,7 +39,16 @@ class PelangganAdapter(
         private val tvWa:        TextView = view.findViewById(R.id.tvWaPelanggan)
 
         fun bind(p: Pelanggan) {
-            tvId.text       = String.format("%03d", p.idPelanggan)
+            // Set Inisial Logo (Ambil 1 huruf pertama)
+            val namaLengkap = p.namaPelanggan
+            if (namaLengkap.isNotBlank()) {
+                tvInisial.text = namaLengkap.take(1).uppercase()
+            } else {
+                tvInisial.text = "-"
+            }
+
+            // Tambahkan "ID: " agar formatnya rapi seperti di desainmu
+            tvId.text       = String.format("ID: %03d", p.idPelanggan)
             tvNama.text     = p.namaPelanggan
             tvLokasi.text   = p.asalDaerah ?: "-"
             tvWa.text       = p.noWa ?: "-"

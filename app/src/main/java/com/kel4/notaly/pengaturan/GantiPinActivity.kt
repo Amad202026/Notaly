@@ -33,7 +33,6 @@ class GantiPinActivity : AppCompatActivity() {
         val pinLama = sharedPref.getString("PIN", "")
 
         btnBack.setOnClickListener {
-            startActivity(Intent(this, PengaturanActivity::class.java))
             finish()
         }
 

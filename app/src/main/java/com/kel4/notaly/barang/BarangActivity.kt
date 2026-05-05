@@ -70,7 +70,6 @@ class BarangActivity : AppCompatActivity() {
         val menuTambahBarang = findViewById<CardView>(R.id.menuTambahBarang)
 
         btnBack.setOnClickListener {
-            startActivity(Intent(this, BerandaActivity::class.java))
             finish()
         }
         menuTambahBarang.setOnClickListener {

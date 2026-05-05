@@ -36,14 +36,9 @@ class PengaturanActivity : AppCompatActivity() {
         rlGantiNamatoko.setOnClickListener { startActivity(Intent(this, GantiNamatokoActivity::class.java)) }
         rlGantiPin.setOnClickListener      { startActivity(Intent(this, GantiPinActivity::class.java)) }
         rlTanggalLahir.setOnClickListener  { startActivity(Intent(this, GantiTanggalLahirActivity::class.java)) }
-        btnBack.setOnClickListener         { startActivity(Intent(this, BerandaActivity::class.java)); finish() }
+        btnBack.setOnClickListener         { finish() }
 
         findViewById<CardView>(R.id.btnKeluar).setOnClickListener { konfirmasiReset() }
-
-        btnBack.setOnClickListener {
-            startActivity(Intent(this, BerandaActivity::class.java))
-            finish()
-        }
     }
 
     private fun konfirmasiReset() {

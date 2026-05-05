@@ -129,7 +129,7 @@
                     android:layout_height="56dp"
                     android:background="@drawable/bg_input_outline"
                     android:paddingHorizontal="16dp"
-                    android:hint="Contoh: Kaos, Celana, Aksesoris"
+                    android:hint="Contoh: Baju"
                     android:textSize="15sp"
                     android:textColor="#1A1A1A"
                     android:textColorHint="#BBBBBB"

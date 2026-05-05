@@ -37,8 +37,12 @@ class RestockActivity : AppCompatActivity() {
 
     private var daftarSupplier:   List<Supplier> = emptyList()
     private var daftarBarangAsli: List<Barang>   = emptyList()
-    private var supplierTerpilih: Supplier?       = null
-    private var barangTerpilih:   Barang?         = null
+
+    // Variabel baru untuk menampung nama pemasok yang digabung
+    private var daftarNamaSupplierUnik: List<String> = emptyList()
+    private var namaSupplierTerpilih: String? = null
+
+    private var barangTerpilih:   Barang? = null
     private val calendar = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,7 +63,6 @@ class RestockActivity : AppCompatActivity() {
         etHargaBeli    = findViewById(R.id.etHargaBeli)
         tvTotalHarga   = findViewById(R.id.tvTotalHarga)
 
-        // Set adapter kosong sementara untuk Spinner Barang
         spinnerBarang.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listOf("Pilih Barang"))
 
         findViewById<View>(R.id.btnBack).setOnClickListener { finish() }
@@ -104,51 +107,57 @@ class RestockActivity : AppCompatActivity() {
     }
 
     private fun setupSupplierDropdown() {
-        // Tambahkan "Pilih Pemasok" di index ke-0
-        val namaSuppliers = mutableListOf("Pilih Pemasok")
-        namaSuppliers.addAll(daftarSupplier.map { it.namaSupplier })
+        // 🔥 1. Ambil nama supplier unik (jika ada nama dobel, gabungkan jadi satu)
+        daftarNamaSupplierUnik = daftarSupplier.map { it.namaSupplier }.distinct()
 
-        // Gunakan .adapter (bukan .setAdapter)
+        val namaSuppliers = mutableListOf("Pilih Pemasok")
+        namaSuppliers.addAll(daftarNamaSupplierUnik)
+
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, namaSuppliers)
         spinnerPemasok.adapter = adapter
 
-        // Gunakan onItemSelectedListener untuk Spinner
         spinnerPemasok.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (position == 0) {
-                    // Jika memilih "Pilih Pemasok", kosongkan pilihan
-                    supplierTerpilih = null
+                    namaSupplierTerpilih = null
                     barangTerpilih = null
-                    filterBarangBerdasarkanSupplier(null)
+                    filterBarangBerdasarkanKategoriMultiple(emptyList())
                 } else {
-                    // Karena index 0 adalah "Pilih Pemasok", index data asli dikurangi 1
-                    supplierTerpilih = daftarSupplier[position - 1]
+                    namaSupplierTerpilih = daftarNamaSupplierUnik[position - 1]
                     barangTerpilih = null
-                    filterBarangBerdasarkanSupplier(supplierTerpilih?.kategoriSuplai)
+
+                    // 🔥 2. Cari semua kategori yang dimiliki oleh PT ini (bisa lebih dari 1)
+                    val listKategoriPemasokIni = daftarSupplier
+                        .filter { it.namaSupplier.equals(namaSupplierTerpilih, ignoreCase = true) }
+                        .mapNotNull { it.kategoriSuplai }
+                        .distinct()
+
+                    filterBarangBerdasarkanKategoriMultiple(listKategoriPemasokIni)
                 }
             }
-
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
 
-    private fun filterBarangBerdasarkanSupplier(kategori: String?) {
-        if (kategori == null || kategori.isEmpty()) {
+    // 🔥 3. Filter barang yang mengecek BANYAK kategori sekaligus
+    private fun filterBarangBerdasarkanKategoriMultiple(kategoriList: List<String>) {
+        if (kategoriList.isEmpty()) {
             spinnerBarang.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listOf("Pilih Barang"))
             return
         }
 
-        // Filter barang sesuai kategori supplier yang dipilih
-        val barangFiltered = daftarBarangAsli.filter {
-            it.kategori.equals(kategori, ignoreCase = true)
+        // Ambil barang yang kategorinya cocok dengan SALAH SATU dari kategoriList
+        val barangFiltered = daftarBarangAsli.filter { barang ->
+            kategoriList.any { katSupplier ->
+                katSupplier.equals(barang.kategori, ignoreCase = true)
+            }
         }
 
         if (barangFiltered.isEmpty()) {
-            spinnerBarang.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listOf("Tidak ada barang di kategori ini"))
+            spinnerBarang.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listOf("Tidak ada barang di kategori pemasok ini"))
             return
         }
 
-        // Tambahkan "Pilih Barang" di index ke-0
         val namaBarang = mutableListOf("Pilih Barang")
         namaBarang.addAll(barangFiltered.map { it.namaBarang })
 
@@ -159,15 +168,13 @@ class RestockActivity : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (position == 0) {
                     barangTerpilih = null
-                    etHargaBeli.setText("") // Kosongkan harga jika belum memilih
+                    etHargaBeli.setText("")
                 } else {
                     barangTerpilih = barangFiltered[position - 1]
-                    // Set harga otomatis saat barang dipilih
                     etHargaBeli.setText(barangTerpilih?.hargaModal?.toString() ?: "")
                     hitungTotal()
                 }
             }
-
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
@@ -195,7 +202,7 @@ class RestockActivity : AppCompatActivity() {
         val qty       = etQty.text.toString().toIntOrNull() ?: 0
         val hargaBeli = etHargaBeli.text.toString().toDoubleOrNull() ?: 0.0
 
-        if (supplierTerpilih == null) {
+        if (namaSupplierTerpilih == null) {
             Toast.makeText(this, "Pilih pemasok terlebih dahulu", Toast.LENGTH_SHORT).show()
             return
         }
@@ -205,14 +212,25 @@ class RestockActivity : AppCompatActivity() {
         }
         if (qty <= 0) {
             etQty.error = "Qty harus lebih dari 0"
-            etQty.requestFocus()
-            return
+            etQty.requestFocus(); return
         }
         if (hargaBeli <= 0.0) {
             etHargaBeli.error = "Harga beli harus lebih dari 0"
-            etHargaBeli.requestFocus()
-            return
+            etHargaBeli.requestFocus(); return
         }
+
+        // 🔥 4. Cari ID Supplier asli yang paling tepat berdasarkan kategori barang yang sedang dibeli
+        val kategoriBarangDibeli = barangTerpilih!!.kategori
+
+        val supplierTepat = daftarSupplier.find {
+            it.namaSupplier.equals(namaSupplierTerpilih, ignoreCase = true) &&
+                    it.kategoriSuplai.equals(kategoriBarangDibeli, ignoreCase = true)
+        } ?: daftarSupplier.find {
+            // Fallback: Jika tidak ketemu kombinasinya, ambil id supplier pertama dgn nama tersebut
+            it.namaSupplier.equals(namaSupplierTerpilih, ignoreCase = true)
+        }
+
+        val idSupplierFinal = supplierTepat?.idSupplier ?: 0
 
         val stockSekarang = barangTerpilih!!.stok
         val namaBarang    = barangTerpilih!!.namaBarang
@@ -221,22 +239,23 @@ class RestockActivity : AppCompatActivity() {
             .setTitle("Konfirmasi Restok")
             .setMessage(
                 "Tambah stock \"$namaBarang\" sebanyak $qty pcs?\n\n" +
+                        "Pemasok: $namaSupplierTerpilih\n" +
                         "Stock saat ini: $stockSekarang pcs\n" +
                         "Stock setelah restok: ${stockSekarang + qty} pcs"
             )
-            .setPositiveButton("Ya, Tambahkan") { _, _ -> simpanRestok(qty, hargaBeli) }
+            .setPositiveButton("Ya, Tambahkan") { _, _ -> simpanRestok(qty, hargaBeli, idSupplierFinal) }
             .setNegativeButton("Batal", null)
             .show()
     }
 
-    private fun simpanRestok(qty: Int, hargaBeli: Double) {
+    private fun simpanRestok(qty: Int, hargaBeli: Double, idSupplierTerpilih: Int) {
         val tanggal = etTanggal.text.toString().trim()
         val db      = AppDatabase.getDatabase(this)
 
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val restokBaru = BarangMasuk(
-                    idSupplier   = supplierTerpilih!!.idSupplier,
+                    idSupplier   = idSupplierTerpilih, // Gunakan ID hasil pencocokan
                     idBarang     = barangTerpilih!!.idBarang,
                     tanggalMasuk = tanggal,
                     qtyMasuk     = qty,
@@ -251,11 +270,7 @@ class RestockActivity : AppCompatActivity() {
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(
-                        this@RestockActivity,
-                        "Terjadi kesalahan: ${e.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(this@RestockActivity, "Terjadi kesalahan: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
         }

@@ -14,9 +14,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.kel4.notaly.R
 import com.kel4.notaly.database.AppDatabase
-import com.kel4.notaly.pengiriman.TambahPengirimanActivity
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
 import java.util.Locale
 
 class DetailPengirimanActivity : AppCompatActivity() {
@@ -61,6 +61,23 @@ class DetailPengirimanActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.tvNomorResi).text = p.noResi ?: "-"
             findViewById<TextView>(R.id.tvAlamatLengkap).text = p.alamatLengkap ?: "-"
 
+            // 🔥 BACA TANGGAL DARI SHAREDPREFERENCES
+            val sp = getSharedPreferences("DataPengirimanEkstra", MODE_PRIVATE)
+            val rawTanggal = sp.getString("TGL_KIRIM_${p.idTransaksi}", "") ?: ""
+
+            val formattedTanggal = if (rawTanggal.isNotEmpty()) {
+                try {
+                    val sdfIn = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                    val sdfOut = SimpleDateFormat("dd MMMM yyyy", Locale("id", "ID"))
+                    sdfOut.format(sdfIn.parse(rawTanggal)!!)
+                } catch (e: Exception) {
+                    rawTanggal
+                }
+            } else {
+                "-"
+            }
+            findViewById<TextView>(R.id.tvTanggalPengiriman).text = formattedTanggal
+
             val biayaFormatted = p.biayaKirim?.let {
                 "Rp ${NumberFormat.getNumberInstance(Locale("id","ID")).format(it)}"
             } ?: "Rp 0"
@@ -80,7 +97,6 @@ class DetailPengirimanActivity : AppCompatActivity() {
             }
             badgeView.setTextColor(statusColor)
 
-            // Tombol salin resi
             findViewById<ImageView>(R.id.ivSalinResi).setOnClickListener {
                 val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val clip = ClipData.newPlainText("Nomor Resi", p.noResi ?: "")

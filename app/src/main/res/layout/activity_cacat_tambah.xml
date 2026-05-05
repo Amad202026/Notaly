@@ -191,7 +191,7 @@
                     <EditText android:id="@+id/etKeteranganKerusakan" android:layout_width="match_parent"
                         android:layout_height="120dp" android:background="@drawable/bg_input_outline"
                         android:paddingHorizontal="16dp" android:paddingVertical="14dp"
-                        android:hint="Contoh: Jahitan lepas, noda permanen..."
+                        android:hint="Contoh: Barang rusak"
                         android:inputType="textMultiLine" android:textSize="14sp"
                         android:textColor="#1A1A1A" android:textColorHint="#BBBBBB"
                         android:gravity="top|start" android:lines="4" android:maxLines="6"
@@ -208,7 +208,7 @@
 
                         <TextView android:layout_width="0dp" android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Barang yang dicatat akan mengurangi stok dan tidak dapat dijual"
+                            android:text="Barang yang dicatat akan ditandai [C] di nama barang"
                             android:textSize="11sp" android:textColor="#B45309" />
                     </LinearLayout>
 

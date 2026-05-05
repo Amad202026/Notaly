@@ -116,7 +116,7 @@
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="0dp"
+                app:cardElevation="2dp"
                 app:cardBackgroundColor="#FFFFFF">
 
                 <RelativeLayout
@@ -207,7 +207,7 @@
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="0dp"
+                app:cardElevation="2dp"
                 app:cardBackgroundColor="#FFFFFF">
 
                 <RelativeLayout
@@ -297,7 +297,7 @@
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="0dp"
+                app:cardElevation="2dp"
                 app:cardBackgroundColor="#FFFFFF">
 
                 <RelativeLayout
@@ -378,7 +378,7 @@
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
         app:cardCornerRadius="20dp"
-        app:cardElevation="0dp"
+        app:cardElevation="2dp"
         app:cardBackgroundColor="#FFF1F1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

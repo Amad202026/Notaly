@@ -119,9 +119,20 @@
                             android:contentDescription="Dropdown" app:tint="#AAAAAA" />
                     </RelativeLayout>
 
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="TANGGAL PENGIRIMAN" android:textSize="10sp" android:textColor="#0D5C3A"
+                        android:textStyle="bold" android:letterSpacing="0.08" android:layout_marginBottom="8dp" />
+
+                    <EditText android:id="@+id/etTanggal" android:layout_width="match_parent"
+                        android:layout_height="56dp" android:background="@drawable/bg_input_outline"
+                        android:paddingHorizontal="16dp" android:hint="Pilih tanggal..."
+                        android:textSize="14sp" android:textColor="#1A1A1A" android:textColorHint="#BBBBBB"
+                        android:focusable="false" android:clickable="true" android:inputType="none"
+                        android:gravity="center_vertical" />
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
             <!-- SECTION 2: DETAIL EKSPEDISI -->
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="12dp">
@@ -144,7 +155,7 @@
 
                     <EditText android:id="@+id/etNamaEkspedisi" android:layout_width="match_parent"
                         android:layout_height="56dp" android:background="@drawable/bg_input_outline"
-                        android:paddingHorizontal="16dp" android:hint="Contoh: J&amp;T Express, JNE, SiCepat"
+                        android:paddingHorizontal="16dp" android:hint="Contoh: JNE"
                         android:textSize="14sp" android:textColor="#1A1A1A" android:textColorHint="#BBBBBB"
                         android:inputType="text" android:singleLine="true" android:gravity="center_vertical"
                         android:layout_marginBottom="16dp" />
@@ -169,7 +180,7 @@
                     <EditText android:id="@+id/etAlamatTujuan" android:layout_width="match_parent"
                         android:layout_height="96dp" android:background="@drawable/bg_input_outline"
                         android:paddingHorizontal="16dp" android:paddingVertical="14dp"
-                        android:hint="Jl. Palaran No. 17, Samarinda..." android:inputType="textMultiLine"
+                        android:hint="Contoh: Jl.Bakti..." android:inputType="textMultiLine"
                         android:textSize="14sp" android:textColor="#1A1A1A" android:textColorHint="#BBBBBB"
                         android:gravity="top|start" />
 

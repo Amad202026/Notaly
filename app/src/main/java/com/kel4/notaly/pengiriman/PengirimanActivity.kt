@@ -66,7 +66,6 @@ class PengirimanActivity : AppCompatActivity() {
         tvPesanKosong = findViewById(R.id.tvPesanKosong)
 
         findViewById<View>(R.id.btnBack).setOnClickListener {
-            startActivity(Intent(this, BerandaActivity::class.java))
             finish()
         }
 

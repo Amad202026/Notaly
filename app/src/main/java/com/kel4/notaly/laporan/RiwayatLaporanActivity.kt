@@ -42,9 +42,7 @@ class RiwayatLaporanActivity : AppCompatActivity() {
         adapter = LaporanAdapter(emptyList())
         rv.adapter = adapter
 
-        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
-            startActivity(Intent(this, BerandaActivity::class.java)); finish()
-        }
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {finish()}
         setupTopNav()
         muatDataRiwayat()
     }
@@ -54,6 +52,9 @@ class RiwayatLaporanActivity : AppCompatActivity() {
             val semuaTransaksi = db.transaksiPenjualanDao().ambilSemuaTransaksi()
             val semuaDetail    = db.detailPenjualanDao().ambilSemuaDetail()
             val semuaBarang    = db.barangDao().ambilSemuaBarang()
+
+            // 🔥 BUKA MEMORI DISKON PELANGGAN
+            val spDiskon = getSharedPreferences("DataDiskonTransaksi", MODE_PRIVATE)
 
             // Kelompokkan transaksi per hari (prefix yyyy-MM-dd), urutkan DESC
             val grouped = semuaTransaksi
@@ -67,13 +68,28 @@ class RiwayatLaporanActivity : AppCompatActivity() {
                 var labaHarian = 0
 
                 transaksiList.forEach { trx ->
+
+                    // 1. Ambil info diskon global (Pelanggan)
+                    val diskonNominal = spDiskon.getInt("DISKON_NOMINAL_${trx.idTransaksi}", 0)
+                    val diskonPersen  = spDiskon.getInt("DISKON_PERSEN_${trx.idTransaksi}", 0)
+
+                    // Buat Tag khusus untuk transaksi yang kena diskon member
+                    val tagDiskonPelanggan = if (diskonPersen > 0) " [-${diskonPersen}%]" else ""
+
                     val details = semuaDetail.filter { it.idTransaksi == trx.idTransaksi }
                     details.forEach { d ->
-                        val barang    = semuaBarang.find { it.idBarang == d.idBarang }
-                        val nama      = barang?.namaBarang ?: d.idBarang
-                        val modal     = (barang?.hargaModal ?: 0) * d.qty
-                        val laba      = d.subtotal - modal
-                        labaHarian   += laba
+                        val barang = semuaBarang.find { it.idBarang == d.idBarang }
+                        var nama   = barang?.namaBarang ?: d.idBarang
+
+                        // 2. Cek apakah barang ini kena diskon nego (hargaNego < hargaJual normal)
+                        val hargaNormal = barang?.hargaJual ?: 0
+                        if (d.hargaNego != null && d.hargaNego < hargaNormal) {
+                            nama += " [Nego]" // Tambahkan label Nego di namanya
+                        }
+
+                        val modal = (barang?.hargaModal ?: 0) * d.qty
+                        val labaKotorItem  = d.subtotal - modal
+                        labaHarian += labaKotorItem // Tambah laba item ke harian
 
                         itemsHariIni.add(
                             ItemRiwayat(
@@ -81,12 +97,16 @@ class RiwayatLaporanActivity : AppCompatActivity() {
                                 qty         = d.qty,
                                 hargaJual   = d.subtotal,
                                 hargaModal  = modal,
-                                labaBersih  = laba,
-                                idTransaksi = trx.idTransaksi,
+                                labaBersih  = labaKotorItem,
+                                // Tempelkan info diskon di sebelah ID Transaksinya
+                                idTransaksi = "${trx.idTransaksi}$tagDiskonPelanggan",
                                 statusBayar = trx.statusPembayaran
                             )
                         )
                     }
+
+                    // 3. PENTING: Kurangi total laba harian dengan diskon pelanggan
+                    labaHarian -= diskonNominal
                 }
 
                 // Tambahkan header hari + ringkasan jumlah transaksi
@@ -94,7 +114,7 @@ class RiwayatLaporanActivity : AppCompatActivity() {
                 listFinal.add(
                     HeaderTanggal(
                         tanggalStr     = formatTanggal(tglRaw),
-                        totalLabaHarian = labaHarian,
+                        totalLabaHarian = labaHarian, // Angka ini sekarang sudah 100% akurat
                         infoTambahan   = "$jumlahTrx transaksi"
                     )
                 )
@@ -117,14 +137,20 @@ class RiwayatLaporanActivity : AppCompatActivity() {
 
     private fun setupTopNav() {
         findViewById<TextView>(R.id.nav_keuangan).setOnClickListener {
-            startActivity(Intent(this, KeuanganLaporanActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
-            }); finish()
+            val intent = Intent(this, KeuanganLaporanActivity::class.java).apply { flags = Intent.FLAG_ACTIVITY_NO_ANIMATION }
+            val options = android.app.ActivityOptions.makeCustomAnimation(this, 0, 0)
+            startActivity(intent, options.toBundle())
+            finish()
+            @Suppress("DEPRECATION")
+            overridePendingTransition(0, 0)
         }
         findViewById<TextView>(R.id.nav_barang).setOnClickListener {
-            startActivity(Intent(this, BarangLaporanActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
-            }); finish()
+            val intent = Intent(this, BarangLaporanActivity::class.java).apply { flags = Intent.FLAG_ACTIVITY_NO_ANIMATION }
+            val options = android.app.ActivityOptions.makeCustomAnimation(this, 0, 0)
+            startActivity(intent, options.toBundle())
+            finish()
+            @Suppress("DEPRECATION")
+            overridePendingTransition(0, 0)
         }
     }
 }

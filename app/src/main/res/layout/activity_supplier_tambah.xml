@@ -175,12 +175,20 @@
                             android:src="@drawable/ic_daftarpelanggan" app:tint="#0D5C3A"
                             android:scaleType="centerInside" android:contentDescription="Telepon" />
 
-                        <EditText android:id="@+id/etNoTelp" android:layout_width="match_parent"
-                            android:layout_height="match_parent" android:paddingStart="44dp"
-                            android:paddingEnd="16dp" android:hint="+62 812 3456 7890"
-                            android:textSize="14sp" android:textColor="#1A1A1A" android:textColorHint="#BBBBBB"
-                            android:inputType="phone" android:singleLine="true"
-                            android:background="@null" android:gravity="center_vertical" />
+                        <EditText
+                            android:id="@+id/etNoTelp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@null"
+                            android:gravity="center_vertical"
+                            android:hint="+62"
+                            android:inputType="phone"
+                            android:paddingStart="44dp"
+                            android:paddingEnd="16dp"
+                            android:singleLine="true"
+                            android:textColor="#1A1A1A"
+                            android:textColorHint="#BBBBBB"
+                            android:textSize="14sp" />
                     </FrameLayout>
 
                     <!-- Kategori Produk -->

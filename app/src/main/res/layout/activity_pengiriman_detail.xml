@@ -152,6 +152,26 @@
                         </LinearLayout>
                     </LinearLayout>
 
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F5F5F5" android:layout_marginBottom="16dp" />
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:gravity="center_vertical">
+                        <FrameLayout android:layout_width="36dp" android:layout_height="36dp"
+                            android:background="@drawable/bg_icon_circle" android:layout_marginEnd="14dp">
+                            <ImageView android:layout_width="16dp" android:layout_height="16dp"
+                                android:layout_gravity="center" android:src="@drawable/ic_calendar"
+                                app:tint="#0D5C3A" android:contentDescription="Tanggal" />
+                        </FrameLayout>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="TANGGAL PENGIRIMAN" android:textColor="#AAAAAA"
+                                android:textSize="10sp" android:letterSpacing="0.06" android:layout_marginBottom="2dp" />
+                            <TextView android:id="@+id/tvTanggalPengiriman" android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" android:text="-"
+                                android:textColor="#1A1A1A" android:textSize="15sp" android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

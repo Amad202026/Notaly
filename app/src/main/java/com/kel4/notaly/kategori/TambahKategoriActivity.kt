@@ -3,6 +3,7 @@ package com.kel4.notaly.kategori
 import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -14,6 +15,7 @@ import com.kel4.notaly.pengaturan.PengaturanActivity
 
 lateinit var etNamaKategori: EditText
 lateinit var btnSimpan: TextView
+lateinit var btnBack: ImageView
 
 class TambahKategoriActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,6 +25,10 @@ class TambahKategoriActivity : AppCompatActivity() {
 
         var etNamaKategori = findViewById<EditText>(R.id.etNamaKategori)
         var btnSimpan = findViewById<TextView>(R.id.btnSimpan)
+        var btnBack = findViewById<ImageView>(R.id.btnBack)
+        btnBack.setOnClickListener {
+            finish()
+        }
 
         // Di dalam onCreate KategoriActivity.kt
         btnSimpan.setOnClickListener {

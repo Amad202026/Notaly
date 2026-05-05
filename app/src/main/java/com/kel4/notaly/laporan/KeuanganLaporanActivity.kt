@@ -43,40 +43,46 @@ class KeuanganLaporanActivity : AppCompatActivity() {
             val semuaBarangMasuk = db.barangMasukDao().riwayatBarangMasuk()
             val semuaPengiriman = db.pengirimanDao().getAllPengiriman()
             val semuaBarang     = db.barangDao().ambilSemuaBarang()
-            val semuaDetail     = db.detailPenjualanDao().ambilSemuaDetail()
 
-            // ── UANG MASUK: total pendapatan penjualan (semua status) ──────
-            val totalMasuk = semuaTransaksi.sumOf { it.totalBelanja.toLong() }
-
-            // ── UANG KELUAR: 3 sumber ────────────────────────────────────
-            // 1. Pembelian stok restock (harga beli × qty)
+            // ── UANG KELUAR ───────────────────────────────────────────────
+            // 1. Pembelian stok restock (kulakan)
             val keluarRestock = semuaBarangMasuk.sumOf { (it.hargaBeli * it.qtyMasuk).toLong() }
+            // 2. Biaya pengiriman ekspedisi
+            val keluarPengiriman = semuaPengiriman.sumOf { (it.biayaKirim ?: 0.0).toLong() }
+            val totalKeluar = keluarRestock + keluarPengiriman
 
-            // 2. Biaya pengiriman yang sudah dicatat
-            val keluarPengiriman = semuaPengiriman
-                .sumOf { (it.biayaKirim ?: 0.0).toLong() }
-
-            // 3. Modal barang yang terjual (harga modal × qty terjual per item)
-            val prefEkstra = getSharedPreferences("DataEkstraBarang", MODE_PRIVATE)
-            val keluarModalTerjual = semuaDetail.sumOf { detail ->
-                val modal = semuaBarang.find { it.idBarang == detail.idBarang }?.hargaModal ?: 0
-                (modal * detail.qty).toLong()
-            }
-            val totalKeluar = keluarRestock + keluarPengiriman + keluarModalTerjual
-            val saldoAkhir  = totalMasuk - totalKeluar
-
-            // ── Bangun list item untuk RecyclerView ───────────────────────
-            // Gabungkan semua transaksi keuangan lalu urutkan per tanggal DESC
+            // ── Bangun list item & Hitung Uang Masuk ──────────────────────
             val semuaItem = mutableListOf<ItemKeuangan>()
+            var totalMasuk = 0L // Variabel uang masuk kita siapkan di sini
 
-            // Pemasukan dari penjualan
+            val spDiskon = getSharedPreferences("DataDiskonTransaksi", MODE_PRIVATE)
+
             semuaTransaksi.forEach { trx ->
+                val pelangganNama = spDiskon.getString("PELANGGAN_NAMA_${trx.idTransaksi}", "Umum")
+                val diskonPersen  = spDiskon.getInt("DISKON_PERSEN_${trx.idTransaksi}", 0)
+
+                // 🔥 1. Tarik nominal DP dari memori
+                val nominalDp     = spDiskon.getInt("DP_NOMINAL_${trx.idTransaksi}", 0)
+
+                // 🔥 2. Logika Uang Riil (Jika DP, ambil nominal DP. Jika Lunas, ambil Total Belanja)
+                val uangDiterima = if (trx.statusPembayaran == "DP" && nominalDp > 0) {
+                    nominalDp.toLong()
+                } else {
+                    trx.totalBelanja.toLong()
+                }
+
+                // Tambahkan uang yang benar-benar diterima ke Total Pemasukan
+                totalMasuk += uangDiterima
+
+                val infoDiskon = if (diskonPersen > 0) " · Diskon $diskonPersen%" else ""
+                val detailTeks = "Penjualan ($pelangganNama) · ${trx.statusPembayaran}$infoDiskon"
+
                 semuaItem.add(
                     ItemKeuangan(
                         tanggal  = trx.tanggalTransaksi,
                         judul    = trx.idTransaksi,
-                        detail   = "Penjualan · ${trx.statusPembayaran} · ${trx.metode ?: "-"}",
-                        nominal  = trx.totalBelanja.toLong(),
+                        detail   = detailTeks,
+                        nominal  = uangDiterima, // 🔥 Tampilkan angka yang benar di daftar
                         jenisPos = true   // true = masuk
                     )
                 )
@@ -96,11 +102,25 @@ class KeuanganLaporanActivity : AppCompatActivity() {
                 )
             }
 
+            // ── BUKA MEMORI TANGGAL PENGIRIMAN ──
+            val spPengiriman = getSharedPreferences("DataPengirimanEkstra", MODE_PRIVATE)
+
             // Pengeluaran biaya pengiriman
             semuaPengiriman.filter { (it.biayaKirim ?: 0.0) > 0 }.forEach { pg ->
+
+                // 1. Tarik tanggal dari SharedPreferences
+                val savedTanggalKirim = spPengiriman.getString("TGL_KIRIM_${pg.idTransaksi}", "") ?: ""
+
+                // 2. Jika kosong (mungkin data lama), pinjam tanggal dari data Transaksinya
+                val finalTanggal = if (savedTanggalKirim.isNotEmpty()) {
+                    savedTanggalKirim
+                } else {
+                    semuaTransaksi.find { it.idTransaksi == pg.idTransaksi }?.tanggalTransaksi ?: ""
+                }
+
                 semuaItem.add(
                     ItemKeuangan(
-                        tanggal  = "",          // Pengiriman tidak punya field tanggal sendiri
+                        tanggal  = finalTanggal, // 🔥 TANGGAL SUDAH TIDAK KOSONG
                         judul    = "Ongkir · ${pg.idTransaksi ?: "-"}",
                         detail   = "${pg.namaEkspedisi ?: "Ekspedisi"} · ${pg.statusKirim ?: "-"}",
                         nominal  = (pg.biayaKirim ?: 0.0).toLong(),
@@ -109,7 +129,7 @@ class KeuanganLaporanActivity : AppCompatActivity() {
                 )
             }
 
-            // Kelompokkan per tanggal (ambil prefix yyyy-MM-dd), urutkan DESC
+            // Kelompokkan per tanggal
             val grouped = semuaItem
                 .groupBy { it.tanggal.take(10).ifEmpty { "Tanpa Tanggal" } }
                 .toSortedMap(reverseOrder())
@@ -120,6 +140,9 @@ class KeuanganLaporanActivity : AppCompatActivity() {
                 listFinal.add(HeaderTanggal(formatTanggal(tglRaw), totalHarian.toInt()))
                 listFinal.addAll(items)
             }
+
+            // Saldo akhir dihitung setelah totalMasuk selesai dijumlahkan
+            val saldoAkhir  = totalMasuk - totalKeluar
 
             withContext(Dispatchers.Main) {
                 val rupiah = NumberFormat.getNumberInstance(Locale("id", "ID"))
@@ -140,18 +163,22 @@ class KeuanganLaporanActivity : AppCompatActivity() {
     }
 
     private fun setupTopNav() {
-        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
-            startActivity(Intent(this, BerandaActivity::class.java)); finish()
-        }
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {finish()}
         findViewById<TextView>(R.id.nav_barang).setOnClickListener {
-            startActivity(Intent(this, BarangLaporanActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
-            }); finish()
+            val intent = Intent(this, BarangLaporanActivity::class.java).apply { flags = Intent.FLAG_ACTIVITY_NO_ANIMATION }
+            val options = android.app.ActivityOptions.makeCustomAnimation(this, 0, 0)
+            startActivity(intent, options.toBundle())
+            finish()
+            @Suppress("DEPRECATION")
+            overridePendingTransition(0, 0)
         }
         findViewById<TextView>(R.id.nav_riwayat).setOnClickListener {
-            startActivity(Intent(this, RiwayatLaporanActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
-            }); finish()
+            val intent = Intent(this, RiwayatLaporanActivity::class.java).apply { flags = Intent.FLAG_ACTIVITY_NO_ANIMATION }
+            val options = android.app.ActivityOptions.makeCustomAnimation(this, 0, 0)
+            startActivity(intent, options.toBundle())
+            finish()
+            @Suppress("DEPRECATION")
+            overridePendingTransition(0, 0)
         }
     }
 }

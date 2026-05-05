@@ -15,7 +15,6 @@
         android:orientation="vertical"
         android:padding="18dp">
 
-        <!-- Header: Label + Hapus -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,7 +44,6 @@
 
         </LinearLayout>
 
-        <!-- Pilih Barang -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -82,14 +80,12 @@
                 app:tint="#AAAAAA" />
         </RelativeLayout>
 
-        <!-- Harga Nego + QTY berdampingan -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginBottom="14dp">
 
-            <!-- Harga Satuan -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -100,7 +96,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="HARGA SATUAN"
+                    android:text="HARGA (BISA NEGO)"
                     android:textColor="#888888"
                     android:textSize="10sp"
                     android:textStyle="bold"
@@ -127,8 +123,8 @@
                         android:layout_height="match_parent"
                         android:paddingStart="38dp"
                         android:paddingEnd="12dp"
-                        android:hint="Normal"
-                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:inputType="number"
                         android:textSize="14sp"
                         android:textColor="#1A1A1A"
                         android:textColorHint="#BBBBBB"
@@ -137,7 +133,6 @@
                 </FrameLayout>
             </LinearLayout>
 
-            <!-- QTY -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -189,7 +184,6 @@
 
         </LinearLayout>
 
-        <!-- Subtotal baris -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
